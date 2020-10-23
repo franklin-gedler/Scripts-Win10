@@ -3,7 +3,7 @@
 start /wait %windir%\setup\scripts\E82.40_CheckPointVPN.msi /quiet /norestart
 start /wait %windir%\setup\scripts\7z1900-x64.exe /S
 start /wait %windir%\setup\scripts\AcroRdrDC1902120049_es_ES.exe /sAll
-start /wait %windir%\setup\scripts\jre-8u261-windows-x64.exe /s
+start /wait %windir%\setup\scripts\java.exe /s
 start /wait %windir%\setup\scripts\ChromeStandaloneSetup64.exe /silent /install
 start /wait %windir%\setup\scripts\Office2016x64\setup.exe /config %windir%\setup\scripts\Office2016x64\standard.ww\config.xml
 :Script PowerShell
