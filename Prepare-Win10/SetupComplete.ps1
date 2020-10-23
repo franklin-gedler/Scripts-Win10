@@ -145,7 +145,7 @@ Start-Process msiexec -ArgumentList '/I "C:\WINDOWS\setup\scripts\TeamViewer_Hos
 # ______________________________ instalando AV  ____________________________________________
 echo "--------------- Instalando AV -----------------------"
 #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -ArgumentList '-s'
-Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /Silent'
+Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
 #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
 echo " ------ Instalado -------"
 # __________________________________________________________________________________________
