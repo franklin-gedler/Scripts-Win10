@@ -3,15 +3,36 @@ cd $currentdirectory
 (pwd).Path
 #######################################################################################################################
 
+echo "_________________________________________________________________________________________________________________________"
+
+echo ""
+echo " ------------------------------------"
+Write-Host " Ingrese Numero de Extension . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ------------------------------------"
+echo ""
+$interno = Read-Host
+$interno = $interno.replace(' ' , '')
+
+echo ""
+echo " ------------------------------------"
+Write-Host " Ingrese Numero de Agente . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ------------------------------------"
+echo ""
+$agente = Read-Host
+$agente = $agente.Replace(' ' , '')
+
+echo ""
+echo "_________________________________________________________________________________________________________________________"
+
 Stop-Service wuauserv -Force -PassThru
 Rename-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -NewName "WindowsUpdateold"
 Start-Service wuauserv -PassThru
 
-# _________________________________________________________________________________________________________________________
-
+echo ""
 echo " ===================================="
 Write-Host " Installing Net Framework Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
 
 Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All
 
@@ -22,45 +43,74 @@ Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All
 # Deshabilitar framework 3.5
 # Disable-WindowsOptionalFeature -Online -FeatureName "NetFx3"
 
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Installing Microsoft Silverlight Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
 
 Start-Process -Wait -FilePath Pre\Silverlight_x64.exe -ArgumentList "/q"
 
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Installing Microsoft Visual C++ 2017 Redistributable (x64) Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
 
 Start-Process -Wait -FilePath Pre\VC_redist.x64.exe -ArgumentList "/install /quiet /norestart"
 
-
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Installing Tsapi-Client Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
 
 Start-Process -Wait -FilePath TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\TsapiClient\setup.iss"
 
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Installing Avaya One X Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
 
 Start-Process -Wait -FilePath AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
 Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\AvayaOneX\DisableMuteButton.reg"
 
+# Seteo extension
+$File = "AvayaOneX\Avaya\one-X Agent\2.5\Profiles\default\Settings.xml"
+$Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
+$Content = $Content.Replace('1111111', "$interno")
+$Content = $Content.Trim()
+[System.IO.File]::WriteAllText("$currentdirectory\$File", $Content)
+
+# Seteo Agente
+$Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
+$Content = $Content.Replace('2222222', "$agente")
+$Content = $Content.Trim()
+[System.IO.File]::WriteAllText("$currentdirectory\$File", $Content)
+
+Copy-Item AvayaOneX\Avaya "$env:appdata\" -Force -Recurse
+
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Config. Certificate Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
 
 $huella = (New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -DnsName "127.0.0.1" -FriendlyName "MySiteCert" -NotAfter (Get-Date).AddYears(10)).Thumbprint
 $cert = (Get-ChildItem -Path cert:\LocalMachine\My\$huella)
@@ -74,11 +124,14 @@ Start-Process -Wait cmd.exe -ArgumentList "C:\Program Files (x86)\Avaya\Avaya on
 
 Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\CertificadoSSL\registro_ssl.reg"
 
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Installing Click to Dial Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
 
 Copy-Item ClickToDial\* C:\ -Force -Recurse
 
@@ -94,18 +147,14 @@ Start-Process -Wait C:\sslCert\sslCert.bat
 
 Restart-Service nginx -PassThru
 
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Config. CTI . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
 echo ""
-echo " ------------------------------------"
-Write-Host " Ingrese Numero de interno . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ------------------------------------"
-echo ""
-$interno = Read-Host
-$interno = $interno.replace(' ' , '')
 
 $File = "CTI\CTI.ini"
 $Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
@@ -114,65 +163,75 @@ $Content = $Content.Trim()
 [System.IO.File]::WriteAllText("$currentdirectory\$File", $Content)
 Copy-Item $File C:\ -Force
 
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
+echo ""
 echo " ===================================="
 Write-Host " Installing Global Protect Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
+echo ""
+
+Start-Process -Wait msiexec -ArgumentList '/i GlobalProtect\GlobalProtect64.msi /quiet Portal="170.80.97.6"'
+
+echo ""
+echo "_________________________________________________________________________________________________________________________"
+
+echo ""
+echo " ===================================="
+Write-Host " Installing ScreenPop Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ===================================="
+echo ""
+
+#rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
+
+Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application"
+
+#Start-Process -Wait ScreenPop\install.bat
 
 
-
-
-
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 
 
 
 
+echo ""
+echo "_________________________________________________________________________________________________________________________"
 
 
+
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 
 
 
 
-
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 
 
 
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 
 
 
-
-
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 
 
-
-
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 
 
-
-
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-
+echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 
