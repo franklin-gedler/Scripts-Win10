@@ -187,8 +187,8 @@ echo ""
 Start-Process -Wait msiexec -ArgumentList '/i GlobalProtect\GlobalProtect64.msi /quiet Portal="170.80.97.6"'
 
 # Este bloque se debe verificar ya que es el certificado de Global Protec
-#$cert = (Get-ChildItem -Path $currentdirectory\GlobalProtect\GP.cer)
-#$cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
+$cert = (Get-ChildItem -Path $currentdirectory\GlobalProtect\GP.cer)
+$cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
 
 echo ""
 echo " _____________________________________________________________________________________________________"
