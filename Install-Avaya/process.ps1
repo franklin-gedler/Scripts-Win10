@@ -6,6 +6,15 @@ cd $currentdirectory
 echo " _____________________________________________________________________________________________________"
 
 echo ""
+echo "                                  ++++++++++++++++++++++++++++++++++++"
+Write-Host "                                   Script Creado por Franklin Gedler                                  " -ForegroundColor green -BackgroundColor Black
+Write-Host "                                      Soporte Despegar Argentina                                      " -ForegroundColor green -BackgroundColor Black
+echo "                                  ++++++++++++++++++++++++++++++++++++"
+echo ""
+
+echo " _____________________________________________________________________________________________________"
+
+echo ""
 echo " ------------------------------------"
 Write-Host "   Ingrese Numero de Extension . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ------------------------------------"
