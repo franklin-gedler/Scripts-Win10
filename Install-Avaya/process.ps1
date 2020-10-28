@@ -7,7 +7,7 @@ echo "__________________________________________________________________________
 
 echo ""
 echo " ------------------------------------"
-Write-Host " Ingrese Numero de Extension . . . " -ForegroundColor Yellow -BackgroundColor Black
+Write-Host "   Ingrese Numero de Extension . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ------------------------------------"
 echo ""
 $interno = Read-Host
@@ -15,7 +15,7 @@ $interno = $interno.replace(' ' , '')
 
 echo ""
 echo " ------------------------------------"
-Write-Host " Ingrese Numero de Agente . . . " -ForegroundColor Yellow -BackgroundColor Black
+Write-Host "     Ingrese Numero de Agente . . .  " -ForegroundColor Yellow -BackgroundColor Black
 echo " ------------------------------------"
 echo ""
 $agente = Read-Host
@@ -26,12 +26,13 @@ echo "__________________________________________________________________________
 
 Stop-Service wuauserv -Force -PassThru
 Rename-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -NewName "WindowsUpdateold"
+Set-Service wuauserv -StartupType Manual -PassThru
 Start-Service wuauserv -PassThru
 
 echo ""
-echo " ===================================="
-Write-Host " Installing Net Framework Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
+echo " ======================================"
+Write-Host "   Installing Net Framework Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ======================================"
 echo ""
 
 Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All
@@ -47,9 +48,9 @@ echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 echo ""
-echo " ===================================="
-Write-Host " Installing Microsoft Silverlight Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
+echo " =============================================="
+Write-Host "   Installing Microsoft Silverlight Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " =============================================="
 echo ""
 
 Start-Process -Wait -FilePath Pre\Silverlight_x64.exe -ArgumentList "/q"
@@ -58,9 +59,9 @@ echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 echo ""
-echo " ===================================="
-Write-Host " Installing Microsoft Visual C++ 2017 Redistributable (x64) Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
+echo " ========================================================================"
+Write-Host "   Installing Microsoft Visual C++ 2017 Redistributable (x64) Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ========================================================================"
 echo ""
 
 Start-Process -Wait -FilePath Pre\VC_redist.x64.exe -ArgumentList "/install /quiet /norestart"
@@ -69,9 +70,9 @@ echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 echo ""
-echo " ===================================="
-Write-Host " Installing Tsapi-Client Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
+echo " ====================================="
+Write-Host "   Installing Tsapi-Client Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ====================================="
 echo ""
 
 Start-Process -Wait -FilePath TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\TsapiClient\setup.iss"
@@ -81,7 +82,7 @@ echo "__________________________________________________________________________
 
 echo ""
 echo " ===================================="
-Write-Host " Installing Avaya One X Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+Write-Host "   Installing Avaya One X Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
 echo ""
 
@@ -108,7 +109,7 @@ echo "__________________________________________________________________________
 
 echo ""
 echo " ===================================="
-Write-Host " Config. Certificate Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+Write-Host "    Config. Certificate Wait . . .   " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
 echo ""
 
@@ -120,7 +121,9 @@ $cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
 
 Copy-Item CertificadoSSL\OneXAgentAPIConfig.bat 'C:\Program Files (x86)\Avaya\Avaya one-X Agent' -Force
 
-Start-Process -Wait cmd.exe -ArgumentList "C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat 60001 1 $huella"
+#Start-Process -Wait cmd.exe -ArgumentList "C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat 60001 1 $huella"
+
+Start-Process -Wait 'C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat' -ArgumentList "60001 1 $huella"
 
 Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\CertificadoSSL\registro_ssl.reg"
 
@@ -128,9 +131,9 @@ echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 echo ""
-echo " ===================================="
-Write-Host " Installing Click to Dial Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
+echo " ======================================"
+Write-Host "   Installing Click to Dial Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ======================================"
 echo ""
 
 Copy-Item ClickToDial\* C:\ -Force -Recurse
@@ -151,9 +154,9 @@ echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 echo ""
-echo " ===================================="
-Write-Host " Config. CTI . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
+echo " ===================="
+Write-Host "   Config. CTI . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ===================="
 echo ""
 
 $File = "CTI\CTI.ini"
@@ -167,78 +170,31 @@ echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 echo ""
-echo " ===================================="
-Write-Host " Installing Global Protect Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
+echo " ======================================="
+Write-Host "   Installing Global Protect Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+echo " ======================================="
 echo ""
 
 Start-Process -Wait msiexec -ArgumentList '/i GlobalProtect\GlobalProtect64.msi /quiet Portal="170.80.97.6"'
 
+# Este bloque se debe verificar ya que es el certificado de Global Protec
+#$cert = (Get-ChildItem -Path $currentdirectory\GlobalProtect\GP.cer)
+#$cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
+
 echo ""
 echo "_________________________________________________________________________________________________________________________"
 
 echo ""
 echo " ===================================="
-Write-Host " Installing ScreenPop Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
+Write-Host "   Installing ScreenPop Wait . . .   " -ForegroundColor Yellow -BackgroundColor Black
 echo " ===================================="
 echo ""
 
-#rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
+rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
 
-Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application"
+#Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application"
 
 #Start-Process -Wait ScreenPop\install.bat
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-echo ""
-echo "_________________________________________________________________________________________________________________________"
-
-
-
-
-
-
 
 Pause
 
