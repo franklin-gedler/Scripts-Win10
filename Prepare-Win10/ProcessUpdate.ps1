@@ -1,3 +1,14 @@
+echo " _____________________________________________________________________________________________________"
+
+echo ""
+echo "                                  ++++++++++++++++++++++++++++++++++++"
+Write-Host "                                   Script Creado por Franklin Gedler                                  " -ForegroundColor green -BackgroundColor Black
+Write-Host "                                      Soporte Despegar Argentina                                      " -ForegroundColor green -BackgroundColor Black
+echo "                                  ++++++++++++++++++++++++++++++++++++"
+echo ""
+
+echo " _____________________________________________________________________________________________________"
+echo ""
 # _________________________ Deshabilito Windows Update Poronga ____________________________
 Stop-Service wuauserv -Force -PassThru
 Set-Service wuauserv -StartupType Disabled -PassThru
