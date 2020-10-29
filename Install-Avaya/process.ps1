@@ -199,11 +199,11 @@ Write-Host "   Installing ScreenPop Wait . . .   " -ForegroundColor Yellow -Back
 echo " ===================================="
 echo ""
 
-& rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
+#& rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
 
 #Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application"
 
-#Start-Process -Wait ScreenPop\install.bat
+Start-Process -Wait ScreenPop\install.bat
 
 Pause
 
