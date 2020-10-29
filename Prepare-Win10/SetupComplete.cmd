@@ -7,7 +7,7 @@ start /wait %windir%\setup\scripts\java.exe /s
 start /wait %windir%\setup\scripts\ChromeStandaloneSetup64.exe /silent /install
 start /wait %windir%\setup\scripts\Office2016x64\setup.exe /config %windir%\setup\scripts\Office2016x64\standard.ww\config.xml
 :Script PowerShell
-PowerShell.exe -NoProfile -Command "& {Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "%windir%\setup\scripts\SetupComplete.ps1"' -Verb RunAs}"
+PowerShell.exe -NoProfile -Command "& {Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "%windir%\setup\scripts\process.ps1"' -Verb RunAs}"
 
 
 
