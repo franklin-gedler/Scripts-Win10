@@ -8,11 +8,11 @@ echo "                                  ++++++++++++++++++++++++++++++++++++"
 echo ""
 
 echo " _____________________________________________________________________________________________________"
-echo ""
+#echo ""
 # _________________________ Deshabilito Windows Update Poronga ____________________________
-Stop-Service wuauserv -Force -PassThru
-Set-Service wuauserv -StartupType Disabled -PassThru
-Get-Service wuauserv | Select-Object *
+#Stop-Service wuauserv -Force -PassThru
+#Set-Service wuauserv -StartupType Disabled -PassThru
+#Get-Service wuauserv | Select-Object *
 echo ""
 # _________________________________________________________________________________________
 
