@@ -188,7 +188,8 @@ echo {
 Remove-Item -LiteralPath C:\Windows\Setup\scripts -Recurse -Force
 #Remove-Item -LiteralPath C:\PS -Recurse -Force
 } > C:\Windows\Setup\scripts\AutoDelete.ps1
-& C:\Windows\Setup\scripts\AutoDelete.ps1
+#& C:\Windows\Setup\scripts\AutoDelete.ps1
+Start-Process -Wait PowerShell.exe -ArgumentList "& C:\Windows\Setup\scripts\AutoDelete.ps1"
 Restart-Computer -Force
 exit
 
