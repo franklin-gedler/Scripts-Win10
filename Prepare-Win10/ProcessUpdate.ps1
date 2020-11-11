@@ -13,7 +13,7 @@ echo " _________________________________________________________________________
 #Stop-Service wuauserv -Force -PassThru
 #Set-Service wuauserv -StartupType Disabled -PassThru
 #Get-Service wuauserv | Select-Object *
-echo ""
+#echo ""
 # _________________________________________________________________________________________
 
 # Obtener Serial de equipo
@@ -24,8 +24,9 @@ $newnamecompu = "AR$serial"
 
 # __________________ Verificando conexion con Dominio y Validando Credenciales _______________________
 echo ""
-echo " -------------- Verificando conexion con el Dominio -------------------- "
-echo ""
+echo " ================================================ "
+Write-Host "       Verificando conexion con el Dominio        " -ForegroundColor Yellow -BackgroundColor Black
+echo " ================================================ "
 
 $CAD = $(Test-Connection 10.40.54.1 -Count 2 -Quiet -ErrorAction SilentlyContinue)
 
@@ -40,16 +41,18 @@ while("$CAD" -eq 'False'){
 }
 echo ""
 echo " ########################## "
-Write-Host " Conexion con el Dominio OK " -ForegroundColor Green
+Write-Host " Conexion con el Dominio OK " -ForegroundColor Green -BackgroundColor Black
 echo " ########################## "
 echo ""
 
+echo ""
 echo "_________________________________________________________________________________________"
+echo ""
 
 $cred = Get-Credential AR\ -Message "Ingresar Credenciales, AR\User.Name"
-echo ""
-echo " ------------------ Validando credenciales ingresadas -------------------------- "
-echo ""
+echo " ============================================== "
+Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
+echo " ============================================== "
 Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\PS -Destination C:\ -Recurse
 Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll"
 Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
@@ -57,7 +60,7 @@ $Very = Get-ADDomain -Server 10.40.54.1 -Credential $cred -ErrorAction SilentlyC
 while(!$Very){
     echo ""
     echo " ########################################################## "
-    Write-Host " Error con credenciales, Vuelva a escribir sus credenciales " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host " Error con credenciales, Vuelva a escribir sus credenciales " -ForegroundColor Red -BackgroundColor Black
     echo " ########################################################## "
     echo ""
     $cred = Get-Credential AR\ -Message "Vuelva a escribir sus credenciales, Ej: AR\User.name"
@@ -67,12 +70,13 @@ while(!$Very){
 }
 echo ""
 echo " ##############################################################"
-Write-Host "              Credenciales OK Alegria Alegria " -ForegroundColor Green
-Write-Host "   Credenciales Validadas con el Dominio: $Very " -ForegroundColor Green
+Write-Host "              Credenciales OK Alegria Alegria " -ForegroundColor Green -BackgroundColor Black
+Write-Host "   Credenciales Validadas con el Dominio: $Very " -ForegroundColor Green -BackgroundColor Black
 echo " ############################################################## "
+
 echo ""
-
-
+echo "_________________________________________________________________________________________"
+echo ""
 # ____________________________________ Binding AD ________________________________________
 #mkdir C:\PS\ADPoSH
 
@@ -80,16 +84,21 @@ echo ""
 #Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
 $consul = Get-ADComputer -LDAPFilter "(cn=$newnamecompu)" -SearchScope Subtree -Server ar.infra.d -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 if ($consul){
-    echo ""
-    echo "---------- Equipo existe, se procede a borrar -----------"
+    echo " ====================================== "
+    Write-Host "   Equipo existe, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
+    echo " ====================================== "
     Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False -Verbose
     Start-Sleep -Seconds 10
-    echo "Eliminado . . ."
+    echo " ############# "
+    Write-Host "   Eliminado   " -ForegroundColor Green -BackgroundColor Black
+    echo " ############# "
 }
 #Remove-Module -Name ActiveDirectory
 #Remove-Item C:\PS -Recurse -Force
 echo ""
-echo " ---------------- Enlazando equipo al AD ------------------- "
+echo " ==================================== "
+Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
+echo " ==================================== "
 $Binding = (Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -passthru -verbose -Credential $cred).HasSucceeded
 
 if("$Binding" -eq "True"){
@@ -113,9 +122,15 @@ if("$Binding" -eq "True"){
 #Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -passthru -verbose -Credential $cred
 # _________________________________________________________________________________________
 
+echo ""
+echo "_________________________________________________________________________________________"
+echo ""
+
 # _____________________ Habilito el bitlocker y envio el ID y pass al NAS _________________
 echo ""
-echo " ------- Verificando si el TPM esta Activo -------- "
+echo " ========================================= "
+Write-Host "     Verificando si el TPM esta Activo     " -ForegroundColor Yellow -BackgroundColor Black
+echo " ========================================= "
 $tpmpresent = (Get-Tpm).TpmPresent
 $tpmready = (Get-Tpm).TpmReady
 
@@ -127,49 +142,98 @@ if("$tpmpresent" -eq "False" -And "$tpmready" -eq "False"){
     echo ""
 
 }else {
-    Write-Host " TPM Activo " -ForegroundColor Green -BackgroundColor Black
     echo ""
-    Write-Host " -------------- Habilitando Bitlocker -------------- "
+    echo " ############ "
+    Write-Host "  TPM Activo  " -ForegroundColor Green -BackgroundColor Black
+    echo " ############ "
+    echo ""
+    echo " ============================== "
+    Write-Host "     Habilitando Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
+    echo " ============================== "
     Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
 
     (Get-BitLockerVolume -mount c).keyprotector | select $newnamecompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$newnamecompu.txt
     #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $newnamecompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$newnamecompu.txt
 
-    echo " ----------- Verificando conexion al NAS ------------"
+    echo ""
+    echo " ============================= "
+    Write-Host "  Verificando conexion al NAS  " -ForegroundColor Yellow -BackgroundColor Black
+    echo " ============================= "
     $nas = Test-Connection 10.40.54.52 -Count 2 -Quiet
     if ("$nas" -eq 'False'){
-        echo "Problemas para conectarnos al NAS, se creo archivo $newnamecompu en el escritorio con el ID y PASS Bitlocker"
+        echo ""
+        echo " ############################################################################################################## "
+        Write-Host "  Problemas para conectarnos al NAS, se creo archivo $newnamecompu en el escritorio con el ID y PASS Bitlocker  " -ForegroundColor Red -BackgroundColor Black
+        echo " ############################################################################################################## "
     }else {
-        Write-Host " Conexion con el NAS OK " -ForegroundColor Green -BackgroundColor Black
-        echo " -------- Copiando ID y PASS al NAS --------- "
+        echo ""
+        echo " ######################## "
+        Write-Host "  Conexion con el NAS OK  " -ForegroundColor Green -BackgroundColor Black
+        echo " ######################## "
+        echo ""
+        echo ""
+        echo " =========================== "
+        Write-Host "  Copiando ID y PASS al NAS  " -ForegroundColor Yellow -BackgroundColor Black
+        echo " =========================== "
         New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles" -Credential $cred
         Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$newnamecompu.txt -Destination Z:\
     }
 
 }
-# __________________________________________________________________________________________
+echo ""
+echo "_________________________________________________________________________________________"
+echo ""
 
 # _____________________ Instalando TeamViewerHost con Politicas ___________________________
+echo " =========================================== "
+Write-Host "   Instalando TeamViewerHost con Politicas   " -ForegroundColor Yellow -BackgroundColor Black
+echo " =========================================== "
 Start-Process msiexec -ArgumentList '/I "C:\WINDOWS\setup\scripts\TeamViewer_Host.msi" /qn SETTINGSFILE="C:\WINDOWS\setup\scripts\politicas.reg"' -Wait
+echo ""
+echo " ############# "
+Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+echo " ############# "
+
 # _________________________________________________________________________________________
 
+echo ""
+echo "_________________________________________________________________________________________"
+echo ""
+
 # ______________________________ instalando AV  ____________________________________________
-echo "--------------- Instalando AV -----------------------"
+echo " ==================== "
+Write-Host "    Instalando AV     " -ForegroundColor Yellow -BackgroundColor Black
+echo " ==================== "
+
 #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -ArgumentList '-s'
 Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
 #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
-echo " ------ Instalado -------"
+echo ""
+echo " ############# "
+Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+echo " ############# "
 # __________________________________________________________________________________________
+
+echo ""
+echo "_________________________________________________________________________________________"
+echo ""
 
 # _____________________________ Deploy Fusioninventory _____________________________________
-echo ""
-echo "------------- Instalando FusionInventory -------------"
+echo " ================================= "
+Write-Host "    Instalando FusionInventory     " -ForegroundColor Yellow -BackgroundColor Black
+echo " ================================= "
 #& "C:\WINDOWS\setup\scripts\fusioninventory-agent-deployment.vbs"
 Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\fusioninventory-agent-deployment.vbs
-echo " ------ Instalado -------"
+echo ""
+echo " ############# "
+Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+echo " ############# "
 # __________________________________________________________________________________________
 
 echo ""
+echo "_________________________________________________________________________________________"
+echo ""
+
 echo "------------------------------------"
 Write-Host "         SE VA A REINICIAR          " -ForegroundColor Yellow -BackgroundColor Black
 echo "------------------------------------"
