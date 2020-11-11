@@ -54,8 +54,8 @@ echo " ============================================== "
 Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
 echo " ============================================== "
 Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\PS -Destination C:\ -Recurse
-Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll"
-Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
+Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
+Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
 $Very = Get-ADDomain -Server 10.40.54.1 -Credential $cred -ErrorAction SilentlyContinue
 while(!$Very){
     echo ""
@@ -64,8 +64,8 @@ while(!$Very){
     echo " ########################################################## "
     echo ""
     $cred = Get-Credential AR\ -Message "Vuelva a escribir sus credenciales, Ej: AR\User.name"
-    Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll"
-    Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
+    Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
+    Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
     $Very = Get-ADDomain -Server 10.40.54.1 -Credential $cred -ErrorAction SilentlyContinue
 }
 echo ""
