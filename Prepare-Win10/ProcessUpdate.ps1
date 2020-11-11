@@ -105,17 +105,16 @@ $Binding = (Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -p
 if("$Binding" -eq "True"){
 
     echo ""
-    echo " ######################################################## "
-    Write-Host " Se agrego al equipo $newnamecompu al Dominio AR.INFRA.D " -ForegroundColor Green -BackgroundColor Black
-    echo " ######################################################## "
-    echo ""
+    echo " ######################################################### "
+    Write-Host "  Se agrego al equipo $newnamecompu al Dominio AR.INFRA.D  " -ForegroundColor Green -BackgroundColor Black
+    echo " ######################################################### "
 
 }else{
 
     echo ""
-    echo " ################################################################# "
-    Write-Host " Error a enlazar el equipo al AD, Por Favor realizarlo Manualmente " -ForegroundColor Red -BackgroundColor Black
-    echo " ################################################################# "
+    echo " ################################################################### "
+    Write-Host "  Error a enlazar el equipo al AD, Por Favor realizarlo Manualmente  " -ForegroundColor Red -BackgroundColor Black
+    echo " ################################################################### "
     echo ""
 
 }
