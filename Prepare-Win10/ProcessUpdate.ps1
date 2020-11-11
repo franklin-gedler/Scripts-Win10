@@ -84,11 +84,12 @@ echo ""
 #Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
 $consul = Get-ADComputer -LDAPFilter "(cn=$newnamecompu)" -SearchScope Subtree -Server ar.infra.d -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 if ($consul){
-    echo " ====================================== "
-    Write-Host "   Equipo existe, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ====================================== "
+    echo " =============================================== "
+    Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
+    echo " =============================================== "
     Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False -Verbose
     Start-Sleep -Seconds 10
+    echo ""
     echo " ############# "
     Write-Host "   Eliminado   " -ForegroundColor Green -BackgroundColor Black
     echo " ############# "
