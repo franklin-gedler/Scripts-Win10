@@ -1,6 +1,6 @@
 @echo off
 :Install Software Basic
-start /wait %windir%\setup\scripts\E82.40_CheckPointVPN.msi /quiet /norestart
+start /wait %windir%\setup\scripts\E84.00_CheckPointVPN.msi /quiet /norestart
 start /wait %windir%\setup\scripts\7z1900-x64.exe /S
 start /wait %windir%\setup\scripts\AcroRdrDC1902120049_es_ES.exe /sAll
 start /wait %windir%\setup\scripts\java.exe /s
