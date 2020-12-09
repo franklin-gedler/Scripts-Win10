@@ -98,6 +98,8 @@ echo ""
 Start-Process -Wait -FilePath AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
 Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\AvayaOneX\DisableMuteButton.reg"
 
+Remove-Item -Path "$env:appdata\Avaya\" -Force -Recurse -ErrorAction SilentlyContinue
+
 # Seteo extension
 $File = "AvayaOneX\Avaya\one-X Agent\2.5\Profiles\default\Settings.xml"
 $Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
