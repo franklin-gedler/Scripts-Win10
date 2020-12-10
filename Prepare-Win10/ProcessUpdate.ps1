@@ -87,7 +87,7 @@ if ($consul){
     echo " =============================================== "
     Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
     echo " =============================================== "
-    Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False -Verbose
+    Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False
     Start-Sleep -Seconds 10
     echo ""
     echo " ############# "
@@ -100,7 +100,7 @@ echo ""
 echo " ==================================== "
 Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
 echo " ==================================== "
-$Binding = (Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -passthru -verbose -Credential $cred).HasSucceeded
+$Binding = (Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -Credential $cred).HasSucceeded
 
 if("$Binding" -eq "True"){
 
