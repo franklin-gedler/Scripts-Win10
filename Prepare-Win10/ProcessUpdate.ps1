@@ -87,7 +87,7 @@ if ($consul){
     echo " =============================================== "
     Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
     echo " =============================================== "
-    Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False
+    Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False -verbose
     Start-Sleep -Seconds 10
     echo ""
     echo " ############# "
