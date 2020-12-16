@@ -1,7 +1,7 @@
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
 cd $currentdirectory
 (pwd).Path
-Add-MpPreference -ExclusionPath "$currentdirectory"
+#Add-MpPreference -ExclusionPath "$currentdirectory"
 #######################################################################################################################
 
 echo " _____________________________________________________________________________________________________"
