@@ -101,20 +101,20 @@ Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\AvayaOneX\Di
 
 Remove-Item -Path "$env:appdata\Avaya\" -Force -Recurse -ErrorAction SilentlyContinue
 
+Copy-Item AvayaOneX\Avaya "$env:appdata\" -Force -Recurse
+
 # Seteo extension
-$File = "AvayaOneX\Avaya\one-X Agent\2.5\Profiles\default\Settings.xml"
-$Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
+$File = "$env:appdata\Avaya\one-X Agent\2.5\Profiles\default\Settings.xml"
+$Content = [System.IO.File]::ReadAllText("$File")
 $Content = $Content.Replace('1111111', "$interno")
 $Content = $Content.Trim()
-[System.IO.File]::WriteAllText("$currentdirectory\$File", $Content)
+[System.IO.File]::WriteAllText("$File", $Content)
 
 # Seteo Agente
-$Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
+$Content = [System.IO.File]::ReadAllText("$File")
 $Content = $Content.Replace('2222222', "$agente")
 $Content = $Content.Trim()
-[System.IO.File]::WriteAllText("$currentdirectory\$File", $Content)
-
-Copy-Item AvayaOneX\Avaya "$env:appdata\" -Force -Recurse
+[System.IO.File]::WriteAllText("$File", $Content)
 
 echo ""
 echo " _____________________________________________________________________________________________________"
