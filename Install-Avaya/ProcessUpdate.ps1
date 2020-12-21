@@ -434,7 +434,6 @@ switch($inp){
             nginx
             cti
             enableall
-
             Pause
             Exit
             
@@ -460,7 +459,6 @@ switch($inp){
             globalprotect
             screenpop
             enableall
-
             Pause
             Exit
         }
