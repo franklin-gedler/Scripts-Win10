@@ -313,6 +313,10 @@ Function moveou {
         Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
         echo " ****************************************** "
         echo ""
+        
+        echo ""
+        showmenumain
+        echo ""
 
     } else {
 
