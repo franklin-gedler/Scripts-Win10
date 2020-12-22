@@ -1,21 +1,21 @@
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
-cd $currentdirectory
-(pwd).Path
+Set-Location $currentdirectory
+(Get-Location).Path
 #Add-MpPreference -ExclusionPath "$currentdirectory"
 ###########################################################################################################################
 
 Function creadopor {
-    echo " _____________________________________________________________________________________________________"
+    Write-Output " _____________________________________________________________________________________________________"
 
-    echo ""
-    echo "                                  ++++++++++++++++++++++++++++++++++++"
+    Write-Output ""
+    Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
     Write-Host "                                   Script Creado por Franklin Gedler                                  " -ForegroundColor green -BackgroundColor Black
     Write-Host "                                      Soporte Despegar Argentina                                      " -ForegroundColor green -BackgroundColor Black
     Write-Host "                                         Updates Franklin Diaz                                        " -ForegroundColor green -BackgroundColor Black
-    echo "                                  ++++++++++++++++++++++++++++++++++++"
-    echo ""
+    Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
+    Write-Output ""
 
-    echo " _____________________________________________________________________________________________________"
+    Write-Output " _____________________________________________________________________________________________________"
 
 }
 
@@ -24,24 +24,24 @@ creadopor
 ###########################################################################################################################
 
 Function extyagent {
-    echo ""
-    echo " ------------------------------------"
+    Write-Output ""
+    Write-Output " ------------------------------------"
     Write-Host "   Ingrese Numero de Extension . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ------------------------------------"
-    echo ""
+    Write-Output " ------------------------------------"
+    Write-Output ""
     $Global:interno = Read-Host
     $Global:interno = $interno.replace(' ' , '')
 
-    echo ""
-    echo " ------------------------------------"
+    Write-Output ""
+    Write-Output " ------------------------------------"
     Write-Host "     Ingrese Numero de Agente . . .  " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ------------------------------------"
-    echo ""
+    Write-Output " ------------------------------------"
+    Write-Output ""
     $Global:agente = Read-Host
     $Global:agente = $agente.Replace(' ' , '')
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 
 }
 
@@ -51,11 +51,11 @@ Function netframework {
     Set-Service wuauserv -StartupType Manual -PassThru
     Start-Service wuauserv -PassThru
 
-    echo ""
-    echo " ======================================"
+    Write-Output ""
+    Write-Output " ======================================"
     Write-Host "   Installing Net Framework Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ======================================"
-    echo ""
+    Write-Output " ======================================"
+    Write-Output ""
 
     Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All
 
@@ -66,56 +66,56 @@ Function netframework {
     # Deshabilitar framework 3.5
     # Disable-WindowsOptionalFeature -Online -FeatureName "NetFx3"
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 
 }
 
 Function silverlight {
-    echo ""
-    echo " =============================================="
+    Write-Output ""
+    Write-Output " =============================================="
     Write-Host "   Installing Microsoft Silverlight Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " =============================================="
-    echo ""
+    Write-Output " =============================================="
+    Write-Output ""
 
     Start-Process -Wait -FilePath Pre\Silverlight_x64.exe -ArgumentList "/q"
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function visual {
-    echo ""
-    echo " ========================================================================"
+    Write-Output ""
+    Write-Output " ========================================================================"
     Write-Host "   Installing Microsoft Visual C++ 2017 Redistributable (x64) Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ========================================================================"
-    echo ""
+    Write-Output " ========================================================================"
+    Write-Output ""
 
     Start-Process -Wait -FilePath Pre\VC_redist.x64.exe -ArgumentList "/install /quiet /norestart"
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function tsapi {
-    echo ""
-    echo " ====================================="
+    Write-Output ""
+    Write-Output " ====================================="
     Write-Host "   Installing Tsapi-Client Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ====================================="
-    echo ""
+    Write-Output " ====================================="
+    Write-Output ""
 
     Start-Process -Wait -FilePath TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\TsapiClient\setup.iss"
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function avaya {
-    echo ""
-    echo " ===================================="
+    Write-Output ""
+    Write-Output " ===================================="
     Write-Host "   Installing Avaya One X Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ===================================="
-    echo ""
+    Write-Output " ===================================="
+    Write-Output ""
 
     Start-Process -Wait -FilePath AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
     Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\AvayaOneX\DisableMuteButton.reg"
@@ -139,16 +139,16 @@ Function avaya {
 
     
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function certificados {
-    echo ""
-    echo " ===================================="
+    Write-Output ""
+    Write-Output " ===================================="
     Write-Host "    Config. Certificate Wait . . .   " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ===================================="
-    echo ""
+    Write-Output " ===================================="
+    Write-Output ""
 
     $huella = (New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -DnsName "127.0.0.1" -FriendlyName "MySiteCert" -NotAfter (Get-Date).AddYears(10)).Thumbprint
     $cert = (Get-ChildItem -Path cert:\LocalMachine\My\$huella)
@@ -166,16 +166,16 @@ Function certificados {
 
     Remove-Item $currentdirectory\CertificadoSSL\avaya.cer -Force
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function nginx {
-    echo ""
-    echo " ======================================"
+    Write-Output ""
+    Write-Output " ======================================"
     Write-Host "   Installing Click to Dial Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ======================================"
-    echo ""
+    Write-Output " ======================================"
+    Write-Output ""
 
     Copy-Item ClickToDial\* C:\ -Force -Recurse
 
@@ -191,16 +191,16 @@ Function nginx {
 
     Restart-Service nginx -PassThru
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function cti {
-    echo ""
-    echo " ===================="
+    Write-Output ""
+    Write-Output " ===================="
     Write-Host "   Config. CTI . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ===================="
-    echo ""
+    Write-Output " ===================="
+    Write-Output ""
 
     Remove-Item -Path "C:\CTI.ini" -Force -ErrorAction SilentlyContinue
 
@@ -211,16 +211,16 @@ Function cti {
     [System.IO.File]::WriteAllText("C:\CTI.ini", $Content)
     
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function globalprotect {
-    echo ""
-    echo " ======================================="
+    Write-Output ""
+    Write-Output " ======================================="
     Write-Host "   Installing Global Protect Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ======================================="
-    echo ""
+    Write-Output " ======================================="
+    Write-Output ""
 
     Start-Process -Wait msiexec -ArgumentList '/i GlobalProtect\GlobalProtect64.msi /quiet Portal="170.80.97.6"'
 
@@ -228,16 +228,16 @@ Function globalprotect {
     $cert = (Get-ChildItem -Path $currentdirectory\GlobalProtect\GP.cer)
     $cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
 
-    echo ""
-    echo " _____________________________________________________________________________________________________"
+    Write-Output ""
+    Write-Output " _____________________________________________________________________________________________________"
 }
 
 Function screenpop {
-    echo ""
-    echo " ===================================="
+    Write-Output ""
+    Write-Output " ===================================="
     Write-Host "   Installing ScreenPop Wait . . .   " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ===================================="
-    echo ""
+    Write-Output " ===================================="
+    Write-Output ""
 
     #& rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
 
@@ -261,9 +261,9 @@ Function enableall {
 Function credencials {
     $Global:cred = Get-Credential Pais\Nombre.Apellido -Message "Ingresar Credenciales, Ejemplo AR\Fulano.Perencejo"
 
-    echo " ============================================== "
+    Write-Output " ============================================== "
     Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
-    echo " ============================================== "
+    Write-Output " ============================================== "
 
     Copy-Item -LiteralPath PS\ -Destination C:\ -Recurse -Force
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
@@ -273,11 +273,11 @@ Function credencials {
 
     while(!$Very){
 
-        echo ""
-        echo " ########################################################## "
+        Write-Output ""
+        Write-Output " ########################################################## "
         Write-Host " Error con credenciales, Vuelva a escribir sus credenciales " -ForegroundColor Red -BackgroundColor Black
-        echo " ########################################################## "
-        echo ""
+        Write-Output " ########################################################## "
+        Write-Output ""
 
         $Global:cred = Get-Credential Pais\Nombre.Apellido -Message "Ingresar Credenciales, Ejemplo AR\Fulano.Perencejo"
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
@@ -285,14 +285,14 @@ Function credencials {
         $Very = Get-ADDomain -Server 10.40.54.1 -Credential $cred -ErrorAction SilentlyContinue
     }
 
-    echo ""
-    echo " ##############################################################"
+    Write-Output ""
+    Write-Output " ##############################################################"
     Write-Host "              Credenciales OK Alegria Alegria " -ForegroundColor Green -BackgroundColor Black
     Write-Host "   Credenciales Validadas con el Dominio: $Very " -ForegroundColor Green -BackgroundColor Black
-    echo " ############################################################## "
-    echo ""
-    echo "_________________________________________________________________________________________"
-    echo ""
+    Write-Output " ############################################################## "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
 }
 
 Function moveou {
@@ -308,21 +308,21 @@ Function moveou {
     
     if (!$Identiny){
 
-        echo ""
-        echo " ****************************************** "
+        Write-Output ""
+        Write-Output " ****************************************** "
         Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
-        echo " ****************************************** "
-        echo ""
+        Write-Output " ****************************************** "
+        Write-Output ""
         
-        echo ""
+        Write-Output ""
         showmenumain
-        echo ""
+        Write-Output ""
 
     } else {
 
-        echo ""
+        Write-Output ""
         showmenupais
-        echo ""
+        Write-Output ""
     
         while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "5"){
     
@@ -331,7 +331,7 @@ Function moveou {
                     Move-ADObject -Identity "$Identity" -TargetPath "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
                     Start-Sleep -Seconds 15
                     $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                    echo $Identiny
+                    Write-Output $Identiny
                     Pause
                     exit
                 }
@@ -339,7 +339,7 @@ Function moveou {
                     Move-ADObject -Identity "$Identity" -TargetPath "51559502-9b54-49b9-8473-eff00e9267ec"
                     Start-Sleep -Seconds 15
                     $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                    echo $Identiny
+                    Write-Output $Identiny
                     Pause
                     exit
                 }
@@ -347,7 +347,7 @@ Function moveou {
                     Move-ADObject -Identity "$Identity" -TargetPath "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
                     Start-Sleep -Seconds 15
                     $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                    echo $Identiny
+                    Write-Output $Identiny
                     Pause
                     exit
                 }
@@ -355,7 +355,7 @@ Function moveou {
                     Move-ADObject -Identity "$Identity" -TargetPath "ab67334e-1f0f-48bf-8eef-9287ca32a427"
                     Start-Sleep -Seconds 15
                     $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                    echo $Identiny
+                    Write-Output $Identiny
                     Pause
                     exit
                 }
@@ -364,9 +364,9 @@ Function moveou {
         
             }
     
-        echo ""
+        Write-Output ""
         showmenupais
-        echo ""
+        Write-Output ""
         } 
 
 
@@ -389,17 +389,17 @@ Function uninstallavaya {
 #############################################################################################################################
 
 Function showmenurepair {
-    echo ""
-    echo " ************************************ "
-    echo "  1. Reinstalar Solo Avaya (Sin Pre) "
+    Write-Output ""
+    Write-Output " ************************************ "
+    Write-Output "  1. Reinstalar Solo Avaya (Sin Pre) "
     
-    echo ""
+    Write-Output ""
 
 }
 
 Function showmenupais {
 
-    echo ""
+    Write-Output ""
     Write-Host " **** De que pais es la maquina **** "
     Write-Host ""
     Write-Host "                1. AR                " -ForegroundColor Yellow -BackgroundColor Black
@@ -408,13 +408,13 @@ Function showmenupais {
     Write-Host "                4. CO                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "                5. Exit              " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " *********************************** "
-    echo ""
+    Write-Output ""
 
 }
 
 Function showmenumain {
     #Clear-Host
-    echo ""
+    Write-Output ""
     Write-Host " ********************** "
     Write-Host "  1. Usuario Despegar   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "  2. Usuario Falabella  " -ForegroundColor Yellow -BackgroundColor Black
@@ -422,12 +422,12 @@ Function showmenumain {
     Write-Host "  4. Mover Equipo OU    " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "  5. Exit               " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " ********************** "
-    echo ""
+    Write-Output ""
 }
 
 ############################################################################################################################
 
-echo ""
+Write-Output ""
 showmenumain
 
 while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "5"){
@@ -436,11 +436,11 @@ switch($inp){
     
         1 {
             #Clear-Host
-            echo ""
+            Write-Output ""
             Write-Host "------------------------------"
             Write-Host " Ejecuto Script para usuario Despegar " 
             Write-Host "------------------------------"
-            echo ""
+            Write-Output ""
 
             disableall
             extyagent
@@ -459,11 +459,11 @@ switch($inp){
         }
         2 {
             #Clear-Host
-            echo ""
+            Write-Output ""
             Write-Host "------------------------------"
             Write-Host " Ejecuto Script para usuario Sucursal "
             Write-Host "------------------------------"
-            echo ""
+            Write-Output ""
             
             disableall
             extyagent
@@ -482,9 +482,9 @@ switch($inp){
             Exit
         }
         3 {
-            echo ""
-            echo " no usar (No te Dije Pelotudo)  "
-            echo ""
+            Write-Output ""
+            Write-Output " no usar (No te Dije Pelotudo)  "
+            Write-Output ""
         }
         4 { 
             disableall
