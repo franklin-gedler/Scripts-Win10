@@ -1,33 +1,33 @@
 #mkdir $env:TEMP\EBS
 #cd $env:TEMP\Install-EBS
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
-cd $currentdirectory
-(pwd).Path
+Set-Location $currentdirectory
+(Get-Location).Path
 Add-MpPreference -ExclusionPath "$currentdirectory"
 
 #######################################################################################################
-echo ""
-echo ""
+Write-Output ""
+Write-Output ""
 # --------------- Instalacion JAVA ---------------------
-echo " ==========================="
+Write-Output " ==========================="
 Write-Host " Installing Java Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ==========================="
+Write-Output " ==========================="
 Start-Process -Wait -FilePath java.exe -ArgumentList '/s'
 Write-Host " OK " -ForegroundColor Green -BackgroundColor Black
-echo ""
-echo ""
-echo " ================================="
+Write-Output ""
+Write-Output ""
+Write-Output " ================================="
 Write-Host " Config. Java for EBS, Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ================================="
+Write-Output " ================================="
 Expand-Archive Sun.zip $env:USERPROFILE\AppData\LocalLow\ -Force
 Write-Host " OK " -ForegroundColor Green -BackgroundColor Black
-echo ""
-echo ""
+Write-Output ""
+Write-Output ""
 
 # ---------------------- Instalacion Firefox ------------------------------
-echo " ========================================"
+Write-Output " ========================================"
 Write-Host " Installing Firefox for EBS-ORACLE . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ========================================" 
+Write-Output " ========================================" 
 Start-Process -FilePath firefox.exe -ArgumentList '-ms -ma' -Wait
 Stop-Service MozillaMaintenance -Force -PassThru
 Set-Service MozillaMaintenance -StartupType Disabled -PassThru
@@ -48,9 +48,9 @@ $dir1 = (Get-ChildItem $env:USERPROFILE\AppData\Local\Mozilla\Firefox\Profiles\)
 Copy-Item EBS\First\* $env:USERPROFILE\AppData\Local\Mozilla\Firefox\Profiles\$dir1 -Force -Recurse
 Copy-Item -Path EBS\Second\* -Destination $env:USERPROFILE\AppData\Roaming\Mozilla\Firefox\ -Force -Recurse
 Start-Process -FilePath $env:USERPROFILE\Desktop\EBS-ORACLE
-echo " ==================================="
+Write-Output " ==================================="
 Write-Host " Finishing Installation, Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================" 
+Write-Output " ===================================" 
 Start-Sleep -Seconds 35
 Remove-Item $env:USERPROFILE\AppData\Local\Mozilla\updates -Force -Recurse
 Remove-Item 'C:\users\public\Desktop\Mozilla Firefox.lnk' -Force
