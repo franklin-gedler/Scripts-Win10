@@ -306,54 +306,69 @@ Function moveou {
     $Computer = hostname
     $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
     
-    echo ""
-    showmenupais
-    echo ""
+    if (!$Identiny){
 
-    while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "5"){
+        echo ""
+        echo " ****************************************** "
+        Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
+        echo " ****************************************** "
+        echo ""
 
-        switch($inp){
-            1{
-                Move-ADObject -Identity "$Identity" -TargetPath "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
-                Start-Sleep -Seconds 15
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                echo $Identiny
-                Pause
-                exit
-            }
-            2{
-                Move-ADObject -Identity "$Identity" -TargetPath "51559502-9b54-49b9-8473-eff00e9267ec"
-                Start-Sleep -Seconds 15
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                echo $Identiny
-                Pause
-                exit
-            }
-            3{
-                Move-ADObject -Identity "$Identity" -TargetPath "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
-                Start-Sleep -Seconds 15
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                echo $Identiny
-                Pause
-                exit
-            }
-            4{
-                Move-ADObject -Identity "$Identity" -TargetPath "ab67334e-1f0f-48bf-8eef-9287ca32a427"
-                Start-Sleep -Seconds 15
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-                echo $Identiny
-                Pause
-                exit
-            }
-            5{"Exit"; break}
-            default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
+    } else {
+
+        echo ""
+        showmenupais
+        echo ""
     
-        }
+        while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "5"){
+    
+            switch($inp){
+                1{
+                    Move-ADObject -Identity "$Identity" -TargetPath "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
+                    Start-Sleep -Seconds 15
+                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                    echo $Identiny
+                    Pause
+                    exit
+                }
+                2{
+                    Move-ADObject -Identity "$Identity" -TargetPath "51559502-9b54-49b9-8473-eff00e9267ec"
+                    Start-Sleep -Seconds 15
+                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                    echo $Identiny
+                    Pause
+                    exit
+                }
+                3{
+                    Move-ADObject -Identity "$Identity" -TargetPath "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
+                    Start-Sleep -Seconds 15
+                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                    echo $Identiny
+                    Pause
+                    exit
+                }
+                4{
+                    Move-ADObject -Identity "$Identity" -TargetPath "ab67334e-1f0f-48bf-8eef-9287ca32a427"
+                    Start-Sleep -Seconds 15
+                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                    echo $Identiny
+                    Pause
+                    exit
+                }
+                5{"Exit"; break}
+                default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
+        
+            }
+    
+        echo ""
+        showmenupais
+        echo ""
+        } 
 
-    echo ""
-    showmenupais
-    echo ""
+
     }
+
+    
 }
 
 
@@ -383,11 +398,11 @@ Function showmenupais {
     echo ""
     Write-Host " **** De que pais es la maquina **** "
     Write-Host ""
-    Write-Host "                1. AR  "
-    Write-Host "                2. UY  "
-    Write-Host "                3. CL  "
-    Write-Host "                4. CO  "
-    Write-Host "                5. Exit "
+    Write-Host "                1. AR                " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "                2. UY                " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "                3. CL                " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "                4. CO                " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "                5. Exit              " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " *********************************** "
     echo ""
 
@@ -397,11 +412,11 @@ Function showmenumain {
     #Clear-Host
     echo ""
     Write-Host " ********************** "
-    Write-Host "  1. Usuario Despegar   "
-    Write-Host "  2. Usuario Falaverga  "
-    Write-Host "  3. Reparar (No Usar)  "
-    Write-Host "  4. Mover Equipo OU    "
-    Write-Host "  5. Exit               "
+    Write-Host "  1. Usuario Despegar   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "  2. Usuario Falabella  " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "  3. Reparar (No Usar)  " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "  4. Mover Equipo OU    " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "  5. Exit               " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " ********************** "
     echo ""
 }
