@@ -302,32 +302,26 @@ Function moveou {
     # Cl Sucursales {69be72ec-f3fd-4c3a-bb75-8ccb81bd002b}
     # CO PCI {ab67334e-1f0f-48bf-8eef-9287ca32a427}
 
-    #echo "Este es el valor de crdednciales: $cred"
-    $Computer = hostname
-    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
-    
-    if (!$Identiny){
+    Write-Output ""
+    showmenupais
+    Write-Output ""
 
-        Write-Output ""
-        Write-Output " ****************************************** "
-        Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
-        Write-Output " ****************************************** "
-        Write-Output ""
-        
-        Write-Output ""
-        showmenumain
-        Write-Output ""
-
-    } else {
-
-        Write-Output ""
-        showmenupais
-        Write-Output ""
+    while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "5"){
     
-        while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "5"){
-    
-            switch($inp){
-                1{
+        switch($inp){
+            1{
+                $Computer = hostname
+                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                
+                if (!$Identiny){
+
+                    Write-Output ""
+                    Write-Output " ****************************************** "
+                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
+                    Write-Output " ****************************************** "
+                    Write-Output ""
+                    
+                } else {
                     Move-ADObject -Identity "$Identity" -TargetPath "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
                     Start-Sleep -Seconds 15
                     $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
@@ -335,43 +329,81 @@ Function moveou {
                     Pause
                     exit
                 }
-                2{
+                
+            }
+            2{
+
+                $Computer = hostname
+                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).objectGUID).Guid
+                if (!$Identiny){
+
+                    Write-Output ""
+                    Write-Output " ****************************************** "
+                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
+                    Write-Output " ****************************************** "
+                    Write-Output ""
+                    
+                } else {
+                
                     Move-ADObject -Identity "$Identity" -TargetPath "51559502-9b54-49b9-8473-eff00e9267ec"
                     Start-Sleep -Seconds 15
-                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).objectGUID).Guid
                     Write-Output $Identiny
                     Pause
                     exit
                 }
-                3{
+            }
+            3{
+                $Computer = hostname
+                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).objectGUID).Guid
+                
+                if (!$Identiny){
+
+                    Write-Output ""
+                    Write-Output " ****************************************** "
+                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
+                    Write-Output " ****************************************** "
+                    Write-Output ""
+                    
+                } else {
                     Move-ADObject -Identity "$Identity" -TargetPath "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
                     Start-Sleep -Seconds 15
-                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).objectGUID).Guid
                     Write-Output $Identiny
                     Pause
                     exit
                 }
-                4{
+            }
+            4{
+                $Computer = hostname
+                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).objectGUID).Guid
+                
+                if (!$Identiny){
+
+                    Write-Output ""
+                    Write-Output " ****************************************** "
+                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
+                    Write-Output " ****************************************** "
+                    Write-Output ""
+                    
+                } else {
                     Move-ADObject -Identity "$Identity" -TargetPath "ab67334e-1f0f-48bf-8eef-9287ca32a427"
                     Start-Sleep -Seconds 15
-                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
+                    $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).objectGUID).Guid
                     Write-Output $Identiny
                     Pause
                     exit
                 }
-                5{"Exit"; break}
-                default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
-        
             }
+            5{"Exit"; break}
+            default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
     
-        Write-Output ""
-        showmenupais
-        Write-Output ""
-        } 
+        }
 
-
-    }
-
+    Write-Output ""
+    showmenupais
+    Write-Output ""
+    } 
     
 }
 
