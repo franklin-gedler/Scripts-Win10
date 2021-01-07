@@ -313,22 +313,35 @@ Function moveou {
                 $Computer = hostname
                 $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
                 
-                if (!$Identiny){
+                if (!$Identity){
 
                     Write-Output ""
                     Write-Output " ****************************************** "
-                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
+                    Write-Host "   El equipo NO existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
                     Write-Output " ****************************************** "
                     Write-Output ""
                     
                 } else {
+
                     disableall
+                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$pcname)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).DistinguishedName
+
+                    Write-Output ""
+                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+
+                    Write-Output ""
+                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+
                     Move-ADObject -Identity "$Identity" -TargetPath "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
                     Start-Sleep -Seconds 15
-                    $Identity = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).DistinguishedName
+
+                    $verif = (Get-ADComputer -LDAPFilter "(cn=$pcname)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).DistinguishedName
                     Write-Output ""
-                    Write-Output $Identiny
+                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
                     Write-Output ""
+
                     enableall
                     Pause
                     exit
@@ -340,7 +353,7 @@ Function moveou {
                 $Computer = hostname
                 $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).objectGUID).Guid
                 
-                if (!$Identiny){
+                if (!$Identity){
 
                     Write-Output ""
                     Write-Output " ****************************************** "
@@ -355,7 +368,7 @@ Function moveou {
                     Start-Sleep -Seconds 15
                     $Identity = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).DistinguishedName
                     Write-Output ""
-                    Write-Output $Identiny
+                    Write-Output $Identity
                     Write-Output ""
                     enableall
                     Pause
