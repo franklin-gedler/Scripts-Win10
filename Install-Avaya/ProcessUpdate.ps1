@@ -364,12 +364,24 @@ Function moveou {
                 } else {
                     
                     disableall
+                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).DistinguishedName
+
+                    Write-Output ""
+                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+
+                    Write-Output ""
+                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+                    
                     Move-ADObject -Identity "$Identity" -TargetPath "51559502-9b54-49b9-8473-eff00e9267ec"
                     Start-Sleep -Seconds 15
-                    $Identity = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).DistinguishedName
+                    
+                    $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).DistinguishedName
                     Write-Output ""
-                    Write-Output $Identity
+                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
                     Write-Output ""
+
                     enableall
                     Pause
                     exit
@@ -379,7 +391,7 @@ Function moveou {
                 $Computer = hostname
                 $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).objectGUID).Guid
                 
-                if (!$Identiny){
+                if (!$Identity){
 
                     Write-Output ""
                     Write-Output " ****************************************** "
@@ -390,11 +402,22 @@ Function moveou {
                 } else {
 
                     disableall
+                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).DistinguishedName
+
+                    Write-Output ""
+                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+
+                    Write-Output ""
+                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+
                     Move-ADObject -Identity "$Identity" -TargetPath "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
                     Start-Sleep -Seconds 15
-                    $Identity = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).DistinguishedName
+
+                    $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).DistinguishedName
                     Write-Output ""
-                    Write-Output $Identiny
+                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
                     Write-Output ""
                     enableall
                     Pause
@@ -405,7 +428,7 @@ Function moveou {
                 $Computer = hostname
                 $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).objectGUID).Guid
                 
-                if (!$Identiny){
+                if (!$Identity){
 
                     Write-Output ""
                     Write-Output " ****************************************** "
@@ -415,11 +438,22 @@ Function moveou {
                     
                 } else {
                     disableall
+                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).DistinguishedName
+
+                    Write-Output ""
+                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+
+                    Write-Output ""
+                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Output ""
+
                     Move-ADObject -Identity "$Identity" -TargetPath "ab67334e-1f0f-48bf-8eef-9287ca32a427"
                     Start-Sleep -Seconds 15
-                    $Identity = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).DistinguishedName
+                    
+                    $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).DistinguishedName
                     Write-Output ""
-                    Write-Output $Identiny
+                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
                     Write-Output ""
                     enableall
                     Pause
