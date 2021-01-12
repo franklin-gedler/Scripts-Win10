@@ -1,49 +1,49 @@
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
-cd $currentdirectory
-(pwd).Path
+Set-Location $currentdirectory
+(Get-Location).Path
 #Add-MpPreference -ExclusionPath "$currentdirectory"
 #######################################################################################################################
 
-echo " _____________________________________________________________________________________________________"
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo "                                  ++++++++++++++++++++++++++++++++++++"
+Write-Output ""
+Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
 Write-Host "                                   Script Creado por Franklin Gedler                                  " -ForegroundColor green -BackgroundColor Black
 Write-Host "                                      Soporte Despegar Argentina                                      " -ForegroundColor green -BackgroundColor Black
-echo "                                  ++++++++++++++++++++++++++++++++++++"
-echo ""
+Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
+Write-Output ""
 
-echo " _____________________________________________________________________________________________________"
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ------------------------------------"
+Write-Output ""
+Write-Output " ------------------------------------"
 Write-Host "   Ingrese Numero de Extension . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ------------------------------------"
-echo ""
+Write-Output " ------------------------------------"
+Write-Output ""
 $interno = Read-Host
 $interno = $interno.replace(' ' , '')
 
-echo ""
-echo " ------------------------------------"
+Write-Output ""
+Write-Output " ------------------------------------"
 Write-Host "     Ingrese Numero de Agente . . .  " -ForegroundColor Yellow -BackgroundColor Black
-echo " ------------------------------------"
-echo ""
+Write-Output " ------------------------------------"
+Write-Output ""
 $agente = Read-Host
 $agente = $agente.Replace(' ' , '')
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
 Stop-Service wuauserv -Force -PassThru
 Rename-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -NewName "WindowsUpdateold"
 Set-Service wuauserv -StartupType Manual -PassThru
 Start-Service wuauserv -PassThru
 
-echo ""
-echo " ======================================"
+Write-Output ""
+Write-Output " ======================================"
 Write-Host "   Installing Net Framework Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ======================================"
-echo ""
+Write-Output " ======================================"
+Write-Output ""
 
 Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All
 
@@ -54,47 +54,47 @@ Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All
 # Deshabilitar framework 3.5
 # Disable-WindowsOptionalFeature -Online -FeatureName "NetFx3"
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " =============================================="
+Write-Output ""
+Write-Output " =============================================="
 Write-Host "   Installing Microsoft Silverlight Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " =============================================="
-echo ""
+Write-Output " =============================================="
+Write-Output ""
 
 Start-Process -Wait -FilePath Pre\Silverlight_x64.exe -ArgumentList "/q"
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ========================================================================"
+Write-Output ""
+Write-Output " ========================================================================"
 Write-Host "   Installing Microsoft Visual C++ 2017 Redistributable (x64) Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ========================================================================"
-echo ""
+Write-Output " ========================================================================"
+Write-Output ""
 
 Start-Process -Wait -FilePath Pre\VC_redist.x64.exe -ArgumentList "/install /quiet /norestart"
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ====================================="
+Write-Output ""
+Write-Output " ====================================="
 Write-Host "   Installing Tsapi-Client Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ====================================="
-echo ""
+Write-Output " ====================================="
+Write-Output ""
 
 Start-Process -Wait -FilePath TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\TsapiClient\setup.iss"
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ===================================="
+Write-Output ""
+Write-Output " ===================================="
 Write-Host "   Installing Avaya One X Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
-echo ""
+Write-Output " ===================================="
+Write-Output ""
 
 Start-Process -Wait -FilePath AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
 Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\AvayaOneX\DisableMuteButton.reg"
@@ -116,14 +116,14 @@ $Content = $Content.Replace('2222222', "$agente")
 $Content = $Content.Trim()
 [System.IO.File]::WriteAllText("$File", $Content)
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ===================================="
+Write-Output ""
+Write-Output " ===================================="
 Write-Host "    Config. Certificate Wait . . .   " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
-echo ""
+Write-Output " ===================================="
+Write-Output ""
 
 $huella = (New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -DnsName "127.0.0.1" -FriendlyName "MySiteCert" -NotAfter (Get-Date).AddYears(10)).Thumbprint
 $cert = (Get-ChildItem -Path cert:\LocalMachine\My\$huella)
@@ -139,14 +139,14 @@ Start-Process -Wait 'C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPI
 
 Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\CertificadoSSL\registro_ssl.reg"
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ======================================"
+Write-Output ""
+Write-Output " ======================================"
 Write-Host "   Installing Click to Dial Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ======================================"
-echo ""
+Write-Output " ======================================"
+Write-Output ""
 
 Copy-Item ClickToDial\* C:\ -Force -Recurse
 
@@ -162,14 +162,14 @@ Start-Process -Wait C:\sslCert\sslCert.bat
 
 Restart-Service nginx -PassThru
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ===================="
+Write-Output ""
+Write-Output " ===================="
 Write-Host "   Config. CTI . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================="
-echo ""
+Write-Output " ===================="
+Write-Output ""
 
 $File = "CTI\CTI.ini"
 $Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
@@ -178,14 +178,14 @@ $Content = $Content.Trim()
 [System.IO.File]::WriteAllText("$currentdirectory\$File", $Content)
 Copy-Item $File C:\ -Force
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ======================================="
+Write-Output ""
+Write-Output " ======================================="
 Write-Host "   Installing Global Protect Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
-echo " ======================================="
-echo ""
+Write-Output " ======================================="
+Write-Output ""
 
 Start-Process -Wait msiexec -ArgumentList '/i GlobalProtect\GlobalProtect64.msi /quiet Portal="170.80.97.6"'
 
@@ -193,14 +193,14 @@ Start-Process -Wait msiexec -ArgumentList '/i GlobalProtect\GlobalProtect64.msi 
 $cert = (Get-ChildItem -Path $currentdirectory\GlobalProtect\GP.cer)
 $cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
 
-echo ""
-echo " _____________________________________________________________________________________________________"
+Write-Output ""
+Write-Output " _____________________________________________________________________________________________________"
 
-echo ""
-echo " ===================================="
+Write-Output ""
+Write-Output " ===================================="
 Write-Host "   Installing ScreenPop Wait . . .   " -ForegroundColor Yellow -BackgroundColor Black
-echo " ===================================="
-echo ""
+Write-Output " ===================================="
+Write-Output ""
 
 #& rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
 

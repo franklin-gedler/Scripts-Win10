@@ -1,6 +1,6 @@
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
-cd $currentdirectory
-(pwd).Path
+Set-Location $currentdirectory
+(Get-Location).Path
 #############################################################################################
 
 Function creadopor {
