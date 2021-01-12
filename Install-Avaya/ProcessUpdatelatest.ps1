@@ -456,7 +456,7 @@ Function credencials {
 
     Write-Output ""
     Write-Output " ##############################################################"
-    Write-Host "              Credenciales OK Alegria Alegria " -ForegroundColor Green -BackgroundColor Black
+    Write-Host "              Credenciales OK Alegria Alegria                    " -ForegroundColor Green -BackgroundColor Black
     Write-Host "   Credenciales Validadas con el Dominio: $Very " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ############################################################## "
     Write-Output ""
