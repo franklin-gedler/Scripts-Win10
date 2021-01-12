@@ -1,8 +1,7 @@
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
-Set-Location $currentdirectory
-(Get-Location).Path
-#Add-MpPreference -ExclusionPath "$currentdirectory"
-###########################################################################################################################
+cd $currentdirectory
+(pwd).Path
+#############################################################################################
 
 Function creadopor {
     Write-Output " _____________________________________________________________________________________________________"
@@ -21,8 +20,7 @@ Function creadopor {
 
 creadopor
 
-###########################################################################################################################
-
+# _______________________________________________________________________________________________ #
 Function extyagent {
     Write-Output ""
     Write-Output " ------------------------------------"
@@ -42,8 +40,9 @@ Function extyagent {
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
-
 }
+
+# _______________________________________________________________________________________________ #
 
 Function netframework {
     Stop-Service wuauserv -Force -PassThru
@@ -68,35 +67,64 @@ Function netframework {
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
-
 }
 
-Function silverlight {
+# _______________________________________________________________________________________________ #
+
+function DownloadPre {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\Pre.zip
+    Expand-Archive Downloads\Pre.zip -DestinationPath Downloads\Pre\ -Force
+}
+Function PreInstall {
     Write-Output ""
     Write-Output " =============================================="
     Write-Host "   Installing Microsoft Silverlight Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =============================================="
     Write-Output ""
 
-    Start-Process -Wait -FilePath Pre\Silverlight_x64.exe -ArgumentList "/q"
+    DownloadPre
 
-    Write-Output ""
-    Write-Output " _____________________________________________________________________________________________________"
-}
+    Start-Process -Wait -FilePath Downloads\Pre\Silverlight_x64.exe -ArgumentList "/q"
 
-Function visual {
     Write-Output ""
     Write-Output " ========================================================================"
     Write-Host "   Installing Microsoft Visual C++ 2017 Redistributable (x64) Wait . . . " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ========================================================================"
     Write-Output ""
 
-    Start-Process -Wait -FilePath Pre\VC_redist.x64.exe -ArgumentList "/install /quiet /norestart"
+    Start-Process -Wait -FilePath Downloads\Pre\VC_redist.x64.exe -ArgumentList "/install /quiet /norestart"
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
 }
 
+# _______________________________________________________________________________________________ #
+
+function DownloadTsapi {
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596446"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\TsapiClient.zip
+    Expand-Archive Downloads\TsapiClient.zip -DestinationPath Downloads\TsapiClient\ -Force
+}
 Function tsapi {
     Write-Output ""
     Write-Output " ====================================="
@@ -104,10 +132,29 @@ Function tsapi {
     Write-Output " ====================================="
     Write-Output ""
 
-    Start-Process -Wait -FilePath TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\TsapiClient\setup.iss"
+    DownloadTsapi
+    Start-Process -Wait -FilePath TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\Downloads\TsapiClient\setup.iss"
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
+}
+
+# _______________________________________________________________________________________________ #
+
+Function DownloadAvaya {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\AvayaOneX.zip
+    Expand-Archive Downloads\AvayaOneX.zip -DestinationPath Downloads\AvayaOneX\ -Force
 }
 
 Function avaya {
@@ -117,30 +164,49 @@ Function avaya {
     Write-Output " ===================================="
     Write-Output ""
 
-    Start-Process -Wait -FilePath AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
-    Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\AvayaOneX\DisableMuteButton.reg"
+    DownloadAvaya
 
-    Remove-Item -Path "$env:appdata\Avaya\" -Force -Recurse -ErrorAction SilentlyContinue
+    Start-Process -Wait -FilePath Downloads\AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
+    Start-Process -Wait regedit.exe -ArgumentList "/s Downloads\AvayaOneX\DisableMuteButton.reg"
 
-    Copy-Item AvayaOneX\Avaya "$env:appdata\" -Force -Recurse
+    Start-Process -FilePath 'C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentUI.exe'
+    Start-Sleep -Seconds 10
+
+    Stop-Process -Name OneXAgentUI -Force
 
     # Seteo extension
-    $File = "$env:appdata\Avaya\one-X Agent\2.5\Profiles\default\Settings.xml"
-    $Content = [System.IO.File]::ReadAllText("$File")
+    $Filein = "$currentdirectory\Downloads\AvayaOneX\Settings.xml"
+    $Fileout = "$env:appdata\Avaya\one-X Agent\2.5\Profiles\default\Settings.xml"
+    $Content = [System.IO.File]::ReadAllText("$Filein")
     $Content = $Content.Replace('1111111', "$interno")
     $Content = $Content.Trim()
-    [System.IO.File]::WriteAllText("$File", $Content)
+    [System.IO.File]::WriteAllText("$Fileout", $Content)
 
     # Seteo Agente
-    $Content = [System.IO.File]::ReadAllText("$File")
+    $Content = [System.IO.File]::ReadAllText("$Fileout")
     $Content = $Content.Replace('2222222', "$agente")
     $Content = $Content.Trim()
-    [System.IO.File]::WriteAllText("$File", $Content)
-
-    
+    [System.IO.File]::WriteAllText("$Fileout", $Content)
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
+}
+
+# _______________________________________________________________________________________________ #
+Function DownloadCertificados {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596347"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\CertificadoSSL.zip
+    Expand-Archive Downloads\CertificadoSSL.zip -DestinationPath Downloads\CertificadoSSL\ -Force
 }
 
 Function certificados {
@@ -150,26 +216,44 @@ Function certificados {
     Write-Output " ===================================="
     Write-Output ""
 
+    DownloadCertificados
+
     $huella = (New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -DnsName "127.0.0.1" -FriendlyName "MySiteCert" -NotAfter (Get-Date).AddYears(10)).Thumbprint
     $cert = (Get-ChildItem -Path cert:\LocalMachine\My\$huella)
-    Export-Certificate -Cert $cert -FilePath $currentdirectory\CertificadoSSL\avaya.cer -Force > $env:TEMP\out.txt
-    $cert = (Get-ChildItem -Path $currentdirectory\CertificadoSSL\avaya.cer)
+    Export-Certificate -Cert $cert -FilePath $currentdirectory\Downloads\CertificadoSSL\avaya.cer -Force
+    $cert = (Get-ChildItem -Path $currentdirectory\Downloads\CertificadoSSL\avaya.cer)
     $cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root > $env:TEMP\out.txt
 
-    Copy-Item CertificadoSSL\OneXAgentAPIConfig.bat 'C:\Program Files (x86)\Avaya\Avaya one-X Agent' -Force
+    Copy-Item Downloads\CertificadoSSL\OneXAgentAPIConfig.bat 'C:\Program Files (x86)\Avaya\Avaya one-X Agent' -Force
 
     #Start-Process -Wait cmd.exe -ArgumentList "C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat 60001 1 $huella"
 
     Start-Process -Wait 'C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat' -ArgumentList "60001 1 $huella"
 
-    Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\CertificadoSSL\registro_ssl.reg"
+    Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\Downloads\CertificadoSSL\registro_ssl.reg"
 
-    Remove-Item $currentdirectory\CertificadoSSL\avaya.cer -Force
+    Remove-Item $currentdirectory\Downloads\CertificadoSSL\avaya.cer -Force
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
 }
 
+# _______________________________________________________________________________________________ #
+Function DownloadClickToDial {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596372"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\ClickToDial.zip
+    Expand-Archive Downloads\ClickToDial.zip -DestinationPath Downloads\ClickToDial\ -Force
+}
 Function nginx {
     Write-Output ""
     Write-Output " ======================================"
@@ -177,7 +261,9 @@ Function nginx {
     Write-Output " ======================================"
     Write-Output ""
 
-    Copy-Item ClickToDial\* C:\ -Force -Recurse
+    DownloadClickToDial
+
+    Copy-Item Downloads\ClickToDial\* C:\ -Force -Recurse
 
     Start-Process C:\Nginx-1.17.8\start.bat
 
@@ -195,6 +281,22 @@ Function nginx {
     Write-Output " _____________________________________________________________________________________________________"
 }
 
+# _______________________________________________________________________________________________ #
+Function DownloadCTI {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596376"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\CTI.zip
+    Expand-Archive Downloads\CTI.zip -DestinationPath Downloads\CTI\ -Force
+}
 Function cti {
     Write-Output ""
     Write-Output " ===================="
@@ -202,17 +304,35 @@ Function cti {
     Write-Output " ===================="
     Write-Output ""
 
+    DownloadCTI
+
     Remove-Item -Path "C:\CTI.ini" -Force -ErrorAction SilentlyContinue
 
-    $File = "CTI\CTI.ini"
+    $File = "Downloads\CTI\CTI.ini"
     $Content = [System.IO.File]::ReadAllText("$currentdirectory\$File")
     $Content = $Content.Replace('7XXXXXX', "$interno")
     $Content = $Content.Trim()
     [System.IO.File]::WriteAllText("C:\CTI.ini", $Content)
     
-
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
+}
+
+# _______________________________________________________________________________________________ #
+Function DownloadGlobalProtect {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596403"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\GlobalProtect.zip
+    Expand-Archive Downloads\GlobalProtect.zip -DestinationPath Downloads\GlobalProtect\ -Force
 }
 
 Function globalprotect {
@@ -222,16 +342,34 @@ Function globalprotect {
     Write-Output " ======================================="
     Write-Output ""
 
-    Start-Process -Wait msiexec -ArgumentList '/i GlobalProtect\GlobalProtect64.msi /quiet Portal="170.80.97.6"'
+    DownloadGlobalProtect
+
+    Start-Process -Wait msiexec -ArgumentList '/i Downloads\GlobalProtect\GlobalProtect64.msi /quiet Portal="170.80.97.6"'
 
     # Este bloque se debe verificar ya que es el certificado de Global Protec
-    $cert = (Get-ChildItem -Path $currentdirectory\GlobalProtect\GP.cer)
+    $cert = (Get-ChildItem -Path $currentdirectory\Downloads\GlobalProtect\GP.cer)
     $cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
 }
 
+# _______________________________________________________________________________________________ #
+Function DownloadScreenPop {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596441"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\ScreenPop.zip
+    Expand-Archive Downloads\ScreenPop.zip -DestinationPath Downloads\ScreenPop\ -Force
+}
 Function screenpop {
     Write-Output ""
     Write-Output " ===================================="
@@ -242,30 +380,61 @@ Function screenpop {
     #& rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
 
     #Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application"
+    DownloadScreenPop
 
-    Start-Process -Wait ScreenPop\install.vbs
+    Start-Process -Wait Downloads\ScreenPop\install.vbs
 }
 
-############################################################################################################################
+# _______________________________________________________________________________________________ #
+Function DownloadDisableOREnable {
 
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596378"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\DisableOREnable.zip
+    Expand-Archive Downloads\DisableOREnable.zip -DestinationPath Downloads\DisableOREnable\ -Force
+}
 Function disableall {
-    Start-Process -Wait -FilePath DisableOREnable\Stop.bat
+    DownloadDisableOREnable
+    Start-Process -Wait -FilePath Downloads\DisableOREnable\Stop.bat
 }
-
 Function enableall {
-    Start-Process -Wait -FilePath DisableOREnable\Start.bat
+    DownloadDisableOREnable
+    Start-Process -Wait -FilePath Downloads\DisableOREnable\Start.bat
 }
 
-############################################################################################################################
+# _______________________________________________________________________________________________ #
 
+Function DownloadPS {
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596420"
+
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URI -Headers $Headers -OutFile $currentdirectory\Downloads\PS.zip
+    Expand-Archive Downloads\PS.zip -DestinationPath Downloads\ -Force
+}
 Function credencials {
     $Global:cred = Get-Credential Pais\Nombre.Apellido -Message "Ingresar Credenciales, Ejemplo AR\Fulano.Perencejo"
 
     Write-Output " ============================================== "
     Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ============================================== "
-
-    Copy-Item -LiteralPath PS\ -Destination C:\ -Recurse -Force
+    DownloadPS
+    Copy-Item -LiteralPath Downloads\PS\ -Destination C:\ -Recurse -Force
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
 
@@ -294,7 +463,6 @@ Function credencials {
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
 }
-
 Function moveou {
     
     # AR Sucursales GUID {479502b9-d1d8-4bb9-b72c-76b0b2c4fe47}
@@ -310,7 +478,6 @@ Function moveou {
     
         switch($inp){
             1{
-            
                 credencials
                 $Computer = hostname
                 $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
@@ -476,27 +643,7 @@ Function moveou {
     
 }
 
-
-#############################################################################################################################
-
-# Repair block
-
-Function uninstallavaya {
-    $Programa = Get-WmiObject -Class Win32_Product -Filter "Name = 'Avaya one-X Agent - 2.5.13'"
-    $Programa.Uninstall()
-    Remove-Item -Force $env:appdata\Avaya -Recurse
-}
-
-#############################################################################################################################
-
-Function showmenurepair {
-    Write-Output ""
-    Write-Output " ************************************ "
-    Write-Output "  1. Reinstalar Solo Avaya (Sin Pre) "
-    
-    Write-Output ""
-
-}
+# _______________________________________________________________________________________________ #
 
 Function showmenupais {
 
@@ -526,7 +673,23 @@ Function showmenumain {
     Write-Output ""
 }
 
-############################################################################################################################
+# _______________________________________________________________________________________________ #
+Function uninstallavaya {
+    $Programa = Get-WmiObject -Class Win32_Product -Filter "Name = 'Avaya one-X Agent - 2.5.13'"
+    $Programa.Uninstall()
+    Remove-Item -Force $env:appdata\Avaya -Recurse
+}
+
+Function showmenurepair {
+    Write-Output ""
+    Write-Output " ************************************ "
+    Write-Output "  1. Reinstalar Solo Avaya (Sin Pre) "
+    
+    Write-Output ""
+
+}
+
+# _______________________________________________________________________________________________ #
 
 Write-Output ""
 showmenumain
@@ -546,8 +709,7 @@ switch($inp){
             disableall
             extyagent
             netframework
-            silverlight
-            visual
+            PreInstall
             tsapi
             avaya
             certificados
@@ -569,8 +731,7 @@ switch($inp){
             disableall
             extyagent
             netframework
-            silverlight
-            visual
+            PreInstall
             tsapi
             avaya
             certificados
