@@ -463,7 +463,49 @@ Function credencials {
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
 }
-Function moveou {
+function moveou {
+    param (
+        [String]$1,[String]$2
+    )
+        credencials
+        $Computer = hostname
+        $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
+        
+        if (!$Identity){
+
+            Write-Output ""
+            Write-Output " ****************************************** "
+            Write-Host "   El equipo NO existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
+            Write-Output " ****************************************** "
+            Write-Output ""
+            
+        } else {
+
+            disableall
+            $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+
+            Write-Output ""
+            Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output ""
+
+            Write-Output ""
+            Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output ""
+
+            Move-ADObject -Identity "$Identity" -TargetPath "$2"
+            Start-Sleep -Seconds 15
+
+            $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+            Write-Output ""
+            Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
+            Write-Output ""
+
+            enableall
+            Pause
+            exit
+        }
+}
+Function moverdeou {
     
     # AR Sucursales GUID {479502b9-d1d8-4bb9-b72c-76b0b2c4fe47}
     # UY PCI GUID {51559502-9b54-49b9-8473-eff00e9267ec}
@@ -478,162 +520,27 @@ Function moveou {
     
         switch($inp){
             1{
-                credencials
-                $Computer = hostname
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).objectGUID).Guid
                 
-                if (!$Identity){
-
-                    Write-Output ""
-                    Write-Output " ****************************************** "
-                    Write-Host "   El equipo NO existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
-                    Write-Output " ****************************************** "
-                    Write-Output ""
-                    
-                } else {
-
-                    disableall
-                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).DistinguishedName
-
-                    Write-Output ""
-                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-
-                    Write-Output ""
-                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-
-                    Move-ADObject -Identity "$Identity" -TargetPath "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
-                    Start-Sleep -Seconds 15
-
-                    $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server ar.infra.d -Credential $cred).DistinguishedName
-                    Write-Output ""
-                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
-                    Write-Output ""
-
-                    enableall
-                    Pause
-                    exit
-                }
+                moveou "ar" "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
                 
             }
             2{
-                credencials
-                $Computer = hostname
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).objectGUID).Guid
-                
-                if (!$Identity){
 
-                    Write-Output ""
-                    Write-Output " ****************************************** "
-                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
-                    Write-Output " ****************************************** "
-                    Write-Output ""
-                    
-                } else {
-                    
-                    disableall
-                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).DistinguishedName
+                moveou "uy" "51559502-9b54-49b9-8473-eff00e9267ec"
 
-                    Write-Output ""
-                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-
-                    Write-Output ""
-                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-                    
-                    Move-ADObject -Identity "$Identity" -TargetPath "51559502-9b54-49b9-8473-eff00e9267ec"
-                    Start-Sleep -Seconds 15
-                    
-                    $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server uy.infra.d -Credential $cred).DistinguishedName
-                    Write-Output ""
-                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
-                    Write-Output ""
-
-                    enableall
-                    Pause
-                    exit
-                }
             }
             3{
-                credencials
-                $Computer = hostname
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).objectGUID).Guid
-                
-                if (!$Identity){
 
-                    Write-Output ""
-                    Write-Output " ****************************************** "
-                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
-                    Write-Output " ****************************************** "
-                    Write-Output ""
-                    
-                } else {
+                moveou "cl" "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
 
-                    disableall
-                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).DistinguishedName
-
-                    Write-Output ""
-                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-
-                    Write-Output ""
-                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-
-                    Move-ADObject -Identity "$Identity" -TargetPath "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
-                    Start-Sleep -Seconds 15
-
-                    $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server cl.infra.d -Credential $cred).DistinguishedName
-                    Write-Output ""
-                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
-                    Write-Output ""
-                    enableall
-                    Pause
-                    exit
-                }
             }
             4{
-                credencials
-                $Computer = hostname
-                $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).objectGUID).Guid
+
+                moveou "co" "ab67334e-1f0f-48bf-8eef-9287ca32a427"
                 
-                if (!$Identity){
-
-                    Write-Output ""
-                    Write-Output " ****************************************** "
-                    Write-Host "   El equipo no existe en el AD, Verificar  " -ForegroundColor Red -BackgroundColor Black
-                    Write-Output " ****************************************** "
-                    Write-Output ""
-                    
-                } else {
-                    disableall
-                    $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).DistinguishedName
-
-                    Write-Output ""
-                    Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-
-                    Write-Output ""
-                    Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
-                    Write-Output ""
-
-                    Move-ADObject -Identity "$Identity" -TargetPath "ab67334e-1f0f-48bf-8eef-9287ca32a427"
-                    Start-Sleep -Seconds 15
-                    
-                    $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server co.infra.d -Credential $cred).DistinguishedName
-                    Write-Output ""
-                    Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
-                    Write-Output ""
-                    enableall
-                    Pause
-                    exit
-                }
             }
             5{"Exit"; break}
             default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
-    
         }
 
     Write-Output ""
@@ -750,7 +657,7 @@ switch($inp){
         }
         4 { 
             
-            moveou
+            moverdeou
             
         }
         5 {"Exit"; break}
