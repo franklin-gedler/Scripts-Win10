@@ -133,7 +133,7 @@ Function tsapi {
     Write-Output ""
 
     DownloadTsapi
-    Start-Process -Wait -FilePath TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\Downloads\TsapiClient\setup.iss"
+    Start-Process -Wait -FilePath Downloads\TsapiClient\setup.exe -ArgumentList "/s /f1$currentdirectory\Downloads\TsapiClient\setup.iss"
 
     Write-Output ""
     Write-Output " _____________________________________________________________________________________________________"
