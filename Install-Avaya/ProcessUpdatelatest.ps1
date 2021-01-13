@@ -56,7 +56,7 @@ Function netframework {
     Write-Output " ======================================"
     Write-Output ""
 
-    Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All
+    Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All -NoRestart
 
     # Verificar que se instalo los net framework:
     # Get-WindowsOptionalFeature -Online -FeatureName "NetFX4"
