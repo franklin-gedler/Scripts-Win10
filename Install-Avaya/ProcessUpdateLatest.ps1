@@ -611,7 +611,7 @@ switch($inp){
 
             extyagent
             DownloadUserDespegar
-            disableall
+            #disableall
             netframework
             PreInstall
             tsapi
@@ -619,7 +619,7 @@ switch($inp){
             certificados
             nginx
             cti
-            enableall
+            #enableall
             Pause
             break         
         }
@@ -633,7 +633,7 @@ switch($inp){
             
             extyagent
             DownloadUserSucursal
-            disableall
+            #disableall
             netframework
             PreInstall
             tsapi
@@ -643,7 +643,7 @@ switch($inp){
             cti
             globalprotect
             screenpop
-            enableall
+            #enableall
             Pause
             break 
         }
