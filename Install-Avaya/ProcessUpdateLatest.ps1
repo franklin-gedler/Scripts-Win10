@@ -622,7 +622,8 @@ switch($inp){
             enableall
             Pause
             #break
-            [Environment]::Exit(0)
+            $Result = [System.Environment]::Exitcode
+            [System.Environment]::Exit($Result)
         }
         2 {
             #Clear-Host
@@ -647,7 +648,8 @@ switch($inp){
             enableall
             Pause
             #break
-            [Environment]::Exit(0) 
+            $Result = [System.Environment]::Exitcode
+            [System.Environment]::Exit($Result)
         }
         3 {
             Write-Output ""
@@ -667,4 +669,4 @@ switch($inp){
 Write-Output ""
 showmenumain
 }
-[Environment]::Exit(0)
+[System.Environment]::Exit($Result)
