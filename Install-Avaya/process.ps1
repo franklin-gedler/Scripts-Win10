@@ -17,3 +17,23 @@ Start-Process -Wait PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy By
 Remove-Item ProcessUpdateLatest.ps1
 
 #Pause
+
+
+<#
+# Destruction Block
+mkdir $env:TEMP\paraborrar\ -Force
+Write-Output $currentdirectory > $env:TEMP\paraborrar\pathfiles.txt
+
+Write-Output {
+    
+    $pathfiles = Get-Content $env:TEMP\paraborrar\pathfiles.txt
+    Remove-Item $pathfiles\ProcessUpdateLatest.ps1 -Force
+
+} > $env:TEMP\paraborrar\borrado.ps1
+
+ 
+
+& $env:TEMP\paraborrar\borrado.ps1
+
+
+#>

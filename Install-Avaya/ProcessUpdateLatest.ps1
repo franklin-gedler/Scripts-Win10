@@ -620,9 +620,7 @@ switch($inp){
             nginx
             cti
             enableall
-            Pause
-            
-            
+            Pause         
         }
         2 {
             #Clear-Host
@@ -645,20 +643,15 @@ switch($inp){
             globalprotect
             screenpop
             enableall
-            Pause
-            
+            Pause 
         }
         3 {
             Write-Output ""
             Write-Output " no usar (No te Dije Pelotudo)  "
             Write-Output ""
-            
         }
         4 { 
-            
             moverdeou
-            
-            
         }
         5 {"Exit"; break}
         default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
