@@ -28,7 +28,7 @@ function listsSucursal {
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596446",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
-    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596347",
+    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30761673",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596372",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596376",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596403",
@@ -119,7 +119,7 @@ function listsDespegar {
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596446",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
-    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596347",
+    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30761673",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596372",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596376",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596378"
