@@ -621,7 +621,7 @@ switch($inp){
             cti
             enableall
             Pause
-            break
+            
             
         }
         2 {
@@ -646,18 +646,18 @@ switch($inp){
             screenpop
             enableall
             Pause
-            break
+            
         }
         3 {
             Write-Output ""
             Write-Output " no usar (No te Dije Pelotudo)  "
             Write-Output ""
-            break
+            
         }
         4 { 
             
             moverdeou
-            break
+            
             
         }
         5 {"Exit"; break}
