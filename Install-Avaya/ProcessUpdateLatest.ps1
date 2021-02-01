@@ -663,15 +663,20 @@ switch($inp){
         }
         3 {
             Write-Output ""
-            Write-Output " no usar (No te Dije Pelotudo)  "
+            Write-Output " NO USAR (No te Dije Pelotudo)  "
             Write-Output ""
+            Start-Sleep -Seconds 5
+            AutoDeleteNow
+            $Result = [System.Environment]::Exitcode
+            [System.Environment]::Exit($Result)
             #break
         }
         4 { 
             moverdeou
             AutoDeleteNow
+            $Result = [System.Environment]::Exitcode
+            [System.Environment]::Exit($Result)
             #break
-            #[Environment]::Exit(0)
         }
         5 {"Exit"; break}
         default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
