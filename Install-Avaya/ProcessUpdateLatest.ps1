@@ -296,7 +296,7 @@ Function certificados {
     $cert = (Get-ChildItem -Path cert:\LocalMachine\My\$huella)
     Export-Certificate -Cert $cert -FilePath $currentdirectory\Downloads\CertificadoSSL\avaya.cer -Force
     $cert = (Get-ChildItem -Path $currentdirectory\Downloads\CertificadoSSL\avaya.cer)
-    $cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root > $env:TEMP\out.txt
+    $cert | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
 
     Copy-Item Downloads\CertificadoSSL\OneXAgentAPIConfig.bat 'C:\Program Files (x86)\Avaya\Avaya one-X Agent' -Force
 
