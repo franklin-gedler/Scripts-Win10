@@ -674,11 +674,12 @@ switch($inp){
             #break
             #[Environment]::Exit(0)
         }
-        5 {"Exit"; AutoDeleteNow break}
+        5 {"Exit"; break}
         default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
         
     }
 Write-Output ""
 showmenumain
 }
+AutoDeleteNow
 [System.Environment]::Exit($Result)
