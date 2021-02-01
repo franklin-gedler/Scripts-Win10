@@ -680,5 +680,4 @@ switch($inp){
 Write-Output ""
 showmenumain
 }
-AutoDeleteNow
 [System.Environment]::Exit($Result)
