@@ -392,9 +392,9 @@ Function screenpop {
 
     #Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application"
 
-    #Start-Process -Wait Downloads\ScreenPop\install.vbs
+    Start-Process Downloads\ScreenPop\install.vbs
 
-    Start-Process -FilePath .\Downloads\ScreenPop\TPSPOPDespegar.application
+    #Start-Process -FilePath .\Downloads\ScreenPop\TPSPOPDespegar.application
 }
 
 # _______________________________________________________________________________________________ #
