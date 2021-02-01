@@ -665,7 +665,6 @@ switch($inp){
             Write-Output ""
             Write-Output " no usar (No te Dije Pelotudo)  "
             Write-Output ""
-            AutoDeleteNow
             #break
         }
         4 { 
