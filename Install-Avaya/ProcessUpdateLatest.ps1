@@ -665,14 +665,16 @@ switch($inp){
             Write-Output ""
             Write-Output " no usar (No te Dije Pelotudo)  "
             Write-Output ""
+            AutoDeleteNow
             #break
         }
         4 { 
             moverdeou
+            AutoDeleteNow
             #break
             #[Environment]::Exit(0)
         }
-        5 {"Exit"; break}
+        5 {"Exit"; AutoDeleteNow break}
         default {Write-Host -ForegroundColor red -BackgroundColor white "Opcion Invalida, por favor seleccion una de las disponibles"}
         
     }
