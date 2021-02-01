@@ -302,9 +302,11 @@ Function certificados {
 
     #Start-Process -Wait cmd.exe -ArgumentList "C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat 60001 1 $huella"
 
-    Start-Process -Wait 'C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat' -ArgumentList "60001 1 $huella"
+    Start-Process 'C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentAPIConfig.bat' -ArgumentList "60001 1 $huella"
 
-    Start-Process -Wait regedit.exe -ArgumentList "/s $currentdirectory\Downloads\CertificadoSSL\registro_ssl.reg"
+    Start-Sleep -Seconds 5
+
+    Start-Process regedit.exe -ArgumentList "/s $currentdirectory\Downloads\CertificadoSSL\registro_ssl.reg"
 
     Remove-Item $currentdirectory\Downloads\CertificadoSSL\avaya.cer -Force
 
