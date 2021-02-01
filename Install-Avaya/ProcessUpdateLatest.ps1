@@ -323,15 +323,15 @@ Function nginx {
 
     Copy-Item Downloads\ClickToDial\* C:\ -Force -Recurse
 
-    Start-Process C:\Nginx-1.17.8\start.bat
+    #Start-Process C:\Nginx-1.17.8\start.bat
+    #Start-Sleep -s 10
+    #Start-Process C:\Nginx-1.17.8\stop.bat
+    #Start-Process -Wait C:\nssm-2.24\createservice.bat
+    #Start-Process -Wait C:\sslCert\sslCert.bat
 
-    Start-Sleep -s 10
+    Start-Process -Wait cmd.exe -ArgumentList '/c start C:\nssm-2.24\win64\nssm.exe install nginx C:\Nginx-1.17.8\nginx.exe'
 
-    Start-Process C:\Nginx-1.17.8\stop.bat
-
-    Start-Process -Wait C:\nssm-2.24\createservice.bat
-
-    Start-Process -Wait C:\sslCert\sslCert.bat
+    Start-Process -Wait cmd.exe -ArgumentList '/c certutil -enterprise -f -v -AddStore "Root" "C:\nginx-1.17.8\conf\nginx-certificate.pem"'
 
     Restart-Service nginx -PassThru
 
