@@ -411,7 +411,7 @@ Function enableall {
 }
 
 function AutoDeleteNow {
-    Remove-Item ProcessUpdateLatest.ps1 -Force
+    Remove-Item $currentdirectory\ProcessUpdateLatest.ps1 -Force
 }
 
 # _______________________________________________________________________________________________ #
