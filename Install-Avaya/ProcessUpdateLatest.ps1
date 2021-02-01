@@ -410,6 +410,10 @@ Function enableall {
     Start-Process -Wait -FilePath Downloads\DisableOREnable\Start.bat
 }
 
+function AutoDeleteNow {
+    Remove-Item ProcessUpdateLatest.ps1 -Force
+}
+
 # _______________________________________________________________________________________________ #
 
 Function DownloadPS {
@@ -624,6 +628,7 @@ switch($inp){
             nginx
             cti
             enableall
+            AutoDeleteNow
             Pause
             #break
             $Result = [System.Environment]::Exitcode
@@ -650,6 +655,7 @@ switch($inp){
             globalprotect
             screenpop
             enableall
+            AutoDeleteNow
             Pause
             #break
             $Result = [System.Environment]::Exitcode
