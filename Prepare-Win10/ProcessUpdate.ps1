@@ -103,14 +103,14 @@ Write-Output " ==================================== "
 $Binding = Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -Credential $cred -PassThru
 
 if( $Binding.HasSucceeded -eq $true ){
-    echo "Valor del Binding: $Binding.HasSucceeded"
+    
     Write-Output ""
     Write-Output " ######################################################### "
     Write-Host "  Se agrego al equipo $newnamecompu al Dominio AR.INFRA.D  " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ######################################################### "
 
 }else{
-    echo "Valor del Binding: $Binding.HasSucceeded"
+    
     Write-Output ""
     Write-Output " ################################################################### "
     Write-Host "  Error a enlazar el equipo al AD, Por Favor realizarlo Manualmente  " -ForegroundColor Red -BackgroundColor Black
