@@ -100,7 +100,7 @@ Write-Output ""
 Write-Output " ==================================== "
 Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output " ==================================== "
-$Binding = Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -Credential $cred
+$Binding = Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -Credential $cred -PassThru
 
 if( $Binding.HasSucceeded -eq $true ){
     echo "Valor del Binding: $Binding.HasSucceeded"
