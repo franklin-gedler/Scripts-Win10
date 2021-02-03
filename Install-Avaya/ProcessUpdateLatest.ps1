@@ -473,7 +473,7 @@ function moveou {
     )
         credencials
         $Computer = hostname
-        $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
+        $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "10.40.$1.1" -Credential $cred).objectGUID).Guid
         
         if (!$Identity){
 
@@ -486,7 +486,7 @@ function moveou {
         } else {
 
             disableall
-            $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+            $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "10.40.$1.1" -Credential $cred).DistinguishedName
 
             Write-Output ""
             Write-Host " OU Actuales del equipo: $currentou " -ForegroundColor Yellow -BackgroundColor Black
@@ -499,7 +499,7 @@ function moveou {
             Move-ADObject -Identity "$Identity" -TargetPath "$2"
             Start-Sleep -Seconds 15
 
-            $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+            $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "10.40.$1.1" -Credential $cred).DistinguishedName
             Write-Output ""
             Write-host " Nueva OU del equipo: $verif " -ForegroundColor Green -BackgroundColor Black
             Write-Output ""
@@ -525,7 +525,7 @@ Function moverdeou {
         switch($inp){
             1{
                 
-                moveou "ar" "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
+                moveou "54" "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
                 
             }
             2{
