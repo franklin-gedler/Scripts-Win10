@@ -530,17 +530,17 @@ Function moverdeou {
             }
             2{
 
-                moveou "uy" "51559502-9b54-49b9-8473-eff00e9267ec"
+                moveou "59" "51559502-9b54-49b9-8473-eff00e9267ec"
 
             }
             3{
 
-                moveou "cl" "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
+                moveou "56" "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
 
             }
             4{
 
-                moveou "co" "ab67334e-1f0f-48bf-8eef-9287ca32a427"
+                moveou "57" "ab67334e-1f0f-48bf-8eef-9287ca32a427"
                 
             }
             5{"Exit"; break}
