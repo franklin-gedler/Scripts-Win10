@@ -496,7 +496,7 @@ function moveou {
             Write-Host " Moviendo equipo, Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
             Write-Output ""
 
-            Move-ADObject -Identity "$Identity" -TargetPath "$2" -Server "10.40.$1.1"
+            Move-ADObject -Identity "$Identity" -TargetPath "$2" -Server "10.40.$1.1" -Credential $cred
             Start-Sleep -Seconds 15
 
             $verif = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "10.40.$1.1" -Credential $cred).DistinguishedName
