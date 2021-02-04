@@ -473,7 +473,7 @@ function moveou {
     )
         credencials
         $Computer = hostname
-        disableall
+
         # ___________________________________________________________________________________________________________________________________________"
         
         $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
@@ -528,7 +528,6 @@ function moveou {
 
         # ___________________________________________________________________________________________________________________________________________"
 
-        enableall
         Pause
 }
 Function moverdeou {
