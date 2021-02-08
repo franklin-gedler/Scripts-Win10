@@ -471,7 +471,7 @@ function moveou {
     param (
         [String]$1,[String]$2
     )
-        credencials
+        #credencials
         $Computer = hostname
 
         # ___________________________________________________________________________________________________________________________________________"
@@ -536,7 +536,9 @@ Function moverdeou {
     # UY PCI GUID {51559502-9b54-49b9-8473-eff00e9267ec}
     # Cl Sucursales {69be72ec-f3fd-4c3a-bb75-8ccb81bd002b}
     # CO PCI {ab67334e-1f0f-48bf-8eef-9287ca32a427}
-
+    <#
+    
+    
     Write-Output ""
     showmenupais
     Write-Output ""
@@ -572,11 +574,30 @@ Function moverdeou {
     showmenupais
     Write-Output ""
     } 
-    
+    #>
+
+    credencials
+    $Global:DomainPC = (Get-ADDomain -Credential $cred).Name
+
+    switch ($DomainPC) {
+        ar {  
+            moveou "ar" "479502b9-d1d8-4bb9-b72c-76b0b2c4fe47"
+        }
+        uy {  
+            moveou "uy" "51559502-9b54-49b9-8473-eff00e9267ec"
+        }
+        cl {  
+            moveou "cl" "69be72ec-f3fd-4c3a-bb75-8ccb81bd002b"
+        }
+        co {  
+            moveou "co" "ab67334e-1f0f-48bf-8eef-9287ca32a427"
+        }
+    }
 }
 
 # _______________________________________________________________________________________________ #
 
+<#
 Function showmenupais {
 
     Write-Output ""
@@ -591,7 +612,7 @@ Function showmenupais {
     Write-Output ""
 
 }
-
+#>
 Function showmenumain {
     #Clear-Host
     Write-Output ""
