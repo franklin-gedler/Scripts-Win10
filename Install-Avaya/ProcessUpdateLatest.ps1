@@ -508,11 +508,11 @@ function moveou {
         Write-Output " ******************************** "
         Write-Output ""
 
-        $moviendo = Move-ADObject -Identity "$Identity" -TargetPath "$2" -Credential $cred -PassThru
+        $moviendo = Move-ADObject -Identity "$Identity" -TargetPath "$2" -Credential $cred
         echo "valor de moviendo: $moviendo"
         Pause
         while (!$moviendo){
-            $moviendo = Move-ADObject -Identity "$Identity" -TargetPath "$2" -Credential $cred -PassThru
+            $moviendo = Move-ADObject -Identity "$Identity" -TargetPath "$2" -Credential $cred
         }
         Start-Sleep -Seconds 10 
         Write-Output " *********** "
