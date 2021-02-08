@@ -481,9 +481,7 @@ function moveou {
             $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
         }
         Write-Output ""
-        Write-Output " ************************************************** "
         Write-Host   "   El ID del equipo es: $Identity" -ForegroundColor Yellow -BackgroundColor Black
-        Write-Output " *************************************************** "
         Write-Output ""
         
         # ___________________________________________________________________________________________________________________________________________"
@@ -494,17 +492,13 @@ function moveou {
             $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
         }
         Write-Output ""
-        Write-Output " ************************************************** "
         Write-Host   "   OU Actuales del equipo: $currentou" -ForegroundColor Yellow -BackgroundColor Black
-        Write-Output " *************************************************** "
         Write-Output ""
         
         # ___________________________________________________________________________________________________________________________________________"
 
         Write-Output ""
-        Write-Output " ******************************** "
         Write-Host   "   Moviendo equipo, Espere . . ." -ForegroundColor Yellow -BackgroundColor Black
-        Write-Output " ******************************** "
         Write-Output ""
 
         Move-ADObject -Identity "$Identity" -TargetPath "$2" -Credential $cred
@@ -512,9 +506,8 @@ function moveou {
             Move-ADObject -Identity "$Identity" -TargetPath "$2" -Credential $cred
         }
         Start-Sleep -Seconds 10 
-        Write-Output " *********** "
+        
         Write-Host   "   Listo. " -ForegroundColor Green -BackgroundColor Black
-        Write-Output " *********** "
         Write-Output ""
 
         # ___________________________________________________________________________________________________________________________________________"
