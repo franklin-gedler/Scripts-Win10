@@ -477,6 +477,7 @@ function moveou {
         # ___________________________________________________________________________________________________________________________________________"
         
         $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
+        echo "valor de identidad: $Identity"
         while (!$Identity){
             $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
         }
@@ -485,10 +486,11 @@ function moveou {
         Write-Host   "   El ID del equipo es: $Identity" -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " *************************************************** "
         Write-Output ""
-        
+        Pause
         # ___________________________________________________________________________________________________________________________________________"
 
         $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+        echo "valor de dn actual: $currentou"
         while (!$currentou){
             $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
         }
@@ -497,7 +499,7 @@ function moveou {
         Write-Host   "   OU Actuales del equipo: $currentou" -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " *************************************************** "
         Write-Output ""
-
+        Pause
         # ___________________________________________________________________________________________________________________________________________"
 
         Write-Output ""
@@ -507,6 +509,7 @@ function moveou {
         Write-Output ""
 
         $moviendo = Move-ADObject -Identity "$Identity" -TargetPath "$2" -Server "$1.infra.d" -Credential $cred -PassThru
+        echo "valor de moviendo: $moviendo"
         while (!$moviendo){
             $moviendo = Move-ADObject -Identity "$Identity" -TargetPath "$2" -Server "$1.infra.d" -Credential $cred -PassThru
         }
