@@ -19,11 +19,11 @@ Write-Output " _________________________________________________________________
 # Obtener Serial de equipo
 #$serial = (gwmi win32_bios).SerialNumber
 
-#$serial = (Get-WmiObject win32_bios).SerialNumber
-#$newnamecompu = "AR$serial"
-#echo "$newnamecompu"
+$serial = (Get-WmiObject win32_bios).SerialNumber
+$newnamecompu = "AR$serial"
+Write-Output "$newnamecompu"
 
-$newnamecompu = "AR1234567"
+#$newnamecompu = "AR1234567"
 
 Rename-Computer -NewName $newnamecompu -force
 
