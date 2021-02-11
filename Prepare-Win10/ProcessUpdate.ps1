@@ -17,10 +17,17 @@ Write-Output " _________________________________________________________________
 # _________________________________________________________________________________________
 
 # Obtener Serial de equipo
-$serial = (gwmi win32_bios).SerialNumber
-$newnamecompu = "AR$serial"
+#$serial = (gwmi win32_bios).SerialNumber
 
-#$newnamecompu = "ARSERIAL1"
+#$serial = (Get-WmiObject win32_bios).SerialNumber
+#$newnamecompu = "AR$serial"
+#echo "$newnamecompu"
+
+$newnamecompu = "AR1234567"
+
+Rename-Computer -NewName $newnamecompu -force
+
+
 
 # __________________ Verificando conexion con Dominio y Validando Credenciales _______________________
 Write-Output ""
@@ -96,6 +103,7 @@ if ($consul){
 }
 #Remove-Module -Name ActiveDirectory
 #Remove-Item C:\PS -Recurse -Force
+
 Write-Output ""
 Write-Output " ==================================== "
 Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
