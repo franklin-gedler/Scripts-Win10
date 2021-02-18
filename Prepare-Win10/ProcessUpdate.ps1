@@ -17,15 +17,24 @@ Write-Output " _________________________________________________________________
 # _________________________________________________________________________________________
 
 # Obtener Serial de equipo
-#$serial = (gwmi win32_bios).SerialNumber
+#$SCompu = (gwmi win32_bios).SerialNumber
 
-$serial = (Get-WmiObject win32_bios).SerialNumber
-$newnamecompu = "AR$serial"
-Write-Output "$newnamecompu"
+$SCompu = (Get-WmiObject win32_bios).SerialNumber
+$NCompu = "AR$SCompu"
+Write-Output "Nuevo nombre a Setear: $NCompu"
+while (!$NCompu) {
+    $SCompu = (Get-WmiObject win32_bios).SerialNumber
+    $NCompu = "AR$SCompu"
+    Write-Output "Nuevo nombre a Setear: $NCompu"
+}
 
-#$newnamecompu = "AR1234567"
+#$NCompu = "AR1234567"
 
-Rename-Computer -NewName $newnamecompu -force
+Rename-Computer -NewName $NCompu -force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" "ComputerName" "$NCompu"
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" "Hostname" "$NCompu"
+
+
 
 
 
@@ -89,7 +98,7 @@ Write-Output ""
 
 #Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll"
 #Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
-$consul = Get-ADComputer -LDAPFilter "(cn=$newnamecompu)" -SearchScope Subtree -Server ar.infra.d -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+$consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Server ar.infra.d -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 if ($consul){
     Write-Output " =============================================== "
     Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
@@ -108,13 +117,13 @@ Write-Output ""
 Write-Output " ==================================== "
 Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output " ==================================== "
-$Binding = Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -Credential $cred -PassThru
+$Binding = Add-Computer -DomainName ar.infra.d -Force -Credential $cred -PassThru
 
 if( $Binding.HasSucceeded -eq $true ){
     
     Write-Output ""
     Write-Output " ######################################################### "
-    Write-Host "  Se agrego al equipo $newnamecompu al Dominio AR.INFRA.D  " -ForegroundColor Green -BackgroundColor Black
+    Write-Host "  Se agrego al equipo $NCompu al Dominio AR.INFRA.D  " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ######################################################### "
 
 }else{
@@ -127,7 +136,7 @@ if( $Binding.HasSucceeded -eq $true ){
 
 }
 
-#Add-Computer -DomainName ar.infra.d -NewName $newnamecompu -Force -passthru -verbose -Credential $cred
+#Add-Computer -DomainName ar.infra.d -Force -passthru -verbose -Credential $cred
 # _________________________________________________________________________________________
 
 Write-Output ""
@@ -160,8 +169,8 @@ if("$tpmpresent" -eq "False" -And "$tpmready" -eq "False"){
     Write-Output " ============================== "
     Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
 
-    (Get-BitLockerVolume -mount c).keyprotector | Select-Object $newnamecompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$newnamecompu.txt
-    #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $newnamecompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$newnamecompu.txt
+    (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+    #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
 
     Write-Output ""
     Write-Output " ============================= "
@@ -171,7 +180,7 @@ if("$tpmpresent" -eq "False" -And "$tpmready" -eq "False"){
     if ("$nas" -eq 'False'){
         Write-Output ""
         Write-Output " ############################################################################################################## "
-        Write-Host "  Problemas para conectarnos al NAS, se creo archivo $newnamecompu en el escritorio con el ID y PASS Bitlocker  " -ForegroundColor Red -BackgroundColor Black
+        Write-Host "  Problemas para conectarnos al NAS, se creo archivo $NCompu en el escritorio con el ID y PASS Bitlocker  " -ForegroundColor Red -BackgroundColor Black
         Write-Output " ############################################################################################################## "
     }else {
         Write-Output ""
@@ -184,7 +193,7 @@ if("$tpmpresent" -eq "False" -And "$tpmready" -eq "False"){
         Write-Host "  Copiando ID y PASS al NAS  " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " =========================== "
         New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles" -Credential $cred
-        Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$newnamecompu.txt -Destination Z:\
+        Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$NCompu.txt -Destination Z:\
     }
 
 }
@@ -245,7 +254,7 @@ Write-Output ""
 Write-Output "------------------------------------"
 Write-Host "         SE VA A REINICIAR          " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output "------------------------------------"
-$p = ConvertTo-SecureString "*+54#$serial*" -AsPlainText -Force
+$p = ConvertTo-SecureString "*+54#$SCompu*" -AsPlainText -Force
 $u = (Get-LocalUser).Name[0]
 Set-LocalUser -Name $u -Password $p -PasswordNeverExpires 1
 Pause
@@ -273,16 +282,16 @@ exit
 # ----------------------------------- Solo notas de varios comandos ------------------------------------------
 
 #New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles" -Credential $cred
-#Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\$newnamecompu.txt -Destination Z:\
-#Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$newnamecompu.txt -Destination Z:\
+#Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\$NCompu.txt -Destination Z:\
+#Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$NCompu.txt -Destination Z:\
 
 #Agregar equipo a Dominio AR (Puedes agregar -passthru -verbose para ver la salida del comando -Restart)
-#Add-Computer -DomainName ar.infra.d -ComputerName ARDESPEGAR -NewName $newnamecompu -Force -passthru -verbose -Credential $cred
+#Add-Computer -DomainName ar.infra.d -ComputerName ARDESPEGAR -NewName $NCompu -Force -passthru -verbose -Credential $cred
 
 # Obtener Serial del equipo
 #$var1 = $(wmic bios get serialnumber)
-#$serial = $var1.split('')[4]
-#$newnamecompu = "AR$serial"
+#$SCompu = $var1.split('')[4]
+#$NCompu = "AR$SCompu"
 
 #Import-Module Enable-Bitlocker
 
@@ -309,7 +318,7 @@ exit
 #Remove-BitlockerKeyProtector -MountPoint "C:" -KeyProtectorId $BLV.KeyProtector[1].KeyProtectorId
 
 # Renombrar equipo
-#Rename-Computer -ComputerName ARDESPEGAR -NewName $newnamecompu -Force
+#Rename-Computer -ComputerName ARDESPEGAR -NewName $NCompu -Force
 
 # habilitar ejecutar script en powershell esto lo tengo que ejecutar como administrador
 #Set-ExecutionPolicy Unrestricted -Force
@@ -321,14 +330,14 @@ exit
 # Muevo el file con el ID y passRecovery al NAS
 # ver si debes importar el modulo de BitsTransfer 
 #Import-Module BitsTransfer
-#Start-BitsTransfer -Source C:\Users\admindesp\Desktop\$newnamecompu.csv -Destination \\10.40.54.52\Soporte\BitLockerFiles -Credential $cred
-#Start-BitsTransfer 'C:\WINDOWS\setup\scripts\$newnamecompu.txt' '\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles' -TransferType Upload -Credential $cred 
+#Start-BitsTransfer -Source C:\Users\admindesp\Desktop\$NCompu.csv -Destination \\10.40.54.52\Soporte\BitLockerFiles -Credential $cred
+#Start-BitsTransfer 'C:\WINDOWS\setup\scripts\$NCompu.txt' '\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles' -TransferType Upload -Credential $cred 
 
 
-#(Get-BitLockerVolume -mount c).keyprotector | select $newnamecompu, keyprotectorId, RecoveryPassword | ConvertTo-Csv | Out-File -Append -FilePath "C:\WINDOWS\setup\scripts\IdPassBitlocker.csv"
+#(Get-BitLockerVolume -mount c).keyprotector | select $NCompu, keyprotectorId, RecoveryPassword | ConvertTo-Csv | Out-File -Append -FilePath "C:\WINDOWS\setup\scripts\IdPassBitlocker.csv"
 #$var1 = $(cat C:\WINDOWS\setup\scripts\IdPassBitlocker.csv)
 #$var2 = $var1.split('')[4]
 #$id = $var2.split(',')[1]
 #$pass = $var2.split(',')[2]
-#echo "ID: $id |------------| PASS: $pass" > C:\WINDOWS\setup\scripts\$newnamecompu.txt
-#echo "ID: $id |------------| PASS: $pass" > C:\Users\admindesp\Desktop\$newnamecompu.txt
+#echo "ID: $id |------------| PASS: $pass" > C:\WINDOWS\setup\scripts\$NCompu.txt
+#echo "ID: $id |------------| PASS: $pass" > C:\Users\admindesp\Desktop\$NCompu.txt
