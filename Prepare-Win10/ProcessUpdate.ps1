@@ -30,9 +30,9 @@ while (!$NCompu) {
 
 #$NCompu = "AR1234567"
 
-Rename-Computer -NewName $NCompu -force
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" "ComputerName" "$NCompu"
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" "Hostname" "$NCompu"
+#Rename-Computer -NewName $NCompu -force
+#Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" "ComputerName" "$NCompu"
+#Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" "Hostname" "$NCompu"
 
 
 
@@ -93,55 +93,7 @@ Write-Output " ############################################################## "
 Write-Output ""
 Write-Output "_________________________________________________________________________________________"
 Write-Output ""
-# ____________________________________ Binding AD ________________________________________
-#mkdir C:\PS\ADPoSH
 
-#Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll"
-#Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
-$consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Server ar.infra.d -Credential $cred | Select-Object -ExpandProperty DistinguishedName
-if ($consul){
-    Write-Output " =============================================== "
-    Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
-    Write-Output " =============================================== "
-    Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False -verbose
-    Start-Sleep -Seconds 10
-    Write-Output ""
-    Write-Output " ############# "
-    Write-Host "   Eliminado   " -ForegroundColor Green -BackgroundColor Black
-    Write-Output " ############# "
-}
-#Remove-Module -Name ActiveDirectory
-#Remove-Item C:\PS -Recurse -Force
-
-Write-Output ""
-Write-Output " ==================================== "
-Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
-Write-Output " ==================================== "
-$Binding = Add-Computer -DomainName ar.infra.d -Force -Credential $cred -PassThru
-
-if( $Binding.HasSucceeded -eq $true ){
-    
-    Write-Output ""
-    Write-Output " ######################################################### "
-    Write-Host "  Se agrego al equipo $NCompu al Dominio AR.INFRA.D  " -ForegroundColor Green -BackgroundColor Black
-    Write-Output " ######################################################### "
-
-}else{
-    
-    Write-Output ""
-    Write-Output " ################################################################### "
-    Write-Host "  Error a enlazar el equipo al AD, Por Favor realizarlo Manualmente  " -ForegroundColor Red -BackgroundColor Black
-    Write-Output " ################################################################### "
-    Write-Output ""
-
-}
-
-#Add-Computer -DomainName ar.infra.d -Force -passthru -verbose -Credential $cred
-# _________________________________________________________________________________________
-
-Write-Output ""
-Write-Output "_________________________________________________________________________________________"
-Write-Output ""
 
 # _____________________ Habilito el bitlocker y envio el ID y pass al NAS _________________
 Write-Output ""
@@ -197,6 +149,56 @@ if("$tpmpresent" -eq "False" -And "$tpmready" -eq "False"){
     }
 
 }
+Write-Output ""
+Write-Output "_________________________________________________________________________________________"
+Write-Output ""
+
+# ____________________________________ Binding AD ________________________________________
+#mkdir C:\PS\ADPoSH
+
+#Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll"
+#Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll"
+$consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Server ar.infra.d -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+if ($consul){
+    Write-Output " =============================================== "
+    Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =============================================== "
+    Remove-ADObject -Identity "$consul" -Credential $cred -Server ar.infra.d -Confirm:$False -verbose
+    Start-Sleep -Seconds 10
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Eliminado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+}
+#Remove-Module -Name ActiveDirectory
+#Remove-Item C:\PS -Recurse -Force
+
+Write-Output ""
+Write-Output " ==================================== "
+Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
+Write-Output " ==================================== "
+$Binding = Add-Computer -NewName "$NCompu" -DomainName ar.infra.d -Force -Credential $cred -PassThru
+
+if( $Binding.HasSucceeded -eq $true ){
+    
+    Write-Output ""
+    Write-Output " ######################################################### "
+    Write-Host "  Se agrego al equipo $NCompu al Dominio AR.INFRA.D  " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######################################################### "
+
+}else{
+    
+    Write-Output ""
+    Write-Output " ################################################################### "
+    Write-Host "  Error a enlazar el equipo al AD, Por Favor realizarlo Manualmente  " -ForegroundColor Red -BackgroundColor Black
+    Write-Output " ################################################################### "
+    Write-Output ""
+
+}
+
+#Add-Computer -DomainName ar.infra.d -Force -passthru -verbose -Credential $cred
+# _________________________________________________________________________________________
+
 Write-Output ""
 Write-Output "_________________________________________________________________________________________"
 Write-Output ""
