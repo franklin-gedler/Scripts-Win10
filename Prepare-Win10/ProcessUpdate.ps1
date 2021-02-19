@@ -31,9 +31,16 @@ while (!$NCompu) {
 #$NCompu = "AR1234567"
 
 #Rename-Computer -NewName $NCompu -force
+#Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" "ComputerName" "$NCompu"
 #Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" "ComputerName" "$NCompu"
 #Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" "Hostname" "$NCompu"
+#Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" "NV Hostname" "$NCompu"
+#Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "COMPUTERNAME" "$NCompu"
 
+
+#Set-ItemProperty -Path "HKCU:\Volatile Environment" "LOGONSERVER" "\\$NCompu"
+#Set-ItemProperty -Path "HKCU:\Volatile Environment" "USERDOMAIN" "$NCompu"
+#Set-ItemProperty -Path "HKCU:\Volatile Environment" "USERDOMAIN_ROAMINGPROFILE" "$NCompu"
 
 
 
