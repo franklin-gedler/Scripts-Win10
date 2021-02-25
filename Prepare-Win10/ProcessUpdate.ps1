@@ -43,6 +43,8 @@ while (!$NCompu) {
 #Set-ItemProperty -Path "HKCU:\Volatile Environment" "USERDOMAIN_ROAMINGPROFILE" "$NCompu"
 
 
+#Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $ComputerName
+#Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $ComputerName
 
 
 # __________________ Verificando conexion con Dominio y Validando Credenciales _______________________
@@ -184,7 +186,13 @@ Write-Output ""
 Write-Output " ==================================== "
 Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output " ==================================== "
-$Binding = Add-Computer -NewName "$NCompu" -DomainName ar.infra.d -Force -Credential $cred -PassThru
+
+Rename-Computer -NewName $NCompu -WarningAction SilentlyContinue
+Start-Sleep -Seconds 5
+
+#$Binding = Add-Computer -NewName "$NCompu" -DomainName ar.infra.d -Force -Credential $cred -PassThru
+
+$Binding = Add-Computer -DomainName ar.infra.d -Credential $cred -Force -Options JoinWithNewName,AccountCreate -WarningAction SilentlyContinue -PassThru
 
 if( $Binding.HasSucceeded -eq $true ){
     
