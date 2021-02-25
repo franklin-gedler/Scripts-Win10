@@ -31,12 +31,15 @@ Function showmenupais {
 }
 
 function ChangeName {
+    param (
+        [String]$1
+    )
     $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
-    $Global:NCompu = "AR$SCompu"
+    $Global:NCompu = "$1$SCompu"
     #Write-Output "Nuevo nombre a Setear: $NCompu"
     while (!$NCompu) {
         $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
-        $Global:NCompu = "AR$SCompu"
+        $Global:NCompu = "$1$SCompu"
         #Write-Output "Nuevo nombre a Setear: $NCompu"
     }
 }
@@ -164,32 +167,199 @@ function JoinAD {
 }
 
 function VPNRegional {
+    Write-Output " =========================== "
+    Write-Host "   Instalando VPN Regional   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =========================== "
     Set-Location $PSScriptRoot
     Start-Process -Wait msiexec -ArgumentList '/i "E84.00_CheckPointVPN.msi" /quiet /norestart'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""  
 }
 
 function 7Zip {
+    Write-Output " =================== "
+    Write-Host "   Instalando 7Zip   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =================== "
     Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath 7z1900-x64.exe -ArgumentList '/S'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""  
 }
 
 function AcrobatReader {
+    Write-Output " ============================= "
+    Write-Host "   Instalando Acrobat Reader   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ============================= "
     Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath AcroRdrDC1902120049_es_ES.exe -ArgumentList '/sAll'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
 }
 function Java {
+    Write-Output " =================== "
+    Write-Host "   Instalando Java   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =================== "
     Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath java.exe -ArgumentList '/s'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
 }
 
 function GoogleChrome {
+    Write-Output " ============================ "
+    Write-Host "   Instalando Google Chrome   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ============================ "
     Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath ChromeStandaloneSetup64.exe -ArgumentList '/silent /install'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
 }
 
 function Office2016 {
+    Write-Output " ========================== "
+    Write-Host "   Instalando Office 2016   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ========================== "
     Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath Office2016x64\setup.exe -ArgumentList '/config standard.ww\config.xml'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
+}
+function TeamViewer {
+    Write-Output " =========================================== "
+    Write-Host "   Instalando TeamViewerHost con Politicas   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =========================================== "
+    Set-Location $PSScriptRoot
+    Start-Process msiexec -ArgumentList '/I "TeamViewer_Host.msi" /qn SETTINGSFILE="politicas.reg"' -Wait
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""  
+}
+function Antivirus {
+    Write-Output " ==================== "
+    Write-Host "    Instalando AV     " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ==================== "
+    Set-Location $PSScriptRoot
+    #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -ArgumentList '-s'
+    Start-Process -Wait -FilePath Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
+    #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
+}
+function FusionInventory {
+    Write-Output " ================================= "
+    Write-Host "    Instalando FusionInventory     " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ================================= "
+    Set-Location $PSScriptRoot
+    #& "C:\WINDOWS\setup\scripts\fusioninventory-agent-deployment.vbs"
+    Start-Process -Wait -FilePath fusioninventory-agent-deployment.vbs
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
+}
+function BitLocker {
+    param (
+        [String]$1
+    )
+    
+    Write-Output ""
+    Write-Output " ========================================= "
+    Write-Host "     Verificando si el TPM esta Activo     " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ========================================= "
+    $tpmpresent = (Get-Tpm).TpmPresent
+    $tpmready = (Get-Tpm).TpmReady
+
+    if("$tpmpresent" -eq "False" -And "$tpmready" -eq "False"){
+        Write-Output ""
+        Write-Output " ####################################################################################### "
+        Write-Host " ERROR: TPM NO ACTIVO, POR FAVOR VERIFICAR EN EL BIOS Y ACTIVAR EL BITLOCKER MANUALMENTE " -ForegroundColor Red -BackgroundColor Black
+        Write-Output " ####################################################################################### "
+        Write-Output ""
+
+    }else {
+        Write-Output ""
+        Write-Output " ############ "
+        Write-Host "  TPM Activo  " -ForegroundColor Green -BackgroundColor Black
+        Write-Output " ############ "
+        Write-Output ""
+        Write-Output " ============================== "
+        Write-Host "     Habilitando Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Output " ============================== "
+        Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
+
+        (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+        #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+
+        Write-Output ""
+        Write-Output " ============================= "
+        Write-Host "  Verificando conexion al NAS  " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Output " ============================= "
+        $nas = Test-Connection 10.40.54.52 -Count 2 -Quiet
+        if ("$nas" -eq 'False'){
+            Write-Output ""
+            Write-Output " ############################################################################################################## "
+            Write-Host "  Problemas para conectarnos al NAS, se creo archivo $NCompu en el escritorio con el ID y PASS Bitlocker  " -ForegroundColor Red -BackgroundColor Black
+            Write-Output " ############################################################################################################## "
+        }else {
+            Write-Output ""
+            Write-Output " ######################## "
+            Write-Host "  Conexion con el NAS OK  " -ForegroundColor Green -BackgroundColor Black
+            Write-Output " ######################## "
+            Write-Output ""
+            Write-Output ""
+            Write-Output " =========================== "
+            Write-Host "  Copiando ID y PASS al NAS  " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output " =========================== "
+            New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles\$1" -Credential $cred
+            Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$NCompu.txt -Destination Z:\
+        }
+
+    }
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
 }
 
 #___________________________________________________________________________________________#
@@ -208,16 +378,19 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         1{
                 
             Write-Output "Ejecuto para AR"
-            ChangeName
+            ChangeName "AR"
             VerifyConnection "ar"
             VerifyCred "ar"
             JoinAD "ar"
+            BitLocker "AR"
             VPNRegional
             7Zip
             AcrobatReader
             Java
             GoogleChrome
-            
+            TeamViewer
+            Antivirus
+            FusionInventory
         }
         2{
 
