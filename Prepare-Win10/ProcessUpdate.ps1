@@ -19,16 +19,16 @@ Write-Output " _________________________________________________________________
 # Obtener Serial de equipo
 #$SCompu = (gwmi win32_bios).SerialNumber
 
-$SCompu = (Get-WmiObject win32_bios).SerialNumber
-$NCompu = "AR$SCompu"
-Write-Output "Nuevo nombre a Setear: $NCompu"
-while (!$NCompu) {
-    $SCompu = (Get-WmiObject win32_bios).SerialNumber
-    $NCompu = "AR$SCompu"
-    Write-Output "Nuevo nombre a Setear: $NCompu"
-}
+#$SCompu = (Get-WmiObject win32_bios).SerialNumber
+#$NCompu = "AR$SCompu"
+#Write-Output "Nuevo nombre a Setear: $NCompu"
+#while (!$NCompu) {
+#    $SCompu = (Get-WmiObject win32_bios).SerialNumber
+#    $NCompu = "AR$SCompu"
+#    Write-Output "Nuevo nombre a Setear: $NCompu"
+#}
 
-#$NCompu = "AR1234567"
+$NCompu = "AR1234567"
 
 #Rename-Computer -NewName $NCompu -force
 #Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" "ComputerName" "$NCompu"
