@@ -54,7 +54,7 @@ function VerifyConnection {
     Write-Host "       Verificando conexion con el Dominio        " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================================ "
 
-    $CAD = $(Test-Connection "$1.infra.d" -Count 2 -Quiet -ErrorAction SilentlyContinue)
+    $CAD = $(Test-Connection "10.40.$1.1" -Count 2 -Quiet -ErrorAction SilentlyContinue)
 
     while("$CAD" -eq 'False'){
         Write-Output ""
@@ -62,7 +62,7 @@ function VerifyConnection {
         Write-Host " Error al conectar con ar.infra.d, por favor verificar conexion " -ForegroundColor Red -BackgroundColor Black
         Write-Output " ############################################################## "
         Pause
-        $CAD = $(Test-Connection "$1.infra.d" -Count 2 -Quiet -ErrorAction SilentlyContinue)
+        $CAD = $(Test-Connection "10.40.$1.1" -Count 2 -Quiet -ErrorAction SilentlyContinue)
         Write-Output ""
     }
     Write-Output ""
@@ -89,7 +89,7 @@ function VerifyCred {
     Copy-Item -Path $PSScriptRoot\PS -Destination C:\ -Recurse -force
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-    $Global:Very = Get-ADDomain -Server "$1.infra.d" -Credential $cred -ErrorAction SilentlyContinue
+    $Global:Very = Get-ADDomain -Server "10.40.$1.1" -Credential $cred -ErrorAction SilentlyContinue
     while(!$Very){
         Write-Output ""
         Write-Output " ########################################################## "
@@ -99,7 +99,7 @@ function VerifyCred {
         $Global:cred = Get-Credential AR\ -Message "Vuelva a escribir sus credenciales, Ej: AR\Nombre.Apellido"
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-        $Global:Very = Get-ADDomain -Server "$1.infra.d" -Credential $cred -ErrorAction SilentlyContinue
+        $Global:Very = Get-ADDomain -Server "10.40.$1.1" -Credential $cred -ErrorAction SilentlyContinue
     }
     Write-Output ""
     Write-Output " ##############################################################"
@@ -118,12 +118,12 @@ function JoinAD {
         [String]$1
     )
 
-    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Server "10.40.$1.1" -Credential $cred | Select-Object -ExpandProperty DistinguishedName
     if ($consul){
         Write-Output " =============================================== "
         Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " =============================================== "
-        Remove-ADObject -Identity "$consul" -Credential $cred -Server "$1.infra.d" -Confirm:$False -verbose
+        Remove-ADObject -Identity "$consul" -Credential $cred -Server "10.40.$1.1" -Confirm:$False -verbose
         Start-Sleep -Seconds 10
         Write-Output ""
         Write-Output " ############# "
@@ -140,14 +140,14 @@ function JoinAD {
 
     #add-computer -DomainName $domainname -Credential $Credential -OUPath $OU -force -Options JoinWithNewName,AccountCreate -restart
 
-    $Global:Binding = Add-Computer -DomainName "$1.infra.d" -Credential $cred -Force -Options JoinWithNewName,AccountCreate -WarningAction SilentlyContinue -PassThru           
+    $Global:Binding = Add-Computer -DomainName "10.40.$1.1" -Credential $cred -Force -Options JoinWithNewName,AccountCreate -WarningAction SilentlyContinue -PassThru           
     
     #$Binding = Add-Computer -NewName "$NCompu" -DomainName ar.infra.d -Force -Credential $cred -PassThru
     if( $Binding.HasSucceeded -eq $true ){
     
         Write-Output ""
         Write-Output " ######################################################### "
-        Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
+        Write-Host "  Se agrego al equipo $NCompu al Dominio 10.40.$1.1  " -ForegroundColor Green -BackgroundColor Black
         Write-Output " ######################################################### "
 
     }else{
@@ -379,9 +379,9 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             ChangeName "AR"
-            VerifyConnection "ar"
-            VerifyCred "ar"
-            JoinAD "ar"
+            VerifyConnection "54"
+            VerifyCred "54"
+            JoinAD "54"
             BitLocker "AR"
             VPNRegional
             7Zip
