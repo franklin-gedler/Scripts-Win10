@@ -30,6 +30,19 @@ Function showmenupais {
     Write-Output ""
 }
 
+function ShowMenuPci {
+    
+    Write-Output ""
+    Write-Host " *** ¿Va ser PCI el equipo? ***  "
+    Write-Host ""
+    Write-Host "            0. Exit              " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host ""
+    Write-Host "            1. SI                " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "            2. NO                " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host " ******************************* "
+    Write-Output ""
+}
+
 function ChangeName {
     param (
         [String]$1
@@ -37,9 +50,23 @@ function ChangeName {
     $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
     $Global:NCompu = "$1$SCompu"
     #Write-Output "Nuevo nombre a Setear: $NCompu"
-    while (!$NCompu) {
+    while (!$SCompu) {
         $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
         $Global:NCompu = "$1$SCompu"
+        #Write-Output "Nuevo nombre a Setear: $NCompu"
+    }
+}
+
+function ChangeNamePCI {
+    param (
+        [String]$1
+    )
+    $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
+    $Global:NCompu = "$1PCI$SCompu"
+    #Write-Output "Nuevo nombre a Setear: $NCompu"
+    while (!$SCompu) {
+        $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
+        $Global:NCompu = "$1PCI$SCompu"
         #Write-Output "Nuevo nombre a Setear: $NCompu"
     }
 }
@@ -79,10 +106,10 @@ function VerifyConnection {
 function VerifyCred {
 
     param (
-        [String]$1
+        [String]$1,[String]$2
     )
 
-    $Global:cred = Get-Credential AR\ -Message "Ingresar Credenciales, AR\Nombre.Apellido"
+    $Global:cred = Get-Credential $2\ -Message "Ingresar Credenciales, $2\Nombre.Apellido"
     Write-Output " ============================================== "
     Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ============================================== "
@@ -96,7 +123,7 @@ function VerifyCred {
         Write-Host " Error con credenciales, Vuelva a escribir sus credenciales " -ForegroundColor Red -BackgroundColor Black
         Write-Output " ########################################################## "
         Write-Output ""
-        $Global:cred = Get-Credential AR\ -Message "Vuelva a escribir sus credenciales, Ej: AR\Nombre.Apellido"
+        $Global:cred = Get-Credential $2\ -Message "Vuelva a escribir sus credenciales, Ej: $2\Nombre.Apellido"
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
         $Global:Very = Get-ADDomain -Server "10.40.$1.1" -Credential $cred -ErrorAction SilentlyContinue
@@ -115,21 +142,25 @@ function VerifyCred {
 function JoinAD {
     
     param (
-        [String]$1
+        [String]$1,$2
     )
 
-    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Server "10.40.$1.1" -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" \
+        -SearchScope Subtree -Server "10.40.$2.1" \
+        -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+
     if ($consul){
         Write-Output " =============================================== "
         Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " =============================================== "
-        Remove-ADObject -Identity "$consul" -Credential $cred -Server "10.40.$1.1" -Confirm:$False -verbose
+        Remove-ADObject -Identity "$consul" -Credential $cred -Server "10.40.$2.1" -Confirm:$False -verbose
         Start-Sleep -Seconds 10
         Write-Output ""
         Write-Output " ############# "
         Write-Host "   Eliminado   " -ForegroundColor Green -BackgroundColor Black
         Write-Output " ############# "
     }
+
     Write-Output ""
     Write-Output " ==================================== "
     Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
@@ -140,14 +171,36 @@ function JoinAD {
 
     #add-computer -DomainName $domainname -Credential $Credential -OUPath $OU -force -Options JoinWithNewName,AccountCreate -restart
 
-    $Global:Binding = Add-Computer -DomainName "10.40.$1.1" -Credential $cred -Force -Options JoinWithNewName,AccountCreate -WarningAction SilentlyContinue -PassThru           
+    $Global:Binding = Add-Computer -DomainName "$1.infra.d" \
+        -Credential $cred -Force -Options JoinWithNewName,AccountCreate \
+        -WarningAction SilentlyContinue -PassThru           
     
     #$Binding = Add-Computer -NewName "$NCompu" -DomainName ar.infra.d -Force -Credential $cred -PassThru
+    while ($Binding.HasSucceeded -eq $False) {
+        Write-Output ""
+        Write-Output " #################################### "
+        Write-Host "   Error en enlazar el equipo al AD   " -ForegroundColor Red -BackgroundColor Black
+        Write-Output " #################################### "
+        Write-Output ""
+        Write-Host "  Presione Enter para Intentar de Nuevo " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Output ""
+        $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+        $Global:Binding = Add-Computer -DomainName "$1.infra.d" \
+            -Credential $cred -Force -Options JoinWithNewName,AccountCreate \
+            -WarningAction SilentlyContinue -PassThru  
+    }
+
+    Write-Output ""
+    Write-Output " ######################################################### "
+    Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######################################################### "
+
+    <#
     if( $Binding.HasSucceeded -eq $true ){
     
         Write-Output ""
         Write-Output " ######################################################### "
-        Write-Host "  Se agrego al equipo $NCompu al Dominio 10.40.$1.1  " -ForegroundColor Green -BackgroundColor Black
+        Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
         Write-Output " ######################################################### "
 
     }else{
@@ -163,9 +216,8 @@ function JoinAD {
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
-
+    #>
 }
-
 function VPNRegional {
     Write-Output " =========================== "
     Write-Host "   Instalando VPN Regional   " -ForegroundColor Yellow -BackgroundColor Black
@@ -299,6 +351,21 @@ function FusionInventory {
     Write-Output "_________________________________________________________________________________________"
     Write-Output "" 
 }
+
+function ZoomInstaller {
+    Write-Output " =================== "
+    Write-Host "   Instalando Zoom   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =================== "
+    Set-Location $PSScriptRoot
+    Start-Process -Wait msiexec -ArgumentList '/i ZoomInstallerFull.msi ZoomAutoUpdate=true /qn'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
+}
 function BitLocker {
     param (
         [String]$1
@@ -362,6 +429,57 @@ function BitLocker {
     Write-Output ""
 }
 
+function ReinicioWin {
+    param (
+        $1
+    )
+
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
+
+    Write-Output "------------------------------------"
+    Write-Host "         SE VA A REINICIAR          " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output "------------------------------------"
+    $p = ConvertTo-SecureString "*+$1#$SCompu*" -AsPlainText -Force
+    $u = (Get-LocalUser).Name[0]
+    Set-LocalUser -Name $u -Password $p -PasswordNeverExpires 1
+    Pause
+
+    # ________________ Habilito el Windows Update Poronga ______________________________________
+    Set-Service wuauserv -StartupType Manual -PassThru
+    Start-Service wuauserv -PassThru
+    Get-Service wuauserv | Select-Object *
+
+    # _______________ Elimino todo despues de ejecutar _____________________________
+    Write-Output {
+    Remove-Item -LiteralPath C:\Windows\Setup\scripts -Recurse -Force
+    #Remove-Item -LiteralPath C:\PS -Recurse -Force
+    } > $env:TMP\AutoDelete.ps1
+    #& C:\Windows\Setup\scripts\AutoDelete.ps1
+    #Start-Process -Wait PowerShell.exe -ArgumentList "& AutoDelete.ps1"
+    & $env:TMP\AutoDelete.ps1
+    Restart-Computer -Force
+    exit
+}
+
+function Sabre {
+    Copy-Item $PSScriptRoot\Sabre_2.20.12.exe $env:USERPROFILE\Desktop -Force   
+}
+
+function Avaya {
+    Copy-Item $PSScriptRoot\Install-Avaya.zip $env:USERPROFILE\Desktop -Force
+}
+
+function eLatam {
+    Copy-Item $PSScriptRoot\E-Latam $env:USERPROFILE\Desktop -Force -Recurse 
+}
+
+function WorldSpan {
+    Copy-Item $PSScriptRoot\WorldSpan $env:USERPROFILE\Desktop -Force -Recurse
+    
+}
+
 #___________________________________________________________________________________________#
 
 Write-Output ""
@@ -373,15 +491,15 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
     switch($inp){
 
         0{"Exit"; break}
-        default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccion una de las disponibles"}
+        default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
 
         1{
                 
             Write-Output "Ejecuto para AR"
             ChangeName "AR"
             VerifyConnection "54"
-            VerifyCred "54"
-            JoinAD "54"
+            VerifyCred "54" "AR"
+            JoinAD "ar" "54"
             BitLocker "AR"
             VPNRegional
             7Zip
@@ -389,40 +507,214 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Java
             GoogleChrome
             TeamViewer
-            Antivirus
+            ZoomInstaller
             FusionInventory
+            Antivirus
+            ReinicioWin "54"
         }
         2{
 
             Write-Output "Ejecuto para UY"
-            VerifyConnection "uy"
+            ChangeName "UY"
+            VerifyConnection "59"
+            VerifyCred "59" "UY"
+            JoinAD "uy" "59"
+            BitLocker "uy"
+            VPNRegional
+            7Zip
+            AcrobatReader
+            Java
+            GoogleChrome
+            TeamViewer
+            ZoomInstaller
+            FusionInventory
+            Sabre
+            Avaya
+            WorldSpan
+            Antivirus
+            ReinicioWin "59"
 
         }
         3{
 
             Write-Output "Ejecuto para BR"
-            VerifyConnection "br"
 
+            # Recuerda que debe haber un menu que pregunte si es PCI o NO
+
+            Write-Output ""
+            ShowMenuPci
+            Write-Output ""
+
+            while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
+                
+                switch ($inp) {
+
+                    0{"Exit"; break}
+                    default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
+
+                    1{
+                        ChangeNamePCI "BR"
+                        VerifyConnection "55"
+                        VerifyCred "55" "BR"
+                        JoinAD "br" "55"
+                        BitLocker "BR"
+                        GoogleChrome
+                        FusionInventory
+                        Sabre
+                        Avaya
+                        WorldSpan
+                        eLatam
+                        Antivirus
+                        ReinicioWin "55"
+                    }
+
+                    2{
+                        ChangeName "BR"
+                        VerifyConnection "55"
+                        VerifyCred "55" "BR"
+                        JoinAD "br" "55"
+                        BitLocker "BR"
+                        VPNRegional
+                        7Zip
+                        AcrobatReader
+                        Java
+                        GoogleChrome
+                        TeamViewer
+                        ZoomInstaller
+                        FusionInventory
+                        Sabre
+                        Avaya
+                        WorldSpan
+                        eLatam
+                        Antivirus
+                        ReinicioWin "55"
+                    }
+                }
+            }
+            
         }
         4{
 
             Write-Output "Ejecuto para CO"
-            VerifyConnection "co"
-                
+            
+            # Recuerda que debe haber un menu que pregunte si es PCI o NO
+
+            Write-Output ""
+            ShowMenuPci
+            Write-Output ""
+
+            while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
+
+                switch ($inp) {
+                    
+                    0{"Exit"; break}
+                    default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
+
+                    1{
+                        ChangeNamePCI "CO"
+                        VerifyConnection "57"
+                        VerifyCred "57" "CO"
+                        JoinAD "co" "57"
+                        BitLocker "CO"
+                        GoogleChrome
+                        FusionInventory
+                        Antivirus
+                        Sabre
+                        Avaya
+                        WorldSpan
+                        ReinicioWin "57"  
+                    }
+
+                    2{
+                        ChangeName "CO"
+                        VerifyConnection "57"
+                        VerifyCred "57" "CO"
+                        JoinAD "co" "57"
+                        BitLocker "CO"
+                        VPNRegional
+                        7Zip
+                        AcrobatReader
+                        Java
+                        GoogleChrome
+                        TeamViewer
+                        ZoomInstaller
+                        FusionInventory
+                        Sabre
+                        Avaya
+                        WorldSpan
+                        Antivirus
+                        ReinicioWin "57"
+
+                    }
+                }
+
+            }
+                           
         }
         5{
             Write-Output "Ejecuto para CL"
-            VerifyConnection "cl"
+            ChangeName "CL"
+            VerifyConnection "56"
+            VerifyCred "56" "CL"
+            JoinAD "cl" "56"
+            BitLocker "CL"
+            VPNRegional
+            7Zip
+            AcrobatReader
+            Java
+            GoogleChrome
+            TeamViewer
+            ZoomInstaller
+            FusionInventory
+            Sabre
+            Avaya
+            WorldSpan
+            Antivirus
+            ReinicioWin "56"
 
         }
         6{
             Write-Output "Ejecuto para MX"
-            VerifyConnection "mx"
+            ChangeName "MX"
+            VerifyConnection "52"
+            VerifyCred "52" "MX"
+            JoinAD "mx" "52"
+            BitLocker "MX"
+            VPNRegional
+            7Zip
+            AcrobatReader
+            Java
+            GoogleChrome
+            TeamViewer
+            ZoomInstaller
+            FusionInventory
+            Sabre
+            Avaya
+            WorldSpan
+            Antivirus
+            ReinicioWin "52"
 
         }
         7{
             Write-Output "Ejecuto para PE"
-            VerifyConnection "pe"
+            ChangeName "PE"
+            VerifyConnection "51"
+            VerifyCred "51" "PE"
+            JoinAD "pe" "51"
+            BitLocker "PE"
+            VPNRegional
+            7Zip
+            AcrobatReader
+            Java
+            GoogleChrome
+            TeamViewer
+            ZoomInstaller
+            FusionInventory
+            Sabre
+            Avaya
+            WorldSpan
+            Antivirus
+            ReinicioWin "51"
         }
             
     }
