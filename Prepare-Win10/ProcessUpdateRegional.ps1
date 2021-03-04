@@ -586,8 +586,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
             JoinAD "ar" "54"
-            BitLocker "AR"
-            VPNRegional
+            BitLocker "AR"            
             7Zip
             AcrobatReader
             Java
@@ -596,6 +595,16 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             ZoomInstaller
             FusionInventory
             Antivirus
+            ##########################
+            LibreOffice
+            CertAzul
+            Sabre
+            Avaya
+            WorldSpan
+            eLatam
+            MicroSip
+            ############################
+            VPNRegional
             ReinicioWin "54"
         }
         2{
@@ -646,6 +655,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         JoinAD "br" "55"
                         BitLocker "BR"
                         GoogleChrome
+                        VPNRegional
                         LibreOffice
                         TeamViewer
                         FusionInventory
@@ -655,7 +665,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         eLatam
                         Antivirus
-                        VPNRegional
                         ReinicioWin "55"
                     }
 
