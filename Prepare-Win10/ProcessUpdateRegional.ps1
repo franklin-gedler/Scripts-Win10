@@ -650,7 +650,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         VerifyCred "55" "BR"
                         JoinAD "br" "55"
                         BitLocker "BR"
-                        VPNRegional
                         GoogleChrome
                         LibreOffice
                         TeamViewer
@@ -661,6 +660,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         eLatam
                         Antivirus
+                        VPNRegional
                         ReinicioWin "55"
                     }
 
@@ -670,8 +670,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         VerifyConnection "55"
                         VerifyCred "55" "BR"
                         JoinAD "br" "55"
-                        BitLocker "BR"
-                        VPNRegional
+                        BitLocker "BR"                        
                         7Zip
                         AcrobatReader
                         Java
@@ -685,6 +684,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         eLatam
                         Antivirus
+                        VPNRegional
                         ReinicioWin "55"
                     }
                 }
