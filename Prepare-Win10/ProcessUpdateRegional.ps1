@@ -9,9 +9,6 @@ Write-Output ""
 
 Write-Output " _____________________________________________________________________________________________________"
 
-# Carga de Funciones
-#& $PSScriptRoot\functions.ps1
-
 Function showmenupais {
 
     Write-Output ""
@@ -27,7 +24,6 @@ Function showmenupais {
     Write-Host "                6. MX                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "                7. PE                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " *********************************** "
-    Write-Output ""
 }
 
 function ShowMenuPci {
@@ -40,7 +36,6 @@ function ShowMenuPci {
     Write-Host "            1. SI                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "            2. NO                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " ******************************* "
-    Write-Output ""
 }
 
 function ChangeName {
@@ -62,7 +57,7 @@ function ChangeNamePCI {
         [String]$1
     )
     $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
-    $Global:NCompu = "$1PCI$SCompu"
+    $Global:NCompu = $1 + 'PCI' + $SCompu
     #Write-Output "Nuevo nombre a Setear: $NCompu"
     while (!$SCompu) {
         $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
@@ -96,7 +91,6 @@ function VerifyConnection {
     Write-Output " ########################## "
     Write-Host " Conexion con el Dominio OK " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ########################## "
-    Write-Output ""
 
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
@@ -145,8 +139,8 @@ function JoinAD {
         [String]$1,$2
     )
 
-    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" \
-        -SearchScope Subtree -Server "10.40.$2.1" \
+    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
+        -SearchScope Subtree -Server "10.40.$2.1" `
         -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 
     if ($consul){
@@ -171,8 +165,8 @@ function JoinAD {
 
     #add-computer -DomainName $domainname -Credential $Credential -OUPath $OU -force -Options JoinWithNewName,AccountCreate -restart
 
-    $Global:Binding = Add-Computer -DomainName "$1.infra.d" \
-        -Credential $cred -Force -Options JoinWithNewName,AccountCreate \
+    $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
+        -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
         -WarningAction SilentlyContinue -PassThru           
     
     #$Binding = Add-Computer -NewName "$NCompu" -DomainName ar.infra.d -Force -Credential $cred -PassThru
@@ -185,8 +179,8 @@ function JoinAD {
         Write-Host "  Presione Enter para Intentar de Nuevo " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output ""
         $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-        $Global:Binding = Add-Computer -DomainName "$1.infra.d" \
-            -Credential $cred -Force -Options JoinWithNewName,AccountCreate \
+        $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
+            -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
             -WarningAction SilentlyContinue -PassThru  
     }
 
@@ -222,8 +216,8 @@ function VPNRegional {
     Write-Output " =========================== "
     Write-Host "   Instalando VPN Regional   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =========================== "
-    Set-Location $PSScriptRoot
-    Start-Process -Wait msiexec -ArgumentList '/i "E84.00_CheckPointVPN.msi" /quiet /norestart'
+    #Set-Location $PSScriptRoot
+    Start-Process -Wait msiexec -ArgumentList '/i E84.00_CheckPointVPN.msi /quiet /norestart'
     Write-Output ""
     Write-Output " ############# "
     Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
@@ -237,7 +231,7 @@ function 7Zip {
     Write-Output " =================== "
     Write-Host "   Instalando 7Zip   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================== "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath 7z1900-x64.exe -ArgumentList '/S'
     Write-Output ""
     Write-Output " ############# "
@@ -252,7 +246,7 @@ function AcrobatReader {
     Write-Output " ============================= "
     Write-Host "   Instalando Acrobat Reader   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ============================= "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath AcroRdrDC1902120049_es_ES.exe -ArgumentList '/sAll'
     Write-Output ""
     Write-Output " ############# "
@@ -266,7 +260,7 @@ function Java {
     Write-Output " =================== "
     Write-Host "   Instalando Java   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================== "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath java.exe -ArgumentList '/s'
     Write-Output ""
     Write-Output " ############# "
@@ -281,7 +275,7 @@ function GoogleChrome {
     Write-Output " ============================ "
     Write-Host "   Instalando Google Chrome   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ============================ "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath ChromeStandaloneSetup64.exe -ArgumentList '/silent /install'
     Write-Output ""
     Write-Output " ############# "
@@ -296,7 +290,7 @@ function Office2016 {
     Write-Output " ========================== "
     Write-Host "   Instalando Office 2016   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ========================== "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     Start-Process -Wait -FilePath Office2016x64\setup.exe -ArgumentList '/config standard.ww\config.xml'
     Write-Output ""
     Write-Output " ############# "
@@ -310,8 +304,8 @@ function TeamViewer {
     Write-Output " =========================================== "
     Write-Host "   Instalando TeamViewerHost con Politicas   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =========================================== "
-    Set-Location $PSScriptRoot
-    Start-Process msiexec -ArgumentList '/I "TeamViewer_Host.msi" /qn SETTINGSFILE="politicas.reg"' -Wait
+    #Set-Location $PSScriptRoot
+    Start-Process msiexec -ArgumentList '/I TeamViewer_Host.msi /qn SETTINGSFILE=politicas.reg' -Wait
     Write-Output ""
     Write-Output " ############# "
     Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
@@ -324,7 +318,7 @@ function Antivirus {
     Write-Output " ==================== "
     Write-Host "    Instalando AV     " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ==================== "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -ArgumentList '-s'
     Start-Process -Wait -FilePath Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
     #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
@@ -356,7 +350,7 @@ function ZoomInstaller {
     Write-Output " =================== "
     Write-Host "   Instalando Zoom   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================== "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     Start-Process -Wait msiexec -ArgumentList '/i ZoomInstallerFull.msi ZoomAutoUpdate=true /qn'
     Write-Output ""
     Write-Output " ############# "
@@ -372,7 +366,7 @@ function LibreOffice {
     Write-Output " ========================== "
     Write-Host "   Instalando LibreOffice   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ========================== "
-    Set-Location $PSScriptRoot
+    #Set-Location $PSScriptRoot
     Start-Process -Wait msiexec -ArgumentList '/i LibreOffice_7.1.1_Win_x64.msi REGISTER_ALL_MSO_TYPES=1 RebootYesNo=No /qn'
     Write-Output ""
     Write-Output " ############# "
@@ -483,7 +477,7 @@ function Sabre {
     Write-Output " ================================ "
     Write-Host "   Moviendo Sabre al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================ "
-    Copy-Item $PSScriptRoot\Sabre_2.20.12.exe $env:USERPROFILE\Desktop -Force
+    Copy-Item "Sabre_2.20.12.exe" $env:USERPROFILE\Desktop -Force
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -497,7 +491,7 @@ function Avaya {
     Write-Output " ================================ "
     Write-Host "   Moviendo Avaya al Escritorio  " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================ "
-    Copy-Item $PSScriptRoot\Install-Avaya.zip $env:USERPROFILE\Desktop -Force
+    Copy-Item "Install-Avaya.zip" $env:USERPROFILE\Desktop -Force
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -511,7 +505,7 @@ function eLatam {
     Write-Output " ================================== "
     Write-Host "   Moviendo E-Latam al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================== "
-    Copy-Item $PSScriptRoot\E-Latam $env:USERPROFILE\Desktop -Force -Recurse
+    Copy-Item ELatam $env:USERPROFILE\Desktop -Force -Recurse
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -525,7 +519,7 @@ function WorldSpan {
     Write-Output " ==================================== "
     Write-Host "   Moviendo WorldSpan al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ==================================== "
-    Copy-Item $PSScriptRoot\WorldSpan $env:USERPROFILE\Desktop -Force -Recurse
+    Copy-Item WorldSpan $env:USERPROFILE\Desktop -Force -Recurse
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -561,7 +555,7 @@ function MicroSip {
     Write-Output " =================================== "
     Write-Host "   Moviendo MicroSip al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================================== "
-    Copy-Item $PSScriptRoot\MicroSIP-3.20.5.exe $env:USERPROFILE\Desktop -Force -Recurse
+    Copy-Item "MicroSIP-3.20.5.exe" $env:USERPROFILE\Desktop -Force
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -572,6 +566,8 @@ function MicroSip {
 }
 
 #___________________________________________________________________________________________#
+
+Set-Location $PSScriptRoot
 
 Write-Output ""
 showmenupais
