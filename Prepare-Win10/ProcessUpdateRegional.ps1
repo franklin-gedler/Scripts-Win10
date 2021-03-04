@@ -583,7 +583,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             ChangeName "AR"
-            VerifyConnection "54"
+            VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
             JoinAD "ar" "54"
             BitLocker "AR"
