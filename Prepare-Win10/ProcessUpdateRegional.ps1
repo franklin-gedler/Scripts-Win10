@@ -366,6 +366,22 @@ function ZoomInstaller {
     Write-Output "_________________________________________________________________________________________"
     Write-Output "" 
 }
+
+function LibreOffice {
+
+    Write-Output " ========================== "
+    Write-Host "   Instalando LibreOffice   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ========================== "
+    Set-Location $PSScriptRoot
+    Start-Process -Wait msiexec -ArgumentList '/i LibreOffice_7.1.1_Win_x64.msi REGISTER_ALL_MSO_TYPES=1 RebootYesNo=No /qn'
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
+}
 function BitLocker {
     param (
         [String]$1
@@ -464,20 +480,95 @@ function ReinicioWin {
 }
 
 function Sabre {
-    Copy-Item $PSScriptRoot\Sabre_2.20.12.exe $env:USERPROFILE\Desktop -Force   
+    Write-Output " ================================ "
+    Write-Host "   Moviendo Sabre al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ================================ "
+    Copy-Item $PSScriptRoot\Sabre_2.20.12.exe $env:USERPROFILE\Desktop -Force
+    Write-Output ""
+    Write-Output " ######### "
+    Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######### "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
 }
 
 function Avaya {
+    Write-Output " ================================ "
+    Write-Host "   Moviendo Avaya al Escritorio  " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ================================ "
     Copy-Item $PSScriptRoot\Install-Avaya.zip $env:USERPROFILE\Desktop -Force
+    Write-Output ""
+    Write-Output " ######### "
+    Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######### "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
 }
 
 function eLatam {
-    Copy-Item $PSScriptRoot\E-Latam $env:USERPROFILE\Desktop -Force -Recurse 
+    Write-Output " ================================== "
+    Write-Host "   Moviendo E-Latam al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ================================== "
+    Copy-Item $PSScriptRoot\E-Latam $env:USERPROFILE\Desktop -Force -Recurse
+    Write-Output ""
+    Write-Output " ######### "
+    Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######### "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
 }
 
 function WorldSpan {
+    Write-Output " ==================================== "
+    Write-Host "   Moviendo WorldSpan al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ==================================== "
     Copy-Item $PSScriptRoot\WorldSpan $env:USERPROFILE\Desktop -Force -Recurse
+    Write-Output ""
+    Write-Output " ######### "
+    Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######### "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
+}
+
+function CertAzul {
     
+    Write-Output " ================================= "
+    Write-Host "   Instalando Certificado ca.crt   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ================================= "
+
+    Expand-Archive $PSScriptRoot\ca.zip $PSScriptRoot\ca\ -Force
+
+    $certca = (Get-ChildItem -Path $PSScriptRoot\ca\ca.crt)
+    $certca | Import-Certificate -CertStoreLocation cert:\LocalMachine\Root
+
+    Write-Output ""
+    Write-Output " ######### "
+    Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######### "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
+    
+}
+
+function MicroSip {
+    # No tiene instalador Silencioso
+    Write-Output " =================================== "
+    Write-Host "   Moviendo MicroSip al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =================================== "
+    Copy-Item $PSScriptRoot\MicroSIP-3.20.5.exe $env:USERPROFILE\Desktop -Force -Recurse
+    Write-Output ""
+    Write-Output " ######### "
+    Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######### "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
 }
 
 #___________________________________________________________________________________________#
@@ -545,21 +636,26 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             ShowMenuPci
             Write-Output ""
 
-            while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
+            while(($inpbr = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
-                switch ($inp) {
+                switch ($inpbr) {
 
                     0{"Exit"; break}
                     default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
 
                     1{
+                        # Cuando es PCI
                         ChangeNamePCI "BR"
                         VerifyConnection "55"
                         VerifyCred "55" "BR"
                         JoinAD "br" "55"
                         BitLocker "BR"
+                        VPNRegional
                         GoogleChrome
+                        LibreOffice
+                        TeamViewer
                         FusionInventory
+                        CertAzul
                         Sabre
                         Avaya
                         WorldSpan
@@ -569,6 +665,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                     }
 
                     2{
+                        # Cuando no es PCI
                         ChangeName "BR"
                         VerifyConnection "55"
                         VerifyCred "55" "BR"
@@ -581,6 +678,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         GoogleChrome
                         TeamViewer
                         ZoomInstaller
+                        MicroSip
                         FusionInventory
                         Sabre
                         Avaya
