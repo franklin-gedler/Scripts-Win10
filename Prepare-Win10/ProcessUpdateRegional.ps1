@@ -477,7 +477,13 @@ function Sabre {
     Write-Output " ================================ "
     Write-Host "   Moviendo Sabre al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================ "
-    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\Sabre_2.20.12.exe -Destination "$env:USERPROFILE\Desktop" -Force
+
+    if (!(Test-Path $env:USERPROFILE\Desktop\Extras)){
+        New-Item -Path $env:USERPROFILE\Desktop\ -Name "Extras" -ItemType Directory
+    }
+
+    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\Sabre_2.20.12.exe -Destination $env:USERPROFILE\Desktop\Extras -Force
+    
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -491,7 +497,13 @@ function Avaya {
     Write-Output " ================================ "
     Write-Host "   Moviendo Avaya al Escritorio  " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================ "
-    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\Install-Avaya.zip -Destination "$env:USERPROFILE\Desktop" -Force
+
+    if (!(Test-Path $env:USERPROFILE\Desktop\Extras)){
+        New-Item -Path $env:USERPROFILE\Desktop\ -Name "Extras" -ItemType Directory
+    }
+
+    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\Install-Avaya.zip -Destination $env:USERPROFILE\Desktop\Extras -Force
+
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -505,7 +517,13 @@ function eLatam {
     Write-Output " ================================== "
     Write-Host "   Moviendo E-Latam al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================== "
-    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\ELatam -Destination "$env:USERPROFILE\Desktop" -Force -Recurse
+
+    if (!(Test-Path $env:USERPROFILE\Desktop\Extras)){
+        New-Item -Path $env:USERPROFILE\Desktop\ -Name "Extras" -ItemType Directory
+    }
+
+    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\ELatam\ -Destination $env:USERPROFILE\Desktop\Extras -Force -Recurse
+
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -519,7 +537,13 @@ function WorldSpan {
     Write-Output " ==================================== "
     Write-Host "   Moviendo WorldSpan al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ==================================== "
-    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\WorldSpan -Destination "$env:USERPROFILE\Desktop" -Force -Recurse
+
+    if (!(Test-Path $env:USERPROFILE\Desktop\Extras)){
+        New-Item -Path $env:USERPROFILE\Desktop\ -Name "Extras" -ItemType Directory
+    }
+
+    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\WorldSpan\ -Destination $env:USERPROFILE\Desktop\Extras -Force -Recurse
+
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
@@ -555,7 +579,13 @@ function MicroSip {
     Write-Output " =================================== "
     Write-Host "   Moviendo MicroSip al Escritorio   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================================== "
-    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\MicroSIP-3.20.5.exe -Destination "$env:USERPROFILE\Desktop" -Force
+
+    if (!(Test-Path $env:USERPROFILE\Desktop\Extras)){
+        New-Item -Path $env:USERPROFILE\Desktop\ -Name "Extras" -ItemType Directory
+    }
+
+    Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\MicroSIP-3.20.5.exe -Destination $env:USERPROFILE\Desktop\Extras -Force
+
     Write-Output ""
     Write-Output " ######### "
     Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
