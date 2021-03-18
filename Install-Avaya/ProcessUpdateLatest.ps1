@@ -17,7 +17,7 @@ Function creadopor {
     Write-Output " _____________________________________________________________________________________________________"
 
 }
-
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 creadopor
 
 # __________________Descargas para Usuarios de Sucursal son todos los Files_____________________ #
