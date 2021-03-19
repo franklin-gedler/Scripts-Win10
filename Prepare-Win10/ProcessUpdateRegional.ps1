@@ -319,8 +319,9 @@ function Antivirus {
     Write-Host "    Instalando AV     " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ==================== "
     #Set-Location $PSScriptRoot
-    #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -ArgumentList '-s'
-    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
+    #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -ArgumentList '-s' /INSTALL=UPDATER
+    #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
+    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/INSTALL=UPDATER /ForceInstall /Silent'
     #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
     Write-Output ""
     Write-Output " ############# "
