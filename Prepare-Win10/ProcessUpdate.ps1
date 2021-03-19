@@ -240,7 +240,8 @@ Write-Host "    Instalando AV     " -ForegroundColor Yellow -BackgroundColor Bla
 Write-Output " ==================== "
 
 #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -ArgumentList '-s'
-Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
+#Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
+Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe
 #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
 Write-Output ""
 Write-Output " ############# "
