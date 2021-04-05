@@ -632,13 +632,13 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             FusionInventory
             Antivirus
             ##########################
-            LibreOffice
-            CertAzul
-            Sabre
-            Avaya
-            WorldSpan
-            eLatam
-            MicroSip
+            #LibreOffice
+            #CertAzul
+            #Sabre
+            #Avaya
+            #WorldSpan
+            #eLatam
+            #MicroSip
             ############################
             VPNRegional
             ReinicioWin "54"
