@@ -601,6 +601,36 @@ function MicroSip {
     Write-Output ""
 }
 
+<#
+function IdiomaBR {
+    
+    # Cambia Idioma de entorno, teclado
+    $UserLanguageList = New-WinUserLanguageList -Language "pt-BR"
+    $UserLanguageList.Add("pt-BR")
+    Set-WinUserLanguageList -LanguageList $UserLanguageList -Force
+
+    # cambia la Region
+    Set-Culture -CultureInfo pt-BR
+
+    # Cambia la Zona horaria
+    Set-TimeZone -Id "E. South America Standard Time"
+}
+#>
+
+function googlerapidresponse {
+    Write-Output " ==================================== "
+    Write-Host "   Instalando Google Rapid Response   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ==================================== "
+    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\GRR_3.4.2.4_amd64.exe
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
+}
+
 #___________________________________________________________________________________________#
 
 
@@ -641,6 +671,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             #MicroSip
             ############################
             VPNRegional
+            googlerapidresponse
             ReinicioWin "54"
         }
         2{
@@ -663,6 +694,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Avaya
             WorldSpan
             Antivirus
+            googlerapidresponse
             ReinicioWin "59"
 
         }
@@ -701,6 +733,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         eLatam
                         Antivirus
+                        googlerapidresponse
                         ReinicioWin "55"
                     }
 
@@ -725,6 +758,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         eLatam
                         Antivirus
                         VPNRegional
+                        googlerapidresponse
                         ReinicioWin "55"
                     }
                 }
@@ -760,6 +794,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         Sabre
                         Avaya
                         WorldSpan
+                        googlerapidresponse
                         ReinicioWin "57"  
                     }
 
@@ -781,6 +816,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         Avaya
                         WorldSpan
                         Antivirus
+                        googlerapidresponse
                         ReinicioWin "57"
 
                     }
@@ -808,6 +844,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Avaya
             WorldSpan
             Antivirus
+            googlerapidresponse
             ReinicioWin "56"
 
         }
@@ -830,6 +867,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Avaya
             WorldSpan
             Antivirus
+            googlerapidresponse
             ReinicioWin "52"
 
         }
@@ -852,6 +890,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Avaya
             WorldSpan
             Antivirus
+            googlerapidresponse
             ReinicioWin "51"
         }
             
