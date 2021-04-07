@@ -269,6 +269,18 @@ Write-Output ""
 Write-Output "_________________________________________________________________________________________"
 Write-Output ""
 
+Write-Output " ==================================== "
+Write-Host "   Instalando Google Rapid Response   " -ForegroundColor Yellow -BackgroundColor Black
+Write-Output " ==================================== "
+Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\GRR_3.4.2.4_amd64.exe
+Write-Output ""
+Write-Output " ############# "
+Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+Write-Output " ############# "
+Write-Output ""
+Write-Output "_________________________________________________________________________________________"
+Write-Output "" 
+
 Write-Output "------------------------------------"
 Write-Host "         SE VA A REINICIAR          " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output "------------------------------------"
