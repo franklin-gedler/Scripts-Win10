@@ -660,7 +660,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             TeamViewer
             ZoomInstaller
             FusionInventory
-            Antivirus
+            VPNRegional
             ##########################
             #LibreOffice
             #CertAzul
@@ -670,8 +670,8 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             #eLatam
             #MicroSip
             ############################
-            VPNRegional
             googlerapidresponse
+            Antivirus
             ReinicioWin "54"
         }
         2{
@@ -693,8 +693,8 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Sabre
             Avaya
             WorldSpan
-            Antivirus
             googlerapidresponse
+            Antivirus
             ReinicioWin "59"
 
         }
@@ -732,8 +732,8 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         Avaya
                         WorldSpan
                         eLatam
-                        Antivirus
                         googlerapidresponse
+                        Antivirus
                         ReinicioWin "55"
                     }
 
@@ -756,9 +756,9 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         Avaya
                         WorldSpan
                         eLatam
-                        Antivirus
                         VPNRegional
                         googlerapidresponse
+                        Antivirus
                         ReinicioWin "55"
                     }
                 }
@@ -790,11 +790,11 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         BitLocker "CO"
                         GoogleChrome
                         FusionInventory
-                        Antivirus
                         Sabre
                         Avaya
                         WorldSpan
                         googlerapidresponse
+                        Antivirus
                         ReinicioWin "57"  
                     }
 
@@ -815,8 +815,8 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         Sabre
                         Avaya
                         WorldSpan
-                        Antivirus
                         googlerapidresponse
+                        Antivirus
                         ReinicioWin "57"
 
                     }
@@ -843,8 +843,8 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Sabre
             Avaya
             WorldSpan
-            Antivirus
             googlerapidresponse
+            Antivirus
             ReinicioWin "56"
 
         }
@@ -866,8 +866,8 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Sabre
             Avaya
             WorldSpan
-            Antivirus
             googlerapidresponse
+            Antivirus
             ReinicioWin "52"
 
         }
@@ -889,8 +889,8 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Sabre
             Avaya
             WorldSpan
-            Antivirus
             googlerapidresponse
+            Antivirus
             ReinicioWin "51"
         }
             
