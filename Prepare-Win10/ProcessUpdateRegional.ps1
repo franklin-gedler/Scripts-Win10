@@ -148,7 +148,7 @@ function JoinAD {
         Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " =============================================== "
         Remove-ADObject -Identity "$consul" -Credential $cred -Server "10.40.$2.1" -Confirm:$False -verbose
-        Start-Sleep -Seconds 10
+        Start-Sleep -Seconds 15
         Write-Output ""
         Write-Output " ############# "
         Write-Host "   Eliminado   " -ForegroundColor Green -BackgroundColor Black
