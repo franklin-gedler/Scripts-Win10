@@ -415,6 +415,18 @@ function BitLocker {
         (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
         #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
 
+        $KeyID = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
+                | Where-Object KeyProtectorType -eq 'RecoveryPassword' `
+                | Select-Object -ExpandProperty KeyProtectorId
+
+        $PassRecovery = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
+                        | Where-Object KeyProtectorType -eq 'RecoveryPassword' | Select-Object -ExpandProperty RecoveryPassword
+
+        $Global:IdKeyBitlocker = "KeyProtectorId:  $KeyID ------------------------------ RecoveryPassword:  $PassRecovery"
+
+        # Envia el mail con id y recovery
+        SendMail
+
         Write-Output ""
         Write-Output " ============================= "
         Write-Host "  Verificando conexion al NAS  " -ForegroundColor Yellow -BackgroundColor Black
@@ -443,6 +455,24 @@ function BitLocker {
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
+}
+function SendMail {
+    
+    $Mail = 'soportescripts@gmail.com'
+    $PassFile = "$PSScriptRoot\passfile"
+    $Key = "$PSScriptRoot\key"
+
+    $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
+                -ArgumentList "$Mail", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
+
+    #$PassMail = ConvertTo-SecureString "Stella1801" -AsPlainText -Force
+    #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
+    #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail, $PassMail
+    
+    Send-MailMessage -From soportescripts@gmail.com -To franklin.gedler@despegar.com `
+                     -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
+                     -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
+
 }
 
 function ReinicioWin {
