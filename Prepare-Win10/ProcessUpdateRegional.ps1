@@ -469,7 +469,7 @@ function SendMail {
     #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
     #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail, $PassMail
     
-    Send-MailMessage -From soportescripts@gmail.com -To franklin.gedler@despegar.com `
+    Send-MailMessage -From soportescripts@gmail.com -To soporte@despegar.com `
                      -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
                      -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
 
