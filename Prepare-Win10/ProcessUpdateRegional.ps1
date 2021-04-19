@@ -465,7 +465,7 @@ function SendMail {
     $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
                 -ArgumentList "$Mail", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
 
-    #$PassMail = ConvertTo-SecureString "Stella1801" -AsPlainText -Force
+    #$PassMail = ConvertTo-SecureString "micontraseña" -AsPlainText -Force
     #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
     #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail, $PassMail
     
