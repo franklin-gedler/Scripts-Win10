@@ -631,21 +631,48 @@ function MicroSip {
     Write-Output ""
 }
 
-<#
-function IdiomaBR {
+function SetRegionUpdateTime {
+    
+    param(
+        $1
+    )
+
+    Set-TimeZone -Id "$1"
+
+    Set-Service w32time -StartupType Automatic
+    Start-Service w32time
+    Start-Sleep -Seconds 30
+
+    <#
+    AR: Set-TimeZone -Id "Argentina Standard Time"
+
+    UY: Set-TimeZone -Id "Montevideo Standard Time"
+
+    BR: Set-TimeZone -Id "E. South America Standard Time"
+
+    CO: Set-TimeZone -Id "SA Pacific Standard Time"
+
+    CL: Set-TimeZone -Id "Pacific SA Standard Time"
+
+    MX: Set-TimeZone -Id "Central Standard Time (Mexico)"
+
+    PE: Set-TimeZone -Id "SA Pacific Standard Time
+    #>
     
     # Cambia Idioma de entorno, teclado
-    $UserLanguageList = New-WinUserLanguageList -Language "pt-BR"
-    $UserLanguageList.Add("pt-BR")
-    Set-WinUserLanguageList -LanguageList $UserLanguageList -Force
+    #$UserLanguageList = New-WinUserLanguageList -Language "pt-BR"
+    #$UserLanguageList.Add("pt-BR")
+    #Set-WinUserLanguageList -LanguageList $UserLanguageList -Force
 
     # cambia la Region
-    Set-Culture -CultureInfo pt-BR
+    #Set-Culture -CultureInfo pt-BR
 
     # Cambia la Zona horaria
-    Set-TimeZone -Id "E. South America Standard Time"
+    #Set-TimeZone -Id "E. South America Standard Time"
+
+     
 }
-#>
+
 
 function googlerapidresponse {
     Write-Output " ==================================== "
@@ -678,6 +705,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         1{
                 
             Write-Output "Ejecuto para AR"
+            SetRegionUpdateTime "Argentina Standard Time"
             ChangeName "AR"
             VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
@@ -707,6 +735,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         2{
 
             Write-Output "Ejecuto para UY"
+            SetRegionUpdateTime "Montevideo Standard Time"
             ChangeName "UY"
             VerifyConnection "59"
             VerifyCred "59" "UY"
@@ -747,6 +776,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
 
                     1{
                         # Cuando es PCI
+                        SetRegionUpdateTime "E. South America Standard Time"
                         ChangeNamePCI "BR"
                         VerifyConnection "55" "br"
                         VerifyCred "55" "BR"
@@ -769,6 +799,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
 
                     2{
                         # Cuando no es PCI
+                        SetRegionUpdateTime "E. South America Standard Time"
                         ChangeName "BR"
                         VerifyConnection "55" "br"
                         VerifyCred "55" "BR"
@@ -813,6 +844,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                     default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
 
                     1{
+                        SetRegionUpdateTime "SA Pacific Standard Time"
                         ChangeNamePCI "CO"
                         VerifyConnection "57"
                         VerifyCred "57" "CO"
@@ -829,6 +861,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                     }
 
                     2{
+                        SetRegionUpdateTime "SA Pacific Standard Time"
                         ChangeName "CO"
                         VerifyConnection "57"
                         VerifyCred "57" "CO"
@@ -857,6 +890,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         }
         5{
             Write-Output "Ejecuto para CL"
+            SetRegionUpdateTime "Pacific SA Standard Time"
             ChangeName "CL"
             VerifyConnection "56"
             VerifyCred "56" "CL"
@@ -880,6 +914,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         }
         6{
             Write-Output "Ejecuto para MX"
+            SetRegionUpdateTime "Central Standard Time (Mexico)"
             ChangeName "MX"
             VerifyConnection "52"
             VerifyCred "52" "MX"
@@ -903,6 +938,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         }
         7{
             Write-Output "Ejecuto para PE"
+            SetRegionUpdateTime "SA Pacific Standard Time"
             ChangeName "PE"
             VerifyConnection "51"
             VerifyCred "51" "PE"
