@@ -637,6 +637,10 @@ function SetRegionUpdateTime {
         $1,$2
     )
 
+    Write-Output " ============================= "
+    Write-Host "   Actualizando Hora y Fecha   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ============================= "
+
     Set-TimeZone -Id "$1"
 
     Set-Service w32time -StartupType Automatic
@@ -645,6 +649,14 @@ function SetRegionUpdateTime {
     w32tm /query /status
     Start-Service w32time
     Start-Sleep -Seconds 15
+
+    Write-Output ""
+    Write-Output " ######### "
+    Write-Host "   Listo   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ######### "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
 
     <#
     AR: Set-TimeZone -Id "Argentina Standard Time"
