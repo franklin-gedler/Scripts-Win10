@@ -490,12 +490,12 @@ function ReinicioWin {
     $p = ConvertTo-SecureString "*+$1#$SCompu*" -AsPlainText -Force
     $u = (Get-LocalUser).Name[0]
     Set-LocalUser -Name $u -Password $p -PasswordNeverExpires 1
-    Pause
-
+    
     # ________________ Habilito el Windows Update Poronga ______________________________________
-    Set-Service wuauserv -StartupType Manual -PassThru
-    Start-Service wuauserv -PassThru
-    Get-Service wuauserv | Select-Object *
+    Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
+    Start-Service wuauserv -InformationAction SilentlyContinue
+    #Get-Service wuauserv | Select-Object *
+    Pause
 
     # _______________ Elimino todo despues de ejecutar _____________________________
     Write-Output {
