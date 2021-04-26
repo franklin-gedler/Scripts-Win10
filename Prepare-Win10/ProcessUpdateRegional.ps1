@@ -644,11 +644,12 @@ function SetRegionUpdateTime {
     Set-TimeZone -Id "$1"
 
     Set-Service w32time -StartupType Automatic
-
+    Start-Service w32time
     w32tm /config /syncfromflags:manual /manualpeerlist:"$2.infra.d" /reliable:yes /update
     w32tm /query /status
-    Start-Service w32time
-    Start-Sleep -Seconds 15
+    #Stop-Service w32time
+    #Start-Service w32time
+    #Start-Sleep -Seconds 15
 
     Write-Output ""
     Write-Output " ######### "
