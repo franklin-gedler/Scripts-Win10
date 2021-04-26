@@ -636,10 +636,11 @@ function SetRegionUpdateTime {
     param(
         $1,$2
     )
-
+    Write-Output ""
     Write-Output " ============================= "
     Write-Host "   Actualizando Hora y Fecha   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ============================= "
+    Write-Output ""
 
     Set-TimeZone -Id "$1"
 
