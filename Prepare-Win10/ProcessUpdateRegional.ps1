@@ -634,14 +634,17 @@ function MicroSip {
 function SetRegionUpdateTime {
     
     param(
-        $1
+        $1,$2
     )
 
     Set-TimeZone -Id "$1"
 
     Set-Service w32time -StartupType Automatic
+
+    w32tm /config /syncfromflags:manual /manualpeerlist:"$2.infra.d" /reliable:yes /update
+    w32tm /query /status
     Start-Service w32time
-    Start-Sleep -Seconds 30
+    Start-Sleep -Seconds 15
 
     <#
     AR: Set-TimeZone -Id "Argentina Standard Time"
@@ -705,7 +708,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         1{
                 
             Write-Output "Ejecuto para AR"
-            SetRegionUpdateTime "Argentina Standard Time"
+            SetRegionUpdateTime "Argentina Standard Time" "ar"
             ChangeName "AR"
             VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
