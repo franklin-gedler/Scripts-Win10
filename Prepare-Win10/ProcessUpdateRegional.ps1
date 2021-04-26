@@ -645,9 +645,9 @@ function SetRegionUpdateTime {
 
     Set-Service w32time -StartupType Automatic
     Start-Service w32time
-    w32tm /config /syncfromflags:manual /manualpeerlist:"$2.infra.d" /reliable:yes /update
+    w32tm /config /syncfromflags:manual /manualpeerlist:"$2.infra.d" /reliable:yes /update > $null
     Start-Sleep -Seconds 10
-    w32tm /query /status
+    #w32tm /query /status
     #Stop-Service w32time
     #Start-Service w32time
     
