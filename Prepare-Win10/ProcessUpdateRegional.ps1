@@ -410,7 +410,13 @@ function BitLocker {
         Write-Output " ============================== "
         Write-Host "     Habilitando Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ============================== "
-        Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
+        #Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
+
+        #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
+        Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction "Continue"
+        Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
+        manage-bde -on C: -UsedSpaceOnly -rp
+
 
         (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
         #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
