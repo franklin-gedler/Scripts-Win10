@@ -414,7 +414,7 @@ function BitLocker {
         #Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
 
         #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
-        Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue -InformationAction SilentlyContinue
+        Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
         Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
         manage-bde -on C: -UsedSpaceOnly -rp
 
