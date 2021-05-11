@@ -742,7 +742,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             TeamViewer
             ZoomInstaller
             FusionInventory
-            VPNRegional
             ##########################
             #LibreOffice
             #CertAzul
@@ -754,6 +753,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             ############################
             googlerapidresponse
             Antivirus
+            VPNRegional
             ReinicioWin "54"
         }
         2{
