@@ -416,7 +416,7 @@ function BitLocker {
         #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
         Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
         Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
-        manage-bde -on C: -UsedSpaceOnly -rp
+        manage-bde -on C: -UsedSpaceOnly -rp > NULL
 
 
         (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
