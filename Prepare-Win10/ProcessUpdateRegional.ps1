@@ -275,7 +275,7 @@ function Java {
     $ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Uri https://api.github.com/repos/franklin-gedler/Only-Download-Prepare-Windows10/releases/assets/36871675 `
                     -Headers $Headers -UseBasicParsing -OutFile $env:TMP\javadownload\jre-8u291-windows-i586.exe
-                    
+
     Start-Process -Wait -FilePath $env:TMP\javadownload\jre-8u291-windows-i586.exe -ArgumentList '/s'
 
     Write-Output ""
@@ -734,7 +734,7 @@ function DellAllUpdate {
     if("$machinebrand" -eq "Dell Inc."){
     
         Write-Output " =================================  "
-        Write-Output "   Instalando Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Host "   Instalando Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ================================== "
         
         mkdir $env:TMP\dellcommand > NULL
