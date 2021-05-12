@@ -262,7 +262,22 @@ function Java {
     Write-Host "   Instalando Java   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================== "
     #Set-Location $PSScriptRoot
-    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\java.exe -ArgumentList '/s'
+    #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\java.exe -ArgumentList '/s'
+    mkdir $env:TMP\javadownload > NULL
+
+    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    
+    $Headers = @{
+    accept = "application/octet-stream"
+    authorization = "Token " + $Token
+    }
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri https://api.github.com/repos/franklin-gedler/Only-Download-Prepare-Windows10/releases/assets/36871675 `
+                    -Headers $Headers -UseBasicParsing -OutFile $env:TMP\javadownload\jre-8u291-windows-i586.exe
+                    
+    Start-Process -Wait -FilePath $env:TMP\javadownload\jre-8u291-windows-i586.exe -ArgumentList '/s'
+
     Write-Output ""
     Write-Output " ############# "
     Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
@@ -713,6 +728,34 @@ function googlerapidresponse {
     Write-Output "" 
 }
 
+function DellAllUpdate {
+    $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
+
+    if("$machinebrand" -eq "Dell Inc."){
+    
+        Write-Output " =================================  "
+        Write-Output "   Instalando Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Output " ================================== "
+        
+        mkdir $env:TMP\dellcommand > NULL
+
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri https://dl.dell.com/FOLDER06986400M/2/Dell-Command-Update-Application_P5R35_WIN_4.1.0_A00.EXE `
+            -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe
+
+        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe -ArgumentList '/s' `
+            -RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
+
+        Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates -updateType=bios,firmware,driver,application,utility,others' `
+            -NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.txt
+
+        Write-Output ""
+        Write-Output "_________________________________________________________________________________________"
+        Write-Output "" 
+    }
+    
+}
 #___________________________________________________________________________________________#
 
 
@@ -755,6 +798,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             googlerapidresponse
             Antivirus
             VPNRegional
+            DellAllUpdate
             ReinicioWin "54"
         }
         2{
