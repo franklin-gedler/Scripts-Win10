@@ -736,7 +736,7 @@ function DellAllUpdate {
         Write-Output " =================================  "
         Write-Host "   Instalando Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ================================== "
-        
+        Write-Output ""
         mkdir $env:TMP\dellcommand > NULL
 
         $ProgressPreference = 'SilentlyContinue'
