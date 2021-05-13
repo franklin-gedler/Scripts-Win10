@@ -517,7 +517,8 @@ function ReinicioWin {
     Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
     Start-Service wuauserv -InformationAction SilentlyContinue
     #Get-Service wuauserv | Select-Object *
-    Pause
+    #Pause
+    timeout /t 300
 
     # _______________ Elimino todo despues de ejecutar _____________________________
     Write-Output {
