@@ -824,6 +824,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
+            DellAllUpdate
             ReinicioWin "59"
 
         }
@@ -864,6 +865,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         eLatam
                         googlerapidresponse
                         Antivirus
+                        DellAllUpdate
                         ReinicioWin "55"
                     }
 
@@ -890,6 +892,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         VPNRegional
                         googlerapidresponse
                         Antivirus
+                        DellAllUpdate
                         ReinicioWin "55"
                     }
                 }
@@ -927,6 +930,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         googlerapidresponse
                         Antivirus
+                        DellAllUpdate
                         ReinicioWin "57"  
                     }
 
@@ -950,6 +954,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         googlerapidresponse
                         Antivirus
+                        DellAllUpdate
                         ReinicioWin "57"
 
                     }
@@ -979,6 +984,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
+            DellAllUpdate
             ReinicioWin "56"
 
         }
@@ -1003,6 +1009,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
+            DellAllUpdate
             ReinicioWin "52"
 
         }
@@ -1027,6 +1034,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
+            DellAllUpdate
             ReinicioWin "51"
         }
             
