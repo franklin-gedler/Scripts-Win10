@@ -732,8 +732,6 @@ function googlerapidresponse {
 function DellAllUpdate {
     $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
     
-    ChargerStatus # valido si el cargador esta conectado
-
     if("$machinebrand" -eq "Dell Inc."){
     
         Write-Output " =================================  "
@@ -742,7 +740,7 @@ function DellAllUpdate {
         Write-Output ""
         mkdir $env:TMP\dellcommand > NULL
 
-       
+        ChargerStatus # valido si el cargador esta conectado
 
         $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri https://dl.dell.com/FOLDER06986400M/2/Dell-Command-Update-Application_P5R35_WIN_4.1.0_A00.EXE `
