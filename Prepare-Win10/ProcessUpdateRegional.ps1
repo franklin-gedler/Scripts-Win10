@@ -731,6 +731,7 @@ function googlerapidresponse {
 
 function DellAllUpdate {
     $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
+    
 
     if("$machinebrand" -eq "Dell Inc."){
     
@@ -740,6 +741,18 @@ function DellAllUpdate {
         Write-Output ""
         mkdir $env:TMP\dellcommand > NULL
 
+        $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
+        while ("$validatecharger" -eq "false"){
+
+            Write-Output ""
+            Write-Output " ########################################## "
+            Write-Host "   Por favor, Conectar cargador de equipo   " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output " ########################################## "
+            timeout /t 300
+            $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
+            
+        }
+
         $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri https://dl.dell.com/FOLDER06986400M/2/Dell-Command-Update-Application_P5R35_WIN_4.1.0_A00.EXE `
             -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe
@@ -748,8 +761,8 @@ function DellAllUpdate {
             -RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -updateType=bios,firmware,driver,application,utility,others' `
-            -NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.txt
+            -ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -updateType=bios,firmware,driver,application,utility,others -outputLog=%USERPROFILE%\Desktop\applyUpdates.log' `
+            -NoNewWindow #-RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
         Write-Output ""
         Write-Output "_________________________________________________________________________________________"
@@ -757,6 +770,25 @@ function DellAllUpdate {
     }
     
 }
+
+function ChargerStatus {
+    $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
+        while ("$validatecharger" -eq "false"){
+
+            Write-Output ""
+            Write-Output " ########################################## "
+            Write-Host "   Por favor, Conectar cargador de equipo   " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output " ########################################## "
+            timeout /t 300
+            $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
+
+            Write-Output ""
+            Write-Output "_________________________________________________________________________________________"
+            Write-Output ""
+        }
+    
+}
+
 #___________________________________________________________________________________________#
 
 
@@ -775,6 +807,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             SetRegionUpdateTime "Argentina Standard Time" "ar"
+            ChargerStatus
             ChangeName "AR"
             VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
