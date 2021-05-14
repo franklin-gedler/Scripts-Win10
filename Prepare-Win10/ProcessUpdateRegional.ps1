@@ -827,6 +827,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
 
             Write-Output "Ejecuto para UY"
             SetRegionUpdateTime "Montevideo Standard Time" "uy"
+            ChargerStatus
             ChangeName "UY"
             VerifyConnection "59"
             VerifyCred "59" "UY"
@@ -869,6 +870,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                     1{
                         # Cuando es PCI
                         SetRegionUpdateTime "E. South America Standard Time" "br"
+                        ChargerStatus
                         ChangeNamePCI "BR"
                         VerifyConnection "55" "br"
                         VerifyCred "55" "BR"
@@ -893,6 +895,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                     2{
                         # Cuando no es PCI
                         SetRegionUpdateTime "E. South America Standard Time" "br"
+                        ChargerStatus
                         ChangeName "BR"
                         VerifyConnection "55" "br"
                         VerifyCred "55" "BR"
@@ -939,6 +942,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
 
                     1{
                         SetRegionUpdateTime "SA Pacific Standard Time" "co"
+                        ChargerStatus
                         ChangeNamePCI "CO"
                         VerifyConnection "57"
                         VerifyCred "57" "CO"
@@ -957,6 +961,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
 
                     2{
                         SetRegionUpdateTime "SA Pacific Standard Time" "co"
+                        ChargerStatus
                         ChangeName "CO"
                         VerifyConnection "57"
                         VerifyCred "57" "CO"
@@ -987,6 +992,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         5{
             Write-Output "Ejecuto para CL"
             SetRegionUpdateTime "Pacific SA Standard Time" "cl"
+            ChargerStatus
             ChangeName "CL"
             VerifyConnection "56"
             VerifyCred "56" "CL"
@@ -1012,6 +1018,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         6{
             Write-Output "Ejecuto para MX"
             SetRegionUpdateTime "Central Standard Time (Mexico)" "mx"
+            ChargerStatus
             ChangeName "MX"
             VerifyConnection "52"
             VerifyCred "52" "MX"
@@ -1037,6 +1044,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         7{
             Write-Output "Ejecuto para PE"
             SetRegionUpdateTime "SA Pacific Standard Time" "pe"
+            ChargerStatus
             ChangeName "PE"
             VerifyConnection "51"
             VerifyCred "51" "PE"
