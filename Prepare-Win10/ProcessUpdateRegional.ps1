@@ -732,6 +732,7 @@ function googlerapidresponse {
 function DellAllUpdate {
     $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
     
+    ChargerStatus # valido si el cargador esta conectado
 
     if("$machinebrand" -eq "Dell Inc."){
     
@@ -741,17 +742,7 @@ function DellAllUpdate {
         Write-Output ""
         mkdir $env:TMP\dellcommand > NULL
 
-        $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
-        while ("$validatecharger" -eq "false"){
-
-            Write-Output ""
-            Write-Output " ########################################## "
-            Write-Host "   Por favor, Conectar cargador de equipo   " -ForegroundColor Yellow -BackgroundColor Black
-            Write-Output " ########################################## "
-            timeout /t 300
-            $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
-            
-        }
+       
 
         $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri https://dl.dell.com/FOLDER06986400M/2/Dell-Command-Update-Application_P5R35_WIN_4.1.0_A00.EXE `
@@ -783,8 +774,7 @@ function ChargerStatus {
             $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
 
             Write-Output ""
-            Write-Output "_________________________________________________________________________________________"
-            Write-Output ""
+            
         }
     
 }
