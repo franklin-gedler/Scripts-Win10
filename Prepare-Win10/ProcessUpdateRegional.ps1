@@ -765,9 +765,9 @@ function ChargerStatus {
         while ("$validatecharger" -eq "false"){
 
             Write-Output ""
-            Write-Output " ########################################## "
-            Write-Host "   Por favor, Conectar cargador de equipo   " -ForegroundColor Yellow -BackgroundColor Black
-            Write-Output " ########################################## "
+            Write-Output " ########################################### "
+            Write-Host "   Por favor, Conectar cargador del equipo   " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output " ########################################### "
             timeout /t 300
             $validatecharger = [BOOL](Get-WmiObject -Class BatteryStatus -Namespace root\wmi).PowerOnLine
 
