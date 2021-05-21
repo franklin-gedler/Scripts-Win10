@@ -751,7 +751,7 @@ function DellAllUpdate {
 
         Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
             -ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -updateType=bios,firmware,driver,application,utility,others' `
-            -NoNewWindow #-RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
+            -NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
         Write-Output ""
         Write-Output "_________________________________________________________________________________________"
