@@ -732,7 +732,7 @@ function googlerapidresponse {
 function DellAllUpdate {
     $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
     
-    if($machinebrand = 'Dell Inc.'){
+    if("$machinebrand" -eq "Dell Inc."){
     
         Write-Output " =================================  "
         Write-Host "   Instalando Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
@@ -750,7 +750,7 @@ function DellAllUpdate {
             -RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -updateType=bios,firmware,driver,application,utility,others -outputLog=%USERPROFILE%\Desktop\applyUpdates.log' `
+            -ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -updateType=bios,firmware,driver,application,utility,others' `
             -NoNewWindow #-RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
         Write-Output ""
