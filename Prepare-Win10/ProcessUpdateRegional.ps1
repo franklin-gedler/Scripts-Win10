@@ -750,9 +750,15 @@ function DellAllUpdate {
             -RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
-            -NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
+            #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver,firmware' `
+            #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
+        Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates'
+
+            #dcu-cli.exe /configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver,firmware > NULL
+            #/applyUpdates
         Write-Output ""
         Write-Output "_________________________________________________________________________________________"
         Write-Output "" 
