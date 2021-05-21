@@ -732,7 +732,7 @@ function googlerapidresponse {
 function DellAllUpdate {
     $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
     
-    if("$machinebrand" -eq "Dell Inc."){
+    if($machinebrand = 'Dell Inc.'){
     
         Write-Output " =================================  "
         Write-Host "   Instalando Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
