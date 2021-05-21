@@ -826,7 +826,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             googlerapidresponse
             Antivirus
             VPNRegional
-            DellAllUpdate
+            #DellAllUpdate
             ReinicioWin "54"
         }
         2{
