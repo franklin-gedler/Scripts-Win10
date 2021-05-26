@@ -340,7 +340,7 @@ function Antivirus {
 
     #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
     #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/INSTALL=UPDATER /ForceInstall /Silent'
-    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe
+    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Silent'
 
     
     #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
@@ -528,7 +528,7 @@ function ReinicioWin {
     #& C:\Windows\Setup\scripts\AutoDelete.ps1
     #Start-Process -Wait PowerShell.exe -ArgumentList "& AutoDelete.ps1"
     & $env:TMP\AutoDelete.ps1
-    Restart-Computer -Force
+    Restart-Computer #-Force
     exit
 }
 
@@ -746,16 +746,19 @@ function DellAllUpdate {
         Invoke-WebRequest -Uri https://dl.dell.com/FOLDER06986400M/2/Dell-Command-Update-Application_P5R35_WIN_4.1.0_A00.EXE `
             -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe
 
-        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe -ArgumentList '/s' `
-            -RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
+        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe -ArgumentList '/s'
+            #-RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
-        #Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
-        #    -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver,firmware' `
+        Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver,firmware'
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
         Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -updateType=bios,driver,firmware'
+            -ArgumentList '/scan -outputLog=C:\Users\admindesp\Desktop\scanOutput.log'
+
+        Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
             #dcu-cli.exe /configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver,firmware > NULL
             #/applyUpdates
@@ -805,6 +808,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             ChangeName "AR"
             VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
+            DellAllUpdate
             JoinAD "ar" "54"
             BitLocker "AR"            
             7Zip
@@ -826,7 +830,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             googlerapidresponse
             Antivirus
             VPNRegional
-            #DellAllUpdate
             ReinicioWin "54"
         }
         2{
