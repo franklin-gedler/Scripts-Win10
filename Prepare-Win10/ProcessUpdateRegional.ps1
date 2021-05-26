@@ -742,11 +742,14 @@ function DellAllUpdate {
 
         ChargerStatus # valido si el cargador esta conectado
 
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri https://dl.dell.com/FOLDER06986400M/2/Dell-Command-Update-Application_P5R35_WIN_4.1.0_A00.EXE `
-            -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe
+        #Invoke-WebRequest -Uri https://dl.dell.com/FOLDER06986400M/2/Dell-Command-Update-Application_P5R35_WIN_4.1.0_A00.EXE `
+        #    -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe
 
-        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Win-4-1-0.exe -ArgumentList '/s'
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri "https://dl.dell.com/FOLDER06986472M/2/Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE" `
+        -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE
+
+        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE -ArgumentList '/s'
             #-RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" `
