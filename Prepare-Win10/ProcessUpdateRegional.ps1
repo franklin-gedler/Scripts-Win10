@@ -177,9 +177,10 @@ function JoinAD {
         Write-Host "   Error en enlazar el equipo al AD   " -ForegroundColor Red -BackgroundColor Black
         Write-Output " #################################### "
         Write-Output ""
-        Write-Host "  Presione Enter para Intentar de Nuevo " -ForegroundColor Yellow -BackgroundColor Black
-        Write-Output ""
-        $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+        $Global:cred = Get-Credential -Message "Ingresar Credenciales, Nombre.Apellido"
+        #Write-Host "  Presione Enter para Intentar de Nuevo " -ForegroundColor Yellow -BackgroundColor Black
+        #Write-Output ""
+        #$host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
         $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
             -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
             -WarningAction SilentlyContinue -PassThru  
