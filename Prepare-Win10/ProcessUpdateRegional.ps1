@@ -764,11 +764,11 @@ function DellAllUpdate {
         #>
         
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
         $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
-            -Argument '/applyUpdates -reboot=enable -updatetype=driver,bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -Argument '/applyUpdates -reboot=enable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
         $trigger =  New-ScheduledTaskTrigger -AtStartup
 
