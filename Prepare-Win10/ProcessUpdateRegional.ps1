@@ -753,7 +753,7 @@ function DellAllUpdate {
             #-RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable'
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver -updateDeviceCategory=audio,video,network'
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
         <#
@@ -764,7 +764,7 @@ function DellAllUpdate {
         #>
         
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver,bios -updateDeviceCategory=audio,video,network -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         <#
         $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
@@ -823,11 +823,11 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             SetRegionUpdateTime "Argentina Standard Time" "ar"
+            DellAllUpdate
             ChargerStatus
             ChangeName "AR"
             VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
-            DellAllUpdate
             JoinAD "ar" "54"
             BitLocker "AR"            
             7Zip
