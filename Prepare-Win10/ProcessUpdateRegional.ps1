@@ -816,7 +816,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             SetRegionUpdateTime "Argentina Standard Time" "ar"
-            DellAllUpdate
             ChargerStatus
             ChangeName "AR"
             VerifyConnection "54" "ar"
@@ -841,6 +840,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             ############################
             googlerapidresponse
             Antivirus
+            DellAllUpdate
             VPNRegional
             ReinicioWin "54"
         }
