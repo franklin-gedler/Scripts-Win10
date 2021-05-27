@@ -764,17 +764,19 @@ function DellAllUpdate {
         #>
         
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver,bios -updateDeviceCategory=audio,video,network -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+        <#
         $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
             -Argument '/applyUpdates -reboot=enable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
         $trigger =  New-ScheduledTaskTrigger -AtStartup
 
-        Register-ScheduledTask -RunLevel Highest -User AR6BSDP73\admindesp -Password '*+54#6BSDP73*' `
+        Register-ScheduledTask -RunLevel Highest -User DESPEGAR\admindesp -Password 'Despegar.com' `
             -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
             -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
+        #>
+        
         
         
             #dcu-cli.exe /configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver,firmware > NULL
