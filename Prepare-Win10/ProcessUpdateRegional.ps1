@@ -341,7 +341,7 @@ function Antivirus {
 
     #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
     #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/INSTALL=UPDATER /ForceInstall /Silent'
-    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Silent'
+    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe
 
     
     #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
@@ -829,6 +829,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             SetRegionUpdateTime "Argentina Standard Time" "ar"
+            DellAllUpdate
             ChargerStatus
             ChangeName "AR"
             VerifyConnection "54" "ar"
@@ -853,7 +854,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             ############################
             googlerapidresponse
             Antivirus
-            DellAllUpdate
+            
             VPNRegional
             ReinicioWin "54"
         }
