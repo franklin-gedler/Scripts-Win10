@@ -762,7 +762,7 @@ function DellAllUpdate {
             -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         #>
         
-        
+        <#
         $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
             -Argument '/applyUpdates -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
@@ -785,6 +785,8 @@ function DellAllUpdate {
             -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
         echo $?
         Pause
+        #>
+        
         Write-Output ""
         Write-Output "_________________________________________________________________________________________"
         Write-Output "" 
