@@ -769,10 +769,21 @@ function DellAllUpdate {
 
         $trigger =  New-ScheduledTaskTrigger -AtStartup
 
-        Register-ScheduledTask -RunLevel Highest -User $NCompu\admindesp -Password 'Despegar.com' `
+        Register-ScheduledTask -RunLevel Highest -User admindesp -Password 'Despegar.com' `
             -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
             -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        
+        echo $?
+        Pause
+        Register-ScheduledTask -RunLevel Highest -User "$env:COMPUTERNAME\admindesp" -Password 'Despegar.com' `
+            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
+            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
+        echo $?
+        echo "valor de hostname: $env:COMPUTERNAME"
+        Pause
+        Register-ScheduledTask -RunLevel Highest -User 'DESPEGAR\admindesp' -Password 'Despegar.com' `
+            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
+            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
+        echo $?
         Pause
         Write-Output ""
         Write-Output "_________________________________________________________________________________________"
