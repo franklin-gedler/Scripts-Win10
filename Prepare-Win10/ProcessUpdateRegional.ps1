@@ -773,7 +773,7 @@ function DellAllUpdate {
             -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
             -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
         
-       
+        Pause
         Write-Output ""
         Write-Output "_________________________________________________________________________________________"
         Write-Output "" 
