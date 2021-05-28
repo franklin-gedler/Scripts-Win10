@@ -342,8 +342,8 @@ function Antivirus {
 
     #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/Install=Agent /ForceInstall /Silent'
     #Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/INSTALL=UPDATER /ForceInstall /Silent'
-    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe
-
+    Start-Process -Wait -FilePath C:\WINDOWS\setup\scripts\Instalador-Mcafee.exe -ArgumentList '/INSTALL=AGENT /SILENT'
+    Start-Process -Wait "C:\Program Files\McAfee\Agent\CmdAgent.exe" -ArgumentList '/p'
     
     #Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\McAfeeSmartInstall.exe -Destination C:\Users\admindesp\Desktop\
     Write-Output ""
