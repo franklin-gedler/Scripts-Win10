@@ -51,6 +51,8 @@ function ChangeName {
         $Global:NCompu = "$1$SCompu"
         #Write-Output "Nuevo nombre a Setear: $NCompu"
     }
+    Rename-Computer -NewName $NCompu -WarningAction SilentlyContinue
+    Start-Sleep -Seconds 5
 }
 
 function ChangeNamePCI {
@@ -161,8 +163,7 @@ function JoinAD {
     Write-Host "        Enlazando equipo al AD        " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ==================================== "
 
-    Rename-Computer -NewName $NCompu -WarningAction SilentlyContinue
-    Start-Sleep -Seconds 5
+    
 
     #add-computer -DomainName $domainname -Credential $Credential -OUPath $OU -force -Options JoinWithNewName,AccountCreate -restart
 
@@ -757,6 +758,16 @@ function DellAllUpdate {
             -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver -updateDeviceCategory=audio,video,network,others'
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
+
+        $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
+            -Argument '/applyUpdates -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+        $trigger =  New-ScheduledTaskTrigger -AtStartup
+
+        Register-ScheduledTask -RunLevel Highest -User SYSTEM `
+            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
+            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
         <#
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
@@ -854,7 +865,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             ############################
             googlerapidresponse
             Antivirus
-            
             VPNRegional
             ReinicioWin "54"
         }
@@ -862,6 +872,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
 
             Write-Output "Ejecuto para UY"
             SetRegionUpdateTime "Montevideo Standard Time" "uy"
+            DellAllUpdate
             ChargerStatus
             ChangeName "UY"
             VerifyConnection "59"
@@ -881,7 +892,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
-            DellAllUpdate
             ReinicioWin "59"
 
         }
@@ -905,6 +915,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                     1{
                         # Cuando es PCI
                         SetRegionUpdateTime "E. South America Standard Time" "br"
+                        DellAllUpdate
                         ChargerStatus
                         ChangeNamePCI "BR"
                         VerifyConnection "55" "br"
@@ -923,13 +934,13 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         eLatam
                         googlerapidresponse
                         Antivirus
-                        DellAllUpdate
                         ReinicioWin "55"
                     }
 
                     2{
                         # Cuando no es PCI
                         SetRegionUpdateTime "E. South America Standard Time" "br"
+                        DellAllUpdate
                         ChargerStatus
                         ChangeName "BR"
                         VerifyConnection "55" "br"
@@ -951,7 +962,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         VPNRegional
                         googlerapidresponse
                         Antivirus
-                        DellAllUpdate
                         ReinicioWin "55"
                     }
                 }
@@ -977,6 +987,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
 
                     1{
                         SetRegionUpdateTime "SA Pacific Standard Time" "co"
+                        DellAllUpdate
                         ChargerStatus
                         ChangeNamePCI "CO"
                         VerifyConnection "57"
@@ -990,12 +1001,12 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         googlerapidresponse
                         Antivirus
-                        DellAllUpdate
                         ReinicioWin "57"  
                     }
 
                     2{
                         SetRegionUpdateTime "SA Pacific Standard Time" "co"
+                        DellAllUpdate
                         ChargerStatus
                         ChangeName "CO"
                         VerifyConnection "57"
@@ -1015,7 +1026,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                         WorldSpan
                         googlerapidresponse
                         Antivirus
-                        DellAllUpdate
                         ReinicioWin "57"
 
                     }
@@ -1027,6 +1037,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
         5{
             Write-Output "Ejecuto para CL"
             SetRegionUpdateTime "Pacific SA Standard Time" "cl"
+            DellAllUpdate
             ChargerStatus
             ChangeName "CL"
             VerifyConnection "56"
@@ -1046,13 +1057,13 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
-            DellAllUpdate
             ReinicioWin "56"
 
         }
         6{
             Write-Output "Ejecuto para MX"
             SetRegionUpdateTime "Central Standard Time (Mexico)" "mx"
+            DellAllUpdate
             ChargerStatus
             ChangeName "MX"
             VerifyConnection "52"
@@ -1072,13 +1083,13 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
-            DellAllUpdate
             ReinicioWin "52"
 
         }
         7{
             Write-Output "Ejecuto para PE"
             SetRegionUpdateTime "SA Pacific Standard Time" "pe"
+            DellAllUpdate
             ChargerStatus
             ChangeName "PE"
             VerifyConnection "51"
@@ -1098,7 +1109,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             WorldSpan
             googlerapidresponse
             Antivirus
-            DellAllUpdate
             ReinicioWin "51"
         }
             
