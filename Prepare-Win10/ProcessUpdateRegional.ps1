@@ -113,7 +113,7 @@ function VerifyCred {
     Copy-Item -Path $PSScriptRoot\PS -Destination C:\ -Recurse -force
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-    $Global:Very = Get-ADDomain -Server "10.40.$1.1" -Credential $cred -ErrorAction SilentlyContinue
+    $Global:Very = Get-ADDomain -Server 10.40.$1.1 -Credential $cred -ErrorAction SilentlyContinue
     while(!$Very){
         Write-Output ""
         Write-Output " ########################################################## "
@@ -123,7 +123,7 @@ function VerifyCred {
         $Global:cred = Get-Credential $2\ -Message "Vuelva a escribir sus credenciales, Ej: $2\Nombre.Apellido"
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-        $Global:Very = Get-ADDomain -Server "10.40.$1.1" -Credential $cred -ErrorAction SilentlyContinue
+        $Global:Very = Get-ADDomain -Server 10.40.$1.1 -Credential $cred -ErrorAction SilentlyContinue
     }
     Write-Output ""
     Write-Output " ##############################################################"
@@ -143,14 +143,14 @@ function JoinAD {
     )
 
     $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
-        -SearchScope Subtree -Server "10.40.$2.1" `
+        -SearchScope Subtree -Server 10.40.$2.1 `
         -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 
     if ($consul){
         Write-Output " =============================================== "
         Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " =============================================== "
-        Remove-ADObject -Identity "$consul" -Credential $cred -Server "10.40.$2.1" -Confirm:$False -verbose
+        Remove-ADObject -Identity "$consul" -Credential $cred -Server 10.40.$2.1 -Confirm:$False -verbose
         Start-Sleep -Seconds 15
         Write-Output ""
         Write-Output " ############# "
@@ -167,7 +167,7 @@ function JoinAD {
 
     #add-computer -DomainName $domainname -Credential $Credential -OUPath $OU -force -Options JoinWithNewName,AccountCreate -restart
 
-    $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
+    $Global:Binding = Add-Computer -DomainName $1.infra.d `
         -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
         -WarningAction SilentlyContinue -PassThru           
     
@@ -182,7 +182,7 @@ function JoinAD {
         #Write-Host "  Presione Enter para Intentar de Nuevo " -ForegroundColor Yellow -BackgroundColor Black
         #Write-Output ""
         #$host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-        $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
+        $Global:Binding = Add-Computer -DomainName $1.infra.d `
             -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
             -WarningAction SilentlyContinue -PassThru  
     }
