@@ -431,7 +431,8 @@ function CreateTaskBitLocker {
         Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\passfile -Destination C:\TaskEnableBitlocker\
         Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\key -Destination C:\TaskEnableBitlocker\
 
-        @'
+        @"
+
         function SendMail {
             $Global:NCompu = $env:COMPUTERNAME
             $Mail = 'soportescripts@gmail.com'
@@ -490,7 +491,7 @@ function CreateTaskBitLocker {
             Restart-Computer
         }
 
-'@ | Add-Content C:\TaskEnableBitlocker\TaskEnableBitlocker.ps1
+"@ | Add-Content C:\TaskEnableBitlocker\TaskEnableBitlocker.ps1
         
         $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
             -WorkingDirectory "C:\TaskEnableBitlocker\" `
