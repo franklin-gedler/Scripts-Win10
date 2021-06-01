@@ -431,9 +431,9 @@ function CreateTaskBitLocker {
         Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\passfile -Destination C:\TaskEnableBitlocker\
         Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\key -Destination C:\TaskEnableBitlocker\
 
-        Clear-BitLockerAutoUnlock
-        Disable-BitLocker -MountPoint C:
-        Clear-Tpm
+        Clear-BitLockerAutoUnlock > NULL
+        Disable-BitLocker -MountPoint C: > NULL
+        Clear-Tpm > NULL
 
 
         @"
