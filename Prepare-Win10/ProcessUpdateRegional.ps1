@@ -436,7 +436,7 @@ function CreateTaskBitLocker {
         Clear-Tpm > NULL
 
 
-        @"
+        @'
 
         function SendMail {
             $Global:NCompu = $env:COMPUTERNAME
@@ -496,7 +496,7 @@ function CreateTaskBitLocker {
             Restart-Computer
         }
 
-"@ | Add-Content C:\TaskEnableBitlocker\TaskEnableBitlocker.ps1
+'@ | Add-Content C:\TaskEnableBitlocker\TaskEnableBitlocker.ps1
         
         $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
             -WorkingDirectory "C:\TaskEnableBitlocker\" `
