@@ -433,7 +433,7 @@ function BitLocker {
         #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
         Clear-BitLockerAutoUnlock > NULL
         Disable-BitLocker -MountPoint C: > NULL
-        Clear-Tpm > NULL
+        #Clear-Tpm > NULL
         Start-Sleep -Seconds 10
 
         Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue

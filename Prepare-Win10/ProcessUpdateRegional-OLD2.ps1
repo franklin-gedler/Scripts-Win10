@@ -437,9 +437,9 @@ function CreateTaskBitLocker {
 
 
         @'
-
+        $NCompu = $env:COMPUTERNAME
         function SendMail {
-            $Global:NCompu = $env:COMPUTERNAME
+            
             $Mail = 'soportescripts@gmail.com'
             $PassFile = "$PSScriptRoot\passfile"
             $Key = "$PSScriptRoot\key"
@@ -478,6 +478,7 @@ function CreateTaskBitLocker {
         }
         Bitlocker
         & C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
+        exit
 
 '@ | Add-Content C:\TaskALL\TaskEnableBitlocker.ps1
         
