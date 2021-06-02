@@ -477,10 +477,6 @@ function CreateTaskBitLocker {
             SendMail
 
             Start-Process -Wait C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
-
-            # Borra la tarea de habilitacion del bitlocker
-            Remove-Item -LiteralPath C:\TaskALL -Recurse -Force
-            Unregister-ScheduledTask -TaskName 'Tarea temporal habilitacion del Bitlocker' -Confirm:$false
             
         }
         Bitlocker
@@ -801,6 +797,10 @@ function DellAllUpdate {
         @'
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+        # Borra la tarea de habilitacion del bitlocker
+        Remove-Item -LiteralPath C:\TaskALL -Recurse -Force
+        Unregister-ScheduledTask -TaskName 'Tarea temporal habilitacion del Bitlocker' -Confirm:$false
 
         Start-Sleep -Seconds 20
         Restart-Computer
