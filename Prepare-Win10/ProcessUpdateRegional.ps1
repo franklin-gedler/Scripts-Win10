@@ -433,7 +433,7 @@ function BitLocker {
         #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
         Clear-BitLockerAutoUnlock > NULL
         Disable-BitLocker -MountPoint C: > NULL
-        #Clear-Tpm > NULL
+        #Clear-Tpm > NULL    Si activo esto tengo que reiniciar para que se inicialice el TPM y poder activar bitlocker
         Start-Sleep -Seconds 10
 
         Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
@@ -760,13 +760,18 @@ function DellAllUpdate {
             #-RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver -updateDeviceCategory=audio,video,network,others'
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updateDeviceCategory=audio,video,network,others'
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
+        # Instalo solo BIOS
+        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+        # creo la tarea para que despues de instalar bios instale driver
         $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
-            -Argument '/applyUpdates -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -Argument '/applyUpdates -reboot=enable -updatetype=bios,driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
         $trigger =  New-ScheduledTaskTrigger -AtStartup
 
