@@ -475,11 +475,9 @@ function CreateTaskBitLocker {
 
             # Envia el mail con id y recovery
             SendMail
-
-            Start-Process -Wait C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
-            
         }
         Bitlocker
+        & C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
 
 '@ | Add-Content C:\TaskALL\TaskEnableBitlocker.ps1
         
