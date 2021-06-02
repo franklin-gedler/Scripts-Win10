@@ -760,7 +760,7 @@ function DellAllUpdate {
             #-RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updateDeviceCategory=audio,video,network,others'
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable'
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
@@ -768,46 +768,42 @@ function DellAllUpdate {
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
-        # creo la tarea para que despues de instalar bios instale driver
-        $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+        # --------------------------Tarea de Winodws para el futuro------------------------------ #
+
+        $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
             -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
-            -Argument '/applyUpdates -reboot=enable -updatetype=bios,driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -Argument '-NoProfile -ExecutionPolicy Bypass -File TaskDellUpdate.ps1'
 
         $trigger =  New-ScheduledTaskTrigger -AtStartup
 
         Register-ScheduledTask -RunLevel Highest -User SYSTEM `
-            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        <#
+            -Action $action -Trigger $trigger -TaskName 'Tarea temporal habilitacion del Bitlocker' `
+            -Description "Esta Tarea activa el bitlocker y se borra despues de haber activado"
+        # --------------------------------------------------------------------------------------- #
+
+        # -------------Mini Scripts que controla el update de drivers y bios--------------------- #
+        @'
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-        #>
-        
-        <#
-        $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
-            -Argument '/applyUpdates -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/scan -updateDeviceCategory=audio,video,network,others -outputLog=C:\Users\admindesp\Desktop\ScanOutput.log'
 
-        $trigger =  New-ScheduledTaskTrigger -AtStartup
+        $ScanOutput = Get-Content C:\Users\admindesp\Desktop\ScanOutput.log
+        $patron = 'BIOS'
+        $SearchScanOutput = $ScanOutput | Select-String -AllMatches $patron
 
-        Register-ScheduledTask -RunLevel Highest -User admindesp -Password 'Despegar.com' `
-            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        echo $?
-        Pause
-        Register-ScheduledTask -RunLevel Highest -User "$env:COMPUTERNAME\admindesp" -Password 'Despegar.com' `
-            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        echo $?
-        echo "valor de hostname: $env:COMPUTERNAME"
-        Pause
-        Register-ScheduledTask -RunLevel Highest -User 'DESPEGAR\admindesp' -Password 'Despegar.com' `
-            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        echo $?
-        Pause
-        #>
+        if ($SearchScanOutput){
+            echo "instalo primero bios"
+            Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+        }else{
+            echo "no hay Bios, instalamos drivers"
+            Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+        }
+
+'@ | Add-Content "C:\Program Files\Dell\CommandUpdate\TaskDellUpdate.ps1"
         
+        # --------------------------------------------------------------------------------------- #
+ 
         Write-Output ""
         Write-Output "_________________________________________________________________________________________"
         Write-Output "" 
