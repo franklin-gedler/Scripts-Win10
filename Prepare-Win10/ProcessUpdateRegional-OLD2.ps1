@@ -400,10 +400,8 @@ function LibreOffice {
     Write-Output "_________________________________________________________________________________________"
     Write-Output "" 
 }
-function BitLocker {
-    param (
-        [String]$1
-    )
+function CreateTaskBitLocker {
+    
     
     Write-Output ""
     Write-Output " ========================================= "
@@ -426,31 +424,76 @@ function BitLocker {
         Write-Output " ############ "
         Write-Output ""
         Write-Output " ============================== "
-        Write-Host "     Habilitando Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Host "     Creando Task Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ============================== "
-        #Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
 
-        #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
-        Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
-        Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
-        manage-bde -on C: -UsedSpaceOnly -rp > NULL
+        mkdir C:\TaskALL > NULL   # folder temporal bitlocker despues dell update
+        Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\passfile -Destination C:\TaskALL\
+        Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\key -Destination C:\TaskALL\
+
+        Clear-BitLockerAutoUnlock > NULL
+        Disable-BitLocker -MountPoint C: > NULL
+        Clear-Tpm > NULL
 
 
-        (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
-        #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+        @'
 
-        $KeyID = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
+        function SendMail {
+            $Global:NCompu = $env:COMPUTERNAME
+            $Mail = 'soportescripts@gmail.com'
+            $PassFile = "$PSScriptRoot\passfile"
+            $Key = "$PSScriptRoot\key"
+        
+            $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
+                        -ArgumentList "$Mail", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
+        
+            #$PassMail = ConvertTo-SecureString "micontraseña" -AsPlainText -Force
+            #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
+            #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail, $PassMail
+            
+            Send-MailMessage -From soportescripts@gmail.com -To soporte@despegar.com `
+                             -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
+                             -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
+        
+        }
+
+        function Bitlocker {
+            Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
+            Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
+            manage-bde -on C: -UsedSpaceOnly -rp > NULL
+
+            (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+
+            $KeyID = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
                 | Where-Object KeyProtectorType -eq 'RecoveryPassword' `
                 | Select-Object -ExpandProperty KeyProtectorId
 
-        $PassRecovery = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
-                        | Where-Object KeyProtectorType -eq 'RecoveryPassword' | Select-Object -ExpandProperty RecoveryPassword
+            $PassRecovery = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
+                            | Where-Object KeyProtectorType -eq 'RecoveryPassword' | Select-Object -ExpandProperty RecoveryPassword
 
-        $Global:IdKeyBitlocker = "KeyProtectorId:  $KeyID ------------------------------ RecoveryPassword:  $PassRecovery"
+            $Global:IdKeyBitlocker = "KeyProtectorId:  $KeyID ------------------------------ RecoveryPassword:  $PassRecovery"
 
-        # Envia el mail con id y recovery
-        SendMail
+            # Envia el mail con id y recovery
+            SendMail
+        }
+        Bitlocker
+        & C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
 
+'@ | Add-Content C:\TaskALL\TaskEnableBitlocker.ps1
+        
+        $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
+            -WorkingDirectory "C:\TaskALL\" `
+            -Argument '-NoProfile -ExecutionPolicy Bypass -File TaskEnableBitlocker.ps1'
+
+        $trigger =  New-ScheduledTaskTrigger -AtStartup
+
+        Register-ScheduledTask -RunLevel Highest -User SYSTEM `
+            -Action $action -Trigger $trigger -TaskName 'Tarea temporal habilitacion del Bitlocker' `
+            -Description "Esta Tarea activa el bitlocker y se borra despues de haber activado"
+
+
+
+        <#
         Write-Output ""
         Write-Output " ============================= "
         Write-Host "  Verificando conexion al NAS  " -ForegroundColor Yellow -BackgroundColor Black
@@ -474,30 +517,15 @@ function BitLocker {
             New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles\$1" -Credential $cred
             Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$NCompu.txt -Destination Z:\
         }
+        #>
+        
 
     }
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
 }
-function SendMail {
-    
-    $Mail = 'soportescripts@gmail.com'
-    $PassFile = "$PSScriptRoot\passfile"
-    $Key = "$PSScriptRoot\key"
 
-    $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
-                -ArgumentList "$Mail", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
-
-    #$PassMail = ConvertTo-SecureString "micontraseña" -AsPlainText -Force
-    #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
-    #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail, $PassMail
-    
-    Send-MailMessage -From soportescripts@gmail.com -To soporte@despegar.com `
-                     -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
-                     -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
-
-}
 
 function ReinicioWin {
     param (
@@ -755,10 +783,41 @@ function DellAllUpdate {
             #-RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=bios,driver -updateDeviceCategory=audio,video,network,others'
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updateDeviceCategory=audio,video,network,others'
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
+        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+
+        # script de dell update
+        @'
+        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+        # Borra la tarea de habilitacion del bitlocker
+        Remove-Item -LiteralPath C:\TaskALL -Recurse -Force
+        Unregister-ScheduledTask -TaskName 'Tarea temporal habilitacion del Bitlocker' -Confirm:$false
+
+        Start-Sleep -Seconds 20
+        Restart-Computer
+'@ | Add-Content C:\TaskALL\TaskDellUpdate.ps1
+
+        <#
+            # crea la tarea para mantaner los driver actualizados
+            $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
+                -Argument '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+            $trigger =  New-ScheduledTaskTrigger -AtStartup
+
+            Register-ScheduledTask -RunLevel Highest -User SYSTEM `
+                -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
+                -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
+            #>
+
+        <#
         $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
             -Argument '/applyUpdates -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
@@ -768,34 +827,6 @@ function DellAllUpdate {
         Register-ScheduledTask -RunLevel Highest -User SYSTEM `
             -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
             -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        <#
-        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-        #>
-        
-        <#
-        $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
-            -Argument '/applyUpdates -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-
-        $trigger =  New-ScheduledTaskTrigger -AtStartup
-
-        Register-ScheduledTask -RunLevel Highest -User admindesp -Password 'Despegar.com' `
-            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        echo $?
-        Pause
-        Register-ScheduledTask -RunLevel Highest -User "$env:COMPUTERNAME\admindesp" -Password 'Despegar.com' `
-            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        echo $?
-        echo "valor de hostname: $env:COMPUTERNAME"
-        Pause
-        Register-ScheduledTask -RunLevel Highest -User 'DESPEGAR\admindesp' -Password 'Despegar.com' `
-            -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-            -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-        echo $?
-        Pause
         #>
         
         Write-Output ""
@@ -840,13 +871,13 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             SetRegionUpdateTime "Argentina Standard Time" "ar"
-            DellAllUpdate
+            
             ChargerStatus
             ChangeName "AR"
             VerifyConnection "54" "ar"
             VerifyCred "54" "AR"
             JoinAD "ar" "54"
-            BitLocker "AR"            
+            CreateTaskBitLocker
             7Zip
             AcrobatReader
             Java
@@ -866,6 +897,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             googlerapidresponse
             Antivirus
             VPNRegional
+            DellAllUpdate
             ReinicioWin "54"
         }
         2{
