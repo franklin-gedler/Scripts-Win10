@@ -427,9 +427,9 @@ function CreateTaskBitLocker {
         Write-Host "     Creando Task Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ============================== "
 
-        mkdir C:\TaskEnableBitlocker > NULL
-        Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\passfile -Destination C:\TaskEnableBitlocker\
-        Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\key -Destination C:\TaskEnableBitlocker\
+        mkdir C:\TaskALL > NULL   # folder temporal bitlocker despues dell update
+        Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\passfile -Destination C:\TaskALL\
+        Copy-Item -LiteralPath C:\WINDOWS\setup\scripts\key -Destination C:\TaskALL\
 
         Clear-BitLockerAutoUnlock > NULL
         Disable-BitLocker -MountPoint C: > NULL
@@ -476,27 +476,16 @@ function CreateTaskBitLocker {
             # Envia el mail con id y recovery
             SendMail
 
-            # crea la tarea para mantaner los driver actualizados
-            $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
-                -Argument '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-
-            $trigger =  New-ScheduledTaskTrigger -AtStartup
-
-            Register-ScheduledTask -RunLevel Highest -User SYSTEM `
-                -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
-                -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
-
-
             # Borra la tarea de habilitacion del bitlocker
             Unregister-ScheduledTask -TaskName 'Tarea temporal habilitacion del Bitlocker'
             Remove-Item -LiteralPath C:\TaskEnableBitlocker -Recurse -Force
             
-            Start-Sleep -Seconds 20
-            Restart-Computer
+            
+            Start-Process -Wait C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
+            
         }
 
-'@ | Add-Content C:\TaskEnableBitlocker\TaskEnableBitlocker.ps1
+'@ | Add-Content C:\TaskALL\TaskEnableBitlocker.ps1
         
         $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
             -WorkingDirectory "C:\TaskEnableBitlocker\" `
@@ -800,14 +789,35 @@ function DellAllUpdate {
             #-RedirectStandardError $env:USERPROFILE\Desktop\errDownloadDellCommand.txt
 
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updatetype=driver -updateDeviceCategory=audio,video,network,others'
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable -updateDeviceCategory=audio,video,network,others'
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
 
+        # script de dell update
+        @'
+        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+        Start-Sleep -Seconds 20
+        Restart-Computer
+'@ | Add-Content C:\TaskALL\TaskDellUpdate.ps1
+
+        <#
+            # crea la tarea para mantaner los driver actualizados
+            $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
+                -Argument '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+            $trigger =  New-ScheduledTaskTrigger -AtStartup
+
+            Register-ScheduledTask -RunLevel Highest -User SYSTEM `
+                -Action $action -Trigger $trigger -TaskName 'Dell Update All' `
+                -Description "Esta Tarea Actualiza Drivers y Bios cada vez que se inicia el equipo"
+            #>
 
         <#
         $action = New-ScheduledTaskAction -Execute "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
