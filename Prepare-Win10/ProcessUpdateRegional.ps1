@@ -476,12 +476,11 @@ function CreateTaskBitLocker {
             # Envia el mail con id y recovery
             SendMail
 
-            # Borra la tarea de habilitacion del bitlocker
-            Unregister-ScheduledTask -TaskName 'Tarea temporal habilitacion del Bitlocker'
-            Remove-Item -LiteralPath C:\TaskALL -Recurse -Force
-            
-            
             Start-Process -Wait C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
+
+            # Borra la tarea de habilitacion del bitlocker
+            Remove-Item -LiteralPath C:\TaskALL -Recurse -Force
+            Unregister-ScheduledTask -TaskName 'Tarea temporal habilitacion del Bitlocker' -Confirm:$false
             
         }
         Bitlocker
