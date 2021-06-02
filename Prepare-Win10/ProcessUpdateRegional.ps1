@@ -478,7 +478,7 @@ function CreateTaskBitLocker {
 
             # Borra la tarea de habilitacion del bitlocker
             Unregister-ScheduledTask -TaskName 'Tarea temporal habilitacion del Bitlocker'
-            Remove-Item -LiteralPath C:\TaskEnableBitlocker -Recurse -Force
+            Remove-Item -LiteralPath C:\TaskALL -Recurse -Force
             
             
             Start-Process -Wait C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
@@ -488,7 +488,7 @@ function CreateTaskBitLocker {
 '@ | Add-Content C:\TaskALL\TaskEnableBitlocker.ps1
         
         $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
-            -WorkingDirectory "C:\TaskEnableBitlocker\" `
+            -WorkingDirectory "C:\TaskALL\" `
             -Argument '-NoProfile -ExecutionPolicy Bypass -File TaskEnableBitlocker.ps1'
 
         $trigger =  New-ScheduledTaskTrigger -AtStartup
