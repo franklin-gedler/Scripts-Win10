@@ -484,6 +484,7 @@ function CreateTaskBitLocker {
             Start-Process -Wait C:\TaskALL\TaskDellUpdate.ps1   # llamar al script de dell update solo drivers
             
         }
+        Bitlocker
 
 '@ | Add-Content C:\TaskALL\TaskEnableBitlocker.ps1
         
