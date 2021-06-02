@@ -771,7 +771,7 @@ function DellAllUpdate {
         # --------------------------Tarea de Winodws para el futuro------------------------------ #
 
         $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
-            -WorkingDirectory "C:\Program Files\Dell\CommandUpdate\" `
+            -WorkingDirectory "C:\Program Files\Dell\" `
             -Argument '-NoProfile -ExecutionPolicy Bypass -File TaskDellUpdate.ps1'
 
         $trigger =  New-ScheduledTaskTrigger -AtStartup
@@ -781,26 +781,43 @@ function DellAllUpdate {
             -Description "Esta Tarea activa el bitlocker y se borra despues de haber activado"
         # --------------------------------------------------------------------------------------- #
 
+        Write-Output '' > "C:\Program Files\Dell\file"  # No borrar ya que indica si el el primer reinicio del equipo
+
         # -------------Mini Scripts que controla el update de drivers y bios--------------------- #
         @'
-        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/scan -updateDeviceCategory=audio,video,network,others -outputLog=C:\Users\admindesp\Desktop\ScanOutput.log'
+        $firtboot = Get-Content "C:\Program Files\Dell\file"
 
-        $ScanOutput = Get-Content C:\Users\admindesp\Desktop\ScanOutput.log
-        $patron = 'BIOS'
-        $SearchScanOutput = $ScanOutput | Select-String -AllMatches $patron
+        if ($firtboot){
 
-        if ($SearchScanOutput){
-            echo "instalo primero bios"
             Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                -ArgumentList '/scan -updateDeviceCategory=audio,video,network,others -outputLog=C:\Users\admindesp\Desktop\ScanOutput.log'
+        
+            $ScanOutput = Get-Content C:\Users\admindesp\Desktop\ScanOutput.log
+            $patron = 'BIOS'
+            $SearchScanOutput = $ScanOutput | Select-String -AllMatches $patron
+
+            if ($SearchScanOutput){
+                echo "instalo primero bios"
+                Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                    -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log' `
+                
+            }else{
+                echo "no hay Bios, instalamos drivers"
+                Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            }
+
         }else{
-            echo "no hay Bios, instalamos drivers"
+
+            # Este bloque solo se ejecuta cuando la maquina recibe el primer reinicio
+                
+            Write-Output 'Lista Para usar' > "C:\Program Files\Dell\file"
+
             Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                -ArgumentList '/applyUpdates -reboot=enable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         }
 
-'@ | Add-Content "C:\Program Files\Dell\CommandUpdate\TaskDellUpdate.ps1"
+'@ | Add-Content "C:\Program Files\Dell\TaskDellUpdate.ps1"
         
         # --------------------------------------------------------------------------------------- #
  
