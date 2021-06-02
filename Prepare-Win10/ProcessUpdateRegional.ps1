@@ -764,7 +764,7 @@ function DellAllUpdate {
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
-        # Instalo solo BIOS
+        # Actualizo solo BIOS
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
@@ -850,7 +850,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
                 
             Write-Output "Ejecuto para AR"
             SetRegionUpdateTime "Argentina Standard Time" "ar"
-            DellAllUpdate
             ChargerStatus
             ChangeName "AR"
             VerifyConnection "54" "ar"
@@ -876,6 +875,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             googlerapidresponse
             Antivirus
             VPNRegional
+            DellAllUpdate
             ReinicioWin "54"
         }
         2{
