@@ -777,8 +777,8 @@ function DellAllUpdate {
         $trigger =  New-ScheduledTaskTrigger -AtStartup
 
         Register-ScheduledTask -RunLevel Highest -User SYSTEM `
-            -Action $action -Trigger $trigger -TaskName 'Tarea temporal habilitacion del Bitlocker' `
-            -Description "Esta Tarea activa el bitlocker y se borra despues de haber activado"
+            -Action $action -Trigger $trigger -TaskName 'Dell Command Update' `
+            -Description "Esta Tarea actualiza Bios y Driver del equipo Dell"
         # --------------------------------------------------------------------------------------- #
 
         Write-Output '' > "C:\Program Files\Dell\file"  # No borrar ya que indica si el el primer reinicio del equipo
@@ -901,7 +901,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             VerifyConnection "59"
             VerifyCred "59" "UY"
             JoinAD "uy" "59"
-            BitLocker "uy"
+            BitLocker "UY"
             VPNRegional
             7Zip
             AcrobatReader
