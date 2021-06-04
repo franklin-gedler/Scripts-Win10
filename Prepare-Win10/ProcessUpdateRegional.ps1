@@ -764,7 +764,7 @@ function DellAllUpdate {
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
-        # Actualizo solo BIOS
+        # Actualizo solo Drivers
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
             -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
