@@ -765,8 +765,11 @@ function DellAllUpdate {
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
         # Actualizo solo Drivers
+        #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+        #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/driverInstall -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
         # --------------------------Tarea de Winodws para el futuro------------------------------ #
 
