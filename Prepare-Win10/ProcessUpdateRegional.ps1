@@ -764,12 +764,9 @@ function DellAllUpdate {
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
-        # Actualizo solo Drivers
-        #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-        #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-
+        # Actualizo solo Bios
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/driverInstall -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
         # --------------------------Tarea de Winodws para el futuro------------------------------ #
 
@@ -816,8 +813,11 @@ function DellAllUpdate {
                 
             Write-Output 'Lista Para usar' > "C:\Program Files\Dell\file"
 
+            #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            #    -ArgumentList '/applyUpdates -reboot=enable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
             Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                -ArgumentList '/applyUpdates -reboot=enable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                -ArgumentList '/driverInstall -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         }
 
 '@ | Add-Content "C:\Program Files\Dell\TaskDellUpdate.ps1"
