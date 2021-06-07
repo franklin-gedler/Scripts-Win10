@@ -830,6 +830,8 @@ function DellAllUpdate {
                 
             Write-Output 'Lista Para usar' > "C:\Program Files\Dell\file"
 
+            Write-Output 'Lista Para usar' > "C:\Users\admindesp\Desktop\Lista Para usar.txt"
+
             Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
                 -ArgumentList '/applyUpdates -reboot=enable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         }
