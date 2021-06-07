@@ -764,9 +764,26 @@ function DellAllUpdate {
             #-ArgumentList '/applyUpdates -autoSuspendBitLocker=enable -userConsent=disable -updateType=bios,driver' `
             #-NoNewWindow -RedirectStandardError $env:USERPROFILE\Desktop\errRUNDellCommand.log
 
-        # Actualizo solo Bios
+        # Actualizo solo drives
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
+
+        # --------------------este bloque es un parche, solo para la instalacion de driver LAN---------------------------------- #
+        $model = (Get-WmiObject Win32_ComputerSystem).Model
+        $model = $model -replace 'Latitude ' -replace ''
+
+        switch($model){
+
+            5411{
+                $ProgressPreference = 'SilentlyContinue'
+                Invoke-WebRequest -Uri "https://dl.dell.com/FOLDER06924893M/1/Intel-PCIe-Ethernet-Controller-Driver_RRXWR_WIN_25.5.0.1_A21.EXE" `
+                    -UseBasicParsing -OutFile $env:TMP\dellcommand\Intel-PCIe-Ethernet-Controller-Driver_RRXWR_WIN_25.5.0.1_A21.EXE
+                
+                Start-Process -Wait $env:TMP\dellcommand\Intel-PCIe-Ethernet-Controller-Driver_RRXWR_WIN_25.5.0.1_A21.EXE -ArgumentList '/s'
+            }
+        }
+        # ------------------------------------------------------------------------------------------------------------
 
         # --------------------------Tarea de Winodws para el futuro------------------------------ #
 
@@ -813,11 +830,8 @@ function DellAllUpdate {
                 
             Write-Output 'Lista Para usar' > "C:\Program Files\Dell\file"
 
-            #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            #    -ArgumentList '/applyUpdates -reboot=enable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-
             Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                -ArgumentList '/driverInstall -reboot=enable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                -ArgumentList '/applyUpdates -reboot=enable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         }
 
 '@ | Add-Content "C:\Program Files\Dell\TaskDellUpdate.ps1"
