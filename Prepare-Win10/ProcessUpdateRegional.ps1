@@ -798,11 +798,11 @@ function DellAllUpdate {
             -Description "Esta Tarea actualiza Bios y Driver del equipo Dell"
         # --------------------------------------------------------------------------------------- #
 
-        Write-Output '' > "C:\Program Files\Dell\file"  # No borrar ya que indica si el el primer reinicio del equipo
+        Write-Output '' > "C:\Users\admindesp\Desktop\Status.txt"  # No borrar ya que indica si el el primer reinicio del equipo
 
         # -------------Mini Scripts que controla el update de drivers y bios--------------------- #
         @'
-        $firtboot = Get-Content "C:\Program Files\Dell\file"
+        $firtboot = Get-Content "C:\Users\admindesp\Desktop\Status.txt"
 
         if ($firtboot){
 
@@ -828,9 +828,7 @@ function DellAllUpdate {
 
             # Este bloque solo se ejecuta cuando la maquina recibe el primer reinicio
                 
-            Write-Output 'Lista Para usar' > "C:\Program Files\Dell\file"
-
-            Write-Output 'Lista Para usar' > "C:\Users\admindesp\Desktop\Lista Para usar.txt"
+            Write-Output 'Lista Para usar' > "C:\Users\admindesp\Desktop\Status.txt"
 
             Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
                 -ArgumentList '/applyUpdates -reboot=enable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
