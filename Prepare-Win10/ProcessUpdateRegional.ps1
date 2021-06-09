@@ -903,7 +903,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             #MicroSip
             ############################
             googlerapidresponse
-            Antivirus
+            #Antivirus
             VPNRegional
             DellAllUpdate
             ReinicioWin "54"
