@@ -83,7 +83,7 @@ if (!$Status){
         }
 
         2{
-            echo "sigo con lo demas"
+            Write-Output "sigo con lo demas"
             Pause
         }
     }
