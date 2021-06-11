@@ -45,12 +45,12 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             Write-Output '54' > C:\PrepareWin10\CodigoPais.txt
 
             # Solicito y Valido Credenciales de Soporte IT -----------------
-            . $PSScriptRoot\VerifyCred.ps1
+            . C:\PrepareWin10\VerifyCred.ps1
             VerifyCred "AR" "54"
             #---------------------------------------------------------------
             
             # Cambio nombre al equipo --------------------------------------
-            . $PSScriptRoot\ChangeName.ps1   # Cargo la funcion en memoria
+            . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
             ChangeName "AR"
             #---------------------------------------------------------------
 

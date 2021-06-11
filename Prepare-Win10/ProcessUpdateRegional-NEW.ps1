@@ -60,7 +60,7 @@ if (!$Status){
 
     Pause
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
-    . $PSScriptRoot\ShowMenu.ps1
+    . C:\PrepareWin10\ShowMenu.ps1
 
 
 
@@ -75,7 +75,7 @@ if (!$Status){
     
         1{
         # LA agrego a Dominio
-        . $PSScriptRoot\JoinAD.ps1
+        . C:\PrepareWin10\JoinAD.ps1
         JoinAD $Pais $CodigoPais
             
         }
