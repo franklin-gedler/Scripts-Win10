@@ -10,13 +10,7 @@ Write-Output ""
 
 Write-Output " _____________________________________________________________________________________________________"
 
-$Status= Get-ChildItem -Path C:\Users\admindesp\Desktop\ -Name Status.txt
-
-if (!$Status){
-
-    mkdir C:\PrepareWin10 -Force > NULL
-
-    Copy-Item -Path "C:\Windows\Setup\Scripts\*" -Destination C:\PrepareWin10 -Force -Recurse
+function DownloadModules {
 
     # Descargo todos los modulos necesarios
     $token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
@@ -25,7 +19,19 @@ if (!$Status){
     Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/VerifyCred.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\VerifyCred.ps1"
     Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ChangeName.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\ChangeName.ps1"
     Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/JoinAD.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\JoinAD.ps1"
-    
+}
+
+$Status= Get-ChildItem -Path C:\Users\admindesp\Desktop\ -Name Status.txt
+
+if (!$Status){
+
+    mkdir C:\PrepareWin10 -Force > NULL
+
+    Copy-Item -Path "C:\Windows\Setup\Scripts\*" -Destination C:\PrepareWin10 -Force -Recurse
+
+    # Descargo los Modulos
+    DownloadModules
+
     Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
 
     # creo la tarea de windows para que se llame el script a el mismo
@@ -35,7 +41,7 @@ if (!$Status){
 
     $trigger =  New-ScheduledTaskTrigger -AtStartup
 
-    Register-ScheduledTask -RunLevel Highest -User admindesp `
+    Register-ScheduledTask -RunLevel Highest -User DESPEGAR\admindesp `
             -Action $action -Trigger $trigger -TaskName 'Preparacion Win 10' `
             -Description "Esta Tarea se ejcuta cuando se prepara un equipo"
 
@@ -46,6 +52,7 @@ if (!$Status){
 
 }else{
     
+    DownloadModules
     $Status = Get-Content C:\Users\admindesp\Desktop\status.txt
     $Global:Pais = Get-Content C:\PrepareWin10\Pais.txt
     $Global:CodigoPais = Get-Content C:\PrepareWin10\CodigoPais.txt

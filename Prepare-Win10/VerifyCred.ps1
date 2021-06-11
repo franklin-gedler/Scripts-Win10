@@ -57,7 +57,7 @@ function VerifyCred {
     Write-Host "   Credenciales Validadas con el Dominio: $Very " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ############################################################## "
 
-    $cred | Export-Clixml -Path C:\PrepareWin10\CredSoporte.xml
+    $cred | Export-Clixml -Path C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml
 
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"

@@ -6,8 +6,12 @@ function JoinAD {
     # $1 = Pais
     # $2 = CodigoPais
 
-    $cred = Import-CliXml -Path C:\PrepareWin10\CredSoporte.xml
+    $cred = Import-CliXml -Path C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml
 
+    $NCompu = $env:COMPUTERNAME
+
+    Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
+    Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
     $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
         -SearchScope Subtree -Server "10.40.$2.1" `
         -Credential $cred | Select-Object -ExpandProperty DistinguishedName
