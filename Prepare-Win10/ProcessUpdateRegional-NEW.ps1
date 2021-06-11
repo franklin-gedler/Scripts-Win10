@@ -29,8 +29,8 @@ function RunScript {
 
 
     # seteo el script que se va a ejecutar
-    New-ItemProperty -Path 'HKCU:HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10' -Value "C:\PrepareWin10\SetupComplete.cmd"
-        
+    #New-ItemProperty -Path 'HKCU:HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10' -Value "C:\PrepareWin10\SetupComplete.cmd"
+    New-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10' -Value '"C:\PrepareWin10\SetupComplete.cmd"'
 }
 
 function StopScript {
@@ -38,7 +38,8 @@ function StopScript {
     Set-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLUA' -Value 1
     
     # Remuevo el Script que se va a Ejecutar
-    Remove-ItemProperty -Path 'HKCU:HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10'
+    #Remove-ItemProperty -Path 'HKCU:HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10'
+    Remove-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10'
 }
 
 $Status= Get-ChildItem -Path C:\Users\admindesp\Desktop\ -Name Status.txt
