@@ -7,31 +7,12 @@ function VerifyCred {
     # $1 = Pais
     # $2 = CodigoPais
     Write-Output "YO $env:USERNAME ejecuto el script"
-    Write-Output ""
-    Write-Output " ================================================ "
-    Write-Host "       Verificando conexion con el Dominio        " -ForegroundColor Yellow -BackgroundColor Black
-    Write-Output " ================================================ "
+    
+    # Verifico si esta conectado al AD
+    . C:\PrepareWin10\ValidateConnectAD.ps1
+    ValidateConnectAD $1 $2
 
-    $CAD = $(Test-Connection "10.40.$2.1" -Count 2 -Quiet -ErrorAction SilentlyContinue)
-
-    while("$CAD" -eq 'False'){
-        Write-Output ""
-        Write-Output " ############################################################## "
-        Write-Host " Error al conectar con $1.INFRA.D, por favor verificar conexion " -ForegroundColor Red -BackgroundColor Black
-        Write-Output " ############################################################## "
-        Pause
-        $CAD = $(Test-Connection "10.40.$2.1" -Count 2 -Quiet -ErrorAction SilentlyContinue)
-        Write-Output ""
-    }
-    Write-Output ""
-    Write-Output " ########################## "
-    Write-Host " Conexion con el Dominio OK " -ForegroundColor Green -BackgroundColor Black
-    Write-Output " ########################## "
-
-    Write-Output ""
-    Write-Output "_________________________________________________________________________________________"
-    Write-Output ""
-
+    # Solicito Credenciales
     $Global:cred = Get-Credential $1\ -Message "Ingresar Credenciales, $1\Nombre.Apellido"
 
     Write-Output " ============================================== "
