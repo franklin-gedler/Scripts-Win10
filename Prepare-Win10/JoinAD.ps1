@@ -5,7 +5,7 @@ function JoinAD {
 
     # $1 = Pais
     # $2 = CodigoPais
-    
+
     Write-Output "YO $env:USERNAME ejecuto el script"
     #$cred = Import-CliXml -Path "C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml"
 
@@ -47,9 +47,29 @@ function JoinAD {
 
     $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
         -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
-        -WarningAction SilentlyContinue -PassThru           
+        -WarningAction SilentlyContinue -PassThru
     
-    #$Binding = Add-Computer -NewName "$NCompu" -DomainName ar.infra.d -Force -Credential $cred -PassThru
+    Start-Sleep -Seconds 20
+
+    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
+        -SearchScope Subtree -Server "10.40.$2.1" `
+        -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+
+    while (!$consul){
+        Write-Output " ====================== "
+        Write-Host "   Reintentando Enlazar   " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Output " ====================== "
+        Remove-Computer -UnjoinDomainCredential $cred -WorkgroupName "TRABAJO" -Force  ## bajo localmente el equipo de la falsa subida a dominio
+        
+        $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
+            -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
+            -WarningAction SilentlyContinue -PassThru
+
+        $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
+            -SearchScope Subtree -Server "10.40.$2.1" `
+            -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+    }
+    <#
     while ($Binding.HasSucceeded -eq $False) {
         Write-Output ""
         Write-Output " #################################### "
@@ -64,7 +84,8 @@ function JoinAD {
             -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
             -WarningAction SilentlyContinue -PassThru  
     }
-
+    #>
+    
     Write-Output ""
     Write-Output " ######################################################### "
     Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
