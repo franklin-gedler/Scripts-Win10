@@ -44,7 +44,7 @@ if (!$Status){
     Register-ScheduledTask -RunLevel Highest -User DESPEGAR\admindesp `
             -Action $action -Trigger $trigger -TaskName 'Preparacion Win 10' `
             -Description "Esta Tarea se ejcuta cuando se prepara un equipo"
-
+    Pause
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
     . $PSScriptRoot\ShowMenu.ps1
 
