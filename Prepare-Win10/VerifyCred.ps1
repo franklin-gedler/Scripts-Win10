@@ -58,7 +58,7 @@ function VerifyCred {
     Write-Output " ############################################################## "
 
     $cred | Export-Clixml -Path C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml
-
+    Pause
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
