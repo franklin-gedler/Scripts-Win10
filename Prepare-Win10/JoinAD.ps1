@@ -59,6 +59,6 @@ function JoinAD {
     Write-Output " ######################################################### "
     Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ######################################################### "
-
+    Pause
     # _____________________________________________________________________________________________________
 }
