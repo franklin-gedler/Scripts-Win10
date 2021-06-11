@@ -65,6 +65,8 @@ function JoinAD {
             -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
             -WarningAction SilentlyContinue -PassThru
 
+        Start-Sleep -Seconds 20
+        
         $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
             -SearchScope Subtree -Server "10.40.$2.1" `
             -Credential $cred | Select-Object -ExpandProperty DistinguishedName
