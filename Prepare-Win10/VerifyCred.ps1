@@ -6,7 +6,7 @@ function VerifyCred {
 
     # $1 = Pais
     # $2 = CodigoPais
-
+    Write-Output "YO $env:USERNAME ejecuto el script"
     Write-Output ""
     Write-Output " ================================================ "
     Write-Host "       Verificando conexion con el Dominio        " -ForegroundColor Yellow -BackgroundColor Black
@@ -33,6 +33,7 @@ function VerifyCred {
     Write-Output ""
 
     $Global:cred = Get-Credential $1\ -Message "Ingresar Credenciales, $1\Nombre.Apellido"
+
     Write-Output " ============================================== "
     Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ============================================== "
@@ -57,7 +58,17 @@ function VerifyCred {
     Write-Host "   Credenciales Validadas con el Dominio: $Very " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ############################################################## "
 
-    $cred | Export-Clixml -Path C:\PrepareWin10\CredSoporte_admindesp_DESPEGAR.xml
+    #$cred | Export-Clixml -Path "C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml"
+
+    # Creo la llave
+    $Key = New-Object Byte[] 32
+    [Security.Cryptography.RNGCryptoServiceProvider]::Create().GetBytes($Key)
+    $Key | out-file C:\PrepareWin10\aes.key
+
+    # Exporto Usuario y Contraseña
+    ($cred).UserName | Add-Content C:\PrepareWin10\Ucred.txt
+    ($cred).Password | ConvertFrom-SecureString -Key (Get-Content C:\PrepareWin10\aes.key) | Set-Content C:\PrepareWin10\Pcred.txt
+
     Pause
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"

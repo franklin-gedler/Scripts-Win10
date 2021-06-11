@@ -5,8 +5,13 @@ function JoinAD {
 
     # $1 = Pais
     # $2 = CodigoPais
+    Write-Output "YO $env:USERNAME ejecuto el script"
+    #$cred = Import-CliXml -Path "C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml"
 
-    $cred = Import-CliXml -Path C:\PrepareWin10\CredSoporte_admindesp_DESPEGAR.xml
+    # Importo Usuario y Clave
+    $Ucred = Get-Content C:\PrepareWin10\Ucred.txt
+    $Pcred = Get-Content C:\PrepareWin10\Pcred.txt | ConvertTo-SecureString -Key (Get-Content C:\PrepareWin10\aes.key)
+    $cred = New-Object System.Management.Automation.PsCredential($Ucred,$Pcred)
 
     $NCompu = $env:COMPUTERNAME
 

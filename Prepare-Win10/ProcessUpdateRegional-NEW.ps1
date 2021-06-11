@@ -11,6 +11,7 @@ Write-Output ""
 Write-Output " _____________________________________________________________________________________________________"
 
 Write-Output 'Preparando lo necesario . . . Espere'
+Write-Output "YO $env:USERNAME ejecuto el script"
 function DownloadModules {
 
     # Descargo todos los modulos necesarios
