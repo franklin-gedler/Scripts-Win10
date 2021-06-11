@@ -45,7 +45,7 @@ function JoinAD {
 
     #add-computer -DomainName $domainname -Credential $Credential -OUPath $OU -force -Options JoinWithNewName,AccountCreate -restart
 
-    $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
+    Add-Computer -DomainName "$1.infra.d" `
         -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
         -WarningAction SilentlyContinue -PassThru
     
@@ -61,7 +61,7 @@ function JoinAD {
         Write-Output " ====================== "
         Remove-Computer -UnjoinDomainCredential $cred -WorkgroupName "TRABAJO" -Force  ## bajo localmente el equipo de la falsa subida a dominio
         
-        $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
+        Add-Computer -DomainName "$1.infra.d" `
             -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
             -WarningAction SilentlyContinue -PassThru
 
