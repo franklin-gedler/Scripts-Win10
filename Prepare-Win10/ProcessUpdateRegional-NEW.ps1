@@ -18,6 +18,13 @@ if (!$Status){
 
     Copy-Item -Path "C:\Windows\Setup\Scripts\*" -Destination C:\PrepareWin10 -Force -Recurse
 
+    # Descargo todos los modulos necesarios
+    $token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    $headers = @{Authorization = "token $($token)"}
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ShowMenu.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\ShowMenu.ps1"
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/VerifyCred.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\VerifyCred.ps1"
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ChangeName.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\ChangeName.ps1"
+
     Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
 
     # creo la tarea de windows para que se llame el script a el mismo
@@ -52,7 +59,7 @@ if (!$Status){
         }
 
         2{
-            
+            echo "sigo con lo demas"
         }
     }
 }

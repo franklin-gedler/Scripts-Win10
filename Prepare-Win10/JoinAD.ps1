@@ -6,6 +6,8 @@ function JoinAD {
     # $1 = Pais
     # $2 = CodigoPais
 
+    $cred = Import-CliXml -Path C:\PrepareWin10\CredSoporte.xml
+
     $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
         -SearchScope Subtree -Server "10.40.$2.1" `
         -Credential $cred | Select-Object -ExpandProperty DistinguishedName
