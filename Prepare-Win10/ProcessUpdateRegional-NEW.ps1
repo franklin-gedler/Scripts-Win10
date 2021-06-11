@@ -10,6 +10,7 @@ Write-Output ""
 
 Write-Output " _____________________________________________________________________________________________________"
 
+Write-Output 'Preparando lo necesario . . . Espere'
 function DownloadModules {
 
     # Descargo todos los modulos necesarios
