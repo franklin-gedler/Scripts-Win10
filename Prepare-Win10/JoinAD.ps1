@@ -6,7 +6,7 @@ function JoinAD {
     # $1 = Pais
     # $2 = CodigoPais
 
-    $cred = Import-CliXml -Path C:\PrepareWin10\CredSoporte_SYSTEM_DESPEGAR.xml
+    $cred = Import-CliXml -Path C:\PrepareWin10\CredSoporte_admindesp_DESPEGAR.xml
 
     $NCompu = $env:COMPUTERNAME
 
