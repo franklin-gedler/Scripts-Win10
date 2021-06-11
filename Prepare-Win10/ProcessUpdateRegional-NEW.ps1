@@ -83,6 +83,7 @@ if (!$Status){
 
         2{
             echo "sigo con lo demas"
+            Pause
         }
     }
 }

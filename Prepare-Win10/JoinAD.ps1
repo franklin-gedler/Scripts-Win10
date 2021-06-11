@@ -64,6 +64,12 @@ function JoinAD {
     Write-Output " ######################################################### "
     Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ######################################################### "
+
+    Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
+    
     Pause
+
+    Restart-Computer
+
     # _____________________________________________________________________________________________________
 }
