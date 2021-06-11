@@ -17,10 +17,10 @@ function DownloadModules {
     $token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
     $headers = @{Authorization = "token $($token)"}
     $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ShowMenu.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\ShowMenu.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/VerifyCred.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\VerifyCred.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ChangeName.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\ChangeName.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/JoinAD.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\JoinAD.ps1"
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ShowMenu.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\ShowMenu.ps1"
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/VerifyCred.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\VerifyCred.ps1"
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ChangeName.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\ChangeName.ps1"
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/JoinAD.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\JoinAD.ps1"
 }
 
 function RunScript {
