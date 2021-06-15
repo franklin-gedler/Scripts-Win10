@@ -52,7 +52,6 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             # Sincronizo hora y la seteo para que la tome del AD -----------
             . C:\PrepareWin10\TimeSet.ps1
             TimeSet "Argentina Standard Time"
-
             #---------------------------------------------------------------
             
             # Cambio nombre al equipo --------------------------------------
