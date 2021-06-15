@@ -1,7 +1,15 @@
 function Bitlocker {
+   
     param (
-        [String]$1
+        $1
     )
+
+    $NCompu = $env:COMPUTERNAME
+
+    # Importo Usuario y Clave de RED
+    $Ucred = Get-Content C:\PrepareWin10\Ucred.txt
+    $Pcred = Get-Content C:\PrepareWin10\Pcred.txt | ConvertTo-SecureString -Key (Get-Content C:\PrepareWin10\aes.key)
+    $cred = New-Object System.Management.Automation.PsCredential($Ucred,$Pcred)
     
     Write-Output ""
     Write-Output " ========================================= "
@@ -26,9 +34,7 @@ function Bitlocker {
         Write-Output " ============================== "
         Write-Host "     Habilitando Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ============================== "
-        #Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
-
-        #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
+       
         Clear-BitLockerAutoUnlock > NULL
         Disable-BitLocker -MountPoint C: > NULL
         #Clear-Tpm > NULL    Si activo esto tengo que reiniciar para que se inicialice el TPM y poder activar bitlocker
@@ -38,10 +44,9 @@ function Bitlocker {
         Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
         manage-bde -on C: -UsedSpaceOnly -rp > NULL
 
-
+        # Respaldo la llave ID y Pass en el Escritorio
         (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
-        #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
-
+        
         $KeyID = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
                 | Where-Object KeyProtectorType -eq 'RecoveryPassword' `
                 | Select-Object -ExpandProperty KeyProtectorId
@@ -51,8 +56,23 @@ function Bitlocker {
 
         $Global:IdKeyBitlocker = "KeyProtectorId:  $KeyID ------------------------------ RecoveryPassword:  $PassRecovery"
 
-        # Envia el mail con id y recovery
-        SendMail
+        # Envia el mail con id y recovery -----------------------------------------------------------------
+        $Mail = 'soportescripts@gmail.com'
+        $PassFile = "C:\PrepareWin10\passfile"
+        $Key = "C:\PrepareWin10\key"
+
+        $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
+                    -ArgumentList "$Mail", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
+
+        #$PassMail = ConvertTo-SecureString "micontraseña" -AsPlainText -Force
+        #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
+        #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail, $PassMail
+        
+        Send-MailMessage -From "$Mail" -To "soporte@despegar.com" `
+                        -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
+                        -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
+        #--------------------------------------------------------------------------------------------------
+        
 
         Write-Output ""
         Write-Output " ============================= "
@@ -77,8 +97,8 @@ function Bitlocker {
             New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles\$1" -Credential $cred
             Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$NCompu.txt -Destination Z:\
         }
-
     }
+
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""

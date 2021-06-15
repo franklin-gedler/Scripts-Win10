@@ -12,6 +12,8 @@ Write-Output " _________________________________________________________________
 
 Write-Output 'Preparando lo necesario . . . Espere'
 Write-Output "YO $env:USERNAME ejecuto el script"
+
+<#
 function DownloadModules {
 
     # Descargo todos los modulos necesarios
@@ -24,6 +26,20 @@ function DownloadModules {
     Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/JoinAD.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\JoinAD.ps1"
     Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ValidateConnectAD.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\ValidateConnectAD.ps1"
     Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/TimeSet.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\TimeSet.ps1"
+    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/Bitlocker.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\Bitlocker.ps1"
+}
+#>
+
+function DownloadModules {
+    param (
+        $1
+    )
+    $token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    $headers = @{Authorization = "token $($token)"}
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Headers $headers `
+        -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/$1.ps1" `
+        -UseBasicParsing -OutFile "C:\PrepareWin10\$1.ps1"
 }
 
 function RunScript {
@@ -53,9 +69,6 @@ if (!$Status){
 
     Copy-Item -Path "C:\Windows\Setup\Scripts\*" -Destination C:\PrepareWin10 -Force -Recurse
 
-    # Descargo los Modulos
-    DownloadModules
-
     Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
 
     # Configuro Windows para que ejecute el script al iniciar Windows
@@ -63,8 +76,16 @@ if (!$Status){
 
     Pause
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
+    DownloadModules "ShowMenu"
+    DownloadModules "ValidateConnectAD"
+    DownloadModules "VerifyCred"
+    DownloadModules "ChangeName"
+    DownloadModules "TimeSet"
     . C:\PrepareWin10\ShowMenu.ps1
 
+    Pause
+    timeout /t 10
+    Restart-Computer
 
 
 }else{
@@ -77,13 +98,48 @@ if (!$Status){
     switch($Status){
     
         1{
-        # LA agrego a Dominio
-        . C:\PrepareWin10\JoinAD.ps1
-        JoinAD $Pais $CodigoPais
-            
+            DownloadModules "Bitlocker"
+            . C:\PrepareWin10\Bitlocker.ps1
+            Bitlocker $Pais
+
+            Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
+            Pause
+            timeout /t 10
+            Restart-Computer
         }
 
         2{
+            # Descargo he instalo el paquete de programas segun el Pais que hayan seleccionado
+
+            switch ($Pais) {
+                
+                AR{
+                    Write-Output "Programas Para AR"
+                    DownloadModules "ARProgramPackages"
+                    . C:\PrepareWin10\ARProgramPackages.ps1
+                }
+                
+            }
+
+            Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
+            Pause
+            timeout /t 10
+            Restart-Computer
+        }
+
+        3{
+            # La agrego a Dominio
+            DownloadModules "JoinAD"
+            . C:\PrepareWin10\JoinAD.ps1
+            JoinAD $Pais $CodigoPais
+
+            Write-Output '4' > C:\Users\admindesp\Desktop\status.txt
+            Pause
+            timeout /t 10
+            Restart-Computer
+        }
+
+        4{
             Write-Output "sigo con lo demas"
             Pause
         }

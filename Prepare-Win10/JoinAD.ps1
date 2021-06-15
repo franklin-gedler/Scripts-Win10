@@ -10,8 +10,7 @@ function JoinAD {
     #$cred = Import-CliXml -Path "C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml"
 
     # Importo Usuario y Clave
-    #$Ucred = Get-Content C:\PrepareWin10\Ucred.txt
-    $Ucred = Get-Content C:\PrepareWin10\Ucred.txt | ConvertTo-SecureString -Key (Get-Content C:\PrepareWin10\aes.key)
+    $Ucred = Get-Content C:\PrepareWin10\Ucred.txt
     $Pcred = Get-Content C:\PrepareWin10\Pcred.txt | ConvertTo-SecureString -Key (Get-Content C:\PrepareWin10\aes.key)
     $cred = New-Object System.Management.Automation.PsCredential($Ucred,$Pcred)
 
@@ -93,12 +92,6 @@ function JoinAD {
     Write-Output " ######################################################### "
     Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
     Write-Output " ######################################################### "
-
-    Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
-    
-    Pause
-    timeout /t 10
-    Restart-Computer
 
     # _____________________________________________________________________________________________________
 }

@@ -11,9 +11,5 @@ function ChangeName {
         #Write-Output "Nuevo nombre a Setear: $NCompu"
     }
     Rename-Computer -NewName $NCompu -WarningAction SilentlyContinue
-
-    Pause
-    timeout /t 10
-    Restart-Computer
-    #Start-Sleep -Seconds 5
+    
 }

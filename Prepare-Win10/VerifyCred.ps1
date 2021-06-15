@@ -50,7 +50,6 @@ function VerifyCred {
     ($cred).UserName | Add-Content C:\PrepareWin10\Ucred.txt
     ($cred).Password | ConvertFrom-SecureString -Key (Get-Content C:\PrepareWin10\aes.key) | Set-Content C:\PrepareWin10\Pcred.txt
 
-    Pause
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
