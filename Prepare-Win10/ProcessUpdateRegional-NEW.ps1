@@ -74,7 +74,6 @@ if (!$Status){
     # Configuro Windows para que ejecute el script al iniciar Windows
     RunScript
 
-    Pause
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
     DownloadModules "ShowMenu"
     DownloadModules "ValidateConnectAD"
@@ -90,7 +89,6 @@ if (!$Status){
 
 }else{
     
-    DownloadModules
     $Status = Get-Content C:\Users\admindesp\Desktop\status.txt
     $Global:Pais = Get-Content C:\PrepareWin10\Pais.txt
     $Global:CodigoPais = Get-Content C:\PrepareWin10\CodigoPais.txt
