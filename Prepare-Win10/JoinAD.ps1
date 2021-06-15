@@ -10,7 +10,8 @@ function JoinAD {
     #$cred = Import-CliXml -Path "C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml"
 
     # Importo Usuario y Clave
-    $Ucred = Get-Content C:\PrepareWin10\Ucred.txt
+    #$Ucred = Get-Content C:\PrepareWin10\Ucred.txt
+    $Ucred = Get-Content C:\PrepareWin10\Ucred.txt | ConvertTo-SecureString -Key (Get-Content C:\PrepareWin10\aes.key)
     $Pcred = Get-Content C:\PrepareWin10\Pcred.txt | ConvertTo-SecureString -Key (Get-Content C:\PrepareWin10\aes.key)
     $cred = New-Object System.Management.Automation.PsCredential($Ucred,$Pcred)
 
@@ -46,8 +47,8 @@ function JoinAD {
     #add-computer -DomainName $domainname -Credential $Credential -OUPath $OU -force -Options JoinWithNewName,AccountCreate -restart
 
     Add-Computer -DomainName "$1.infra.d" `
-        -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
-        -WarningAction SilentlyContinue -PassThru
+        -Credential $cred -Force -Options AccountCreate `
+        -WarningAction SilentlyContinue
     
     Start-Sleep -Seconds 20
 
@@ -62,8 +63,8 @@ function JoinAD {
         Remove-Computer -UnjoinDomainCredential $cred -WorkgroupName "TRABAJO" -Force  ## bajo localmente el equipo de la falsa subida a dominio
         
         Add-Computer -DomainName "$1.infra.d" `
-            -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
-            -WarningAction SilentlyContinue -PassThru
+            -Credential $cred -Force -Options AccountCreate `
+            -WarningAction SilentlyContinue
 
         Start-Sleep -Seconds 20
         

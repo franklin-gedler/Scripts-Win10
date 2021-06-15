@@ -48,6 +48,12 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             . C:\PrepareWin10\VerifyCred.ps1
             VerifyCred "AR" "54"
             #---------------------------------------------------------------
+
+            # Sincronizo hora y la seteo para que la tome del AD -----------
+            . C:\PrepareWin10\TimeSet.ps1
+            TimeSet "Argentina Standard Time"
+
+            #---------------------------------------------------------------
             
             # Cambio nombre al equipo --------------------------------------
             . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria

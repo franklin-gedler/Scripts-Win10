@@ -47,7 +47,8 @@ function VerifyCred {
     $Key | out-file C:\PrepareWin10\aes.key
 
     # Exporto Usuario y Contraseña
-    ($cred).UserName | Add-Content C:\PrepareWin10\Ucred.txt
+    #($cred).UserName | Add-Content C:\PrepareWin10\Ucred.txt
+    ($cred).UserName | ConvertFrom-SecureString -Key (Get-Content C:\PrepareWin10\aes.key) | Set-Content C:\PrepareWin10\Ucred.txt
     ($cred).Password | ConvertFrom-SecureString -Key (Get-Content C:\PrepareWin10\aes.key) | Set-Content C:\PrepareWin10\Pcred.txt
 
     Pause
