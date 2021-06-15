@@ -97,7 +97,7 @@ function JoinAD {
     Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
     
     Pause
-
+    timeout /t 10
     Restart-Computer
 
     # _____________________________________________________________________________________________________
