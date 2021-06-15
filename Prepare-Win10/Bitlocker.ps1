@@ -1,0 +1,85 @@
+function Bitlocker {
+    param (
+        [String]$1
+    )
+    
+    Write-Output ""
+    Write-Output " ========================================= "
+    Write-Host "     Verificando si el TPM esta Activo     " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ========================================= "
+    $tpmpresent = (Get-Tpm).TpmPresent
+    $tpmready = (Get-Tpm).TpmReady
+
+    if("$tpmpresent" -eq "False" -And "$tpmready" -eq "False"){
+        Write-Output ""
+        Write-Output " ####################################################################################### "
+        Write-Host " ERROR: TPM NO ACTIVO, POR FAVOR VERIFICAR EN EL BIOS Y ACTIVAR EL BITLOCKER MANUALMENTE " -ForegroundColor Red -BackgroundColor Black
+        Write-Output " ####################################################################################### "
+        Write-Output ""
+
+    }else {
+        Write-Output ""
+        Write-Output " ############ "
+        Write-Host "  TPM Activo  " -ForegroundColor Green -BackgroundColor Black
+        Write-Output " ############ "
+        Write-Output ""
+        Write-Output " ============================== "
+        Write-Host "     Habilitando Bitlocker      " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Output " ============================== "
+        #Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector
+
+        #Enable-Bitlocker -MountPoint c: -UsedSpaceOnly -SkipHardwareTest -RecoveryPasswordProtector
+        Clear-BitLockerAutoUnlock > NULL
+        Disable-BitLocker -MountPoint C: > NULL
+        #Clear-Tpm > NULL    Si activo esto tengo que reiniciar para que se inicialice el TPM y poder activar bitlocker
+        Start-Sleep -Seconds 10
+
+        Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
+        Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
+        manage-bde -on C: -UsedSpaceOnly -rp > NULL
+
+
+        (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+        #(Get-BitLockerVolume -mount c).keyprotector[1] | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+
+        $KeyID = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
+                | Where-Object KeyProtectorType -eq 'RecoveryPassword' `
+                | Select-Object -ExpandProperty KeyProtectorId
+
+        $PassRecovery = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
+                        | Where-Object KeyProtectorType -eq 'RecoveryPassword' | Select-Object -ExpandProperty RecoveryPassword
+
+        $Global:IdKeyBitlocker = "KeyProtectorId:  $KeyID ------------------------------ RecoveryPassword:  $PassRecovery"
+
+        # Envia el mail con id y recovery
+        SendMail
+
+        Write-Output ""
+        Write-Output " ============================= "
+        Write-Host "  Verificando conexion al NAS  " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Output " ============================= "
+        $nas = Test-Connection 10.40.54.52 -Count 2 -Quiet
+        if ("$nas" -eq 'False'){
+            Write-Output ""
+            Write-Output " ############################################################################################################## "
+            Write-Host "  Problemas para conectarnos al NAS, se creo archivo $NCompu en el escritorio con el ID y PASS Bitlocker  " -ForegroundColor Red -BackgroundColor Black
+            Write-Output " ############################################################################################################## "
+        }else {
+            Write-Output ""
+            Write-Output " ######################## "
+            Write-Host "  Conexion con el NAS OK  " -ForegroundColor Green -BackgroundColor Black
+            Write-Output " ######################## "
+            Write-Output ""
+            Write-Output ""
+            Write-Output " =========================== "
+            Write-Host "  Copiando ID y PASS al NAS  " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output " =========================== "
+            New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles\$1" -Credential $cred
+            Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$NCompu.txt -Destination Z:\
+        }
+
+    }
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output ""
+}

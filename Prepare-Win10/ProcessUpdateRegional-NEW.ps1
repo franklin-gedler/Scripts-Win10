@@ -28,12 +28,12 @@ function DownloadModules {
 
 function RunScript {
     # Deshabilito el control de usuarios UAC
-    Set-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLUA' -Value 0
+    Set-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLUA' -Value 0 > NULL
 
 
     # seteo el script que se va a ejecutar
     #New-ItemProperty -Path 'HKCU:HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10' -Value "C:\PrepareWin10\SetupComplete.cmd"
-    New-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10' -Value '"C:\PrepareWin10\SetupComplete.cmd"'
+    New-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10' -Value '"C:\PrepareWin10\SetupComplete.cmd"' > NULL
 }
 
 function StopScript {
