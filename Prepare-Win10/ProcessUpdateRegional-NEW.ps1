@@ -82,6 +82,11 @@ if (!$Status){
     DownloadModules "TimeSet"
     . C:\PrepareWin10\ShowMenu.ps1
 
+    # Activo Bitlocker
+    DownloadModules "Bitlocker"
+    . C:\PrepareWin10\Bitlocker.ps1
+    Bitlocker $Pais
+
     Pause
     timeout /t 10
     Restart-Computer
@@ -97,17 +102,6 @@ if (!$Status){
     switch($Status){
     
         1{
-            DownloadModules "Bitlocker"
-            . C:\PrepareWin10\Bitlocker.ps1
-            Bitlocker $Pais
-
-            Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
-            Pause
-            timeout /t 10
-            Restart-Computer
-        }
-
-        2{
             # Descargo he instalo el paquete de programas segun el Pais que hayan seleccionado
             $Global:Pais = Get-Content C:\PrepareWin10\Pais.txt
             switch ($Pais) {
@@ -120,6 +114,15 @@ if (!$Status){
                 }
                 
             }
+
+            Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
+            Pause
+            timeout /t 10
+            Restart-Computer
+        }
+
+        2{
+            
 
             Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
             Pause
