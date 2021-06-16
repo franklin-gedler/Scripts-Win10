@@ -42,7 +42,8 @@ function Bitlocker {
 
         Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
         Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
-        C:\Windows\system32\manage-bde.exe -on C: -UsedSpaceOnly -rp > NULL
+        #C:\Windows\system32\manage-bde.exe -on C: -UsedSpaceOnly -rp > NULL
+        Start-Process -Wait C:\Windows\system32\manage-bde.exe -ArgumentList '-on C: -UsedSpaceOnly -rp > NULL'
 
         # Respaldo la llave ID y Pass en el Escritorio
         (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
