@@ -83,6 +83,7 @@ if (!$Status){
     . C:\PrepareWin10\ShowMenu.ps1
 
     # Activo Bitlocker
+    $Pais = Get-Content C:\PrepareWin10\Pais.txt
     DownloadModules "Bitlocker"
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
@@ -96,20 +97,21 @@ if (!$Status){
     
     Set-Location -Path C:\PrepareWin10\
     $Status = Get-Content C:\Users\admindesp\Desktop\status.txt
-    $Global:Pais = Get-Content C:\PrepareWin10\Pais.txt
-    $Global:CodigoPais = Get-Content C:\PrepareWin10\CodigoPais.txt
+    $Pais = Get-Content C:\PrepareWin10\Pais.txt
+    $CodigoPais = Get-Content C:\PrepareWin10\CodigoPais.txt
 
     switch($Status){
     
         1{
             # Descargo he instalo el paquete de programas segun el Pais que hayan seleccionado
-            $Global:Pais = Get-Content C:\PrepareWin10\Pais.txt
+            $Pais = Get-Content C:\PrepareWin10\Pais.txt
             switch ($Pais) {
                 
                 AR{
                     Write-Output "Programas Para AR"
                     DownloadModules "ARProgramPackages"
                     . C:\PrepareWin10\ARProgramPackages.ps1
+                    Pause
                     Exit
                 }
                 

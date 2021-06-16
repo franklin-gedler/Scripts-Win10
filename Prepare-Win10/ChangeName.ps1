@@ -17,6 +17,7 @@ function ChangeName {
         #Write-Output "Nuevo nombre a Setear: $NCompu"
     }
     Rename-Computer -NewName $NCompu -WarningAction SilentlyContinue
+    Write-Output $NCompu > C:\PrepareWin10\NCompu.txt
     
     Write-Output ""
     Write-Output " ######### "

@@ -4,7 +4,7 @@ function Bitlocker {
         $1
     )
 
-    $NCompu = $env:COMPUTERNAME
+    $NCompu = Get-Content C:\PrepareWin10\NCompu.txt
 
     # Importo Usuario y Clave de RED
     $Ucred = Get-Content C:\PrepareWin10\Ucred.txt
@@ -42,9 +42,8 @@ function Bitlocker {
 
         Add-BitLockerKeyProtector -MountPoint $env:SystemDrive -RecoveryPasswordProtector
         Add-BitLockerKeyProtector -MountPoint $env:SystemDrive -TpmProtector
-        Get-Command -Name manage-bde
-        Pause
-        manage-bde.exe -on $env:SystemDrive
+        #Get-Command -Name manage-bde
+        manage-bde.exe -on $env:SystemDrive > NULL
         Pause
 
         <#
