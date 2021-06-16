@@ -124,12 +124,15 @@ if (!$Status){
         }
 
         2{
-            
-
             Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
-            Pause
-            timeout /t 10
-            Restart-Computer
+            DownloadModules "PowerAdapterStatus"
+            DownloadModules "DellCommandUpdate"
+            . C:\PrepareWin10\DellCommandUpdate.ps1
+            DellCommandUpdate
+
+            #Pause
+            #timeout /t 10
+            #Restart-Computer    El reinicio lo controla DellCommandUpdate
         }
 
         3{
