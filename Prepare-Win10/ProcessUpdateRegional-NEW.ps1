@@ -104,13 +104,14 @@ if (!$Status){
     
         1{
             # Descargo he instalo el paquete de programas segun el Pais que hayan seleccionado
-            $Pais = Get-Content C:\PrepareWin10\Pais.txt
+            #$Pais = Get-Content C:\PrepareWin10\Pais.txt
             switch ($Pais) {
                 
                 AR{
                     Write-Output "Programas Para AR"
                     DownloadModules "ARProgramPackages"
                     . C:\PrepareWin10\ARProgramPackages.ps1
+                    ARProgramPackages
                     Pause
                     Exit
                 }
