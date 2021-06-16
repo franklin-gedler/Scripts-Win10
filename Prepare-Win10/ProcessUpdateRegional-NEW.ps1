@@ -115,7 +115,7 @@ if (!$Status){
                     Write-Output "Programas Para AR"
                     DownloadModules "ARProgramPackages"
                     . C:\PrepareWin10\ARProgramPackages.ps1
-                    break
+                    Exit
                 }
                 
             }
