@@ -42,11 +42,14 @@ function Bitlocker {
 
         Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
         Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
+        @'
         manage-bde -on C: -UsedSpaceOnly -rp > NULL
+
+'@ | Add-Content C:\PrepareWin10\ActiveBitlocker.bat
         Pause
-        . "C:\Windows\system32\manage-bde" -on C: -UsedSpaceOnly -rp > NULL
-        Pause
-        Start-Process -Wait cmd.exe -ArgumentList 'manage-bde -on C: -UsedSpaceOnly -rp > NULL'
+
+        Start-Process -Wait C:\PrepareWin10\ActiveBitlocker.bat
+
         Pause
         
 

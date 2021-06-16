@@ -89,6 +89,7 @@ if (!$Status){
 
 }else{
     
+    Set-Location -Path C:\PrepareWin10\
     $Status = Get-Content C:\Users\admindesp\Desktop\status.txt
     $Global:Pais = Get-Content C:\PrepareWin10\Pais.txt
     $Global:CodigoPais = Get-Content C:\PrepareWin10\CodigoPais.txt
