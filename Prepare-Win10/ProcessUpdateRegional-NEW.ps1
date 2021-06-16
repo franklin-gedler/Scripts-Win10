@@ -12,6 +12,7 @@ Write-Output " _________________________________________________________________
 
 Write-Output 'Preparando lo necesario . . . Espere'
 Write-Output "YO $env:USERNAME ejecuto el script"
+Get-Location
 
 <#
 function DownloadModules {
