@@ -58,7 +58,7 @@ while(($inp = Read-Host -Prompt "Seleccione una Opcion") -ne "0"){
             . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
             ChangeName "AR"
             #---------------------------------------------------------------
-            break
+            Exit
         }
         2{
 
