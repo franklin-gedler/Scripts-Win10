@@ -40,15 +40,15 @@ function Bitlocker {
         #Clear-Tpm > NULL    Si activo esto tengo que reiniciar para que se inicialice el TPM y poder activar bitlocker
         Start-Sleep -Seconds 10
 
-        Enable-BitLocker -MountPoint C: -TpmProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
-        Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
+        Enable-BitLocker -MountPoint C: -TpmProtector -RecoveryPasswordProtector -SkipHardwareTest -UsedSpaceOnly -ErrorAction Continue
+        #Enable-BitLocker -MountPoint C: -RecoveryPasswordProtector -SkipHardwareTest
         @'
         manage-bde -on C: -UsedSpaceOnly -rp > NULL
 
 '@ | Add-Content C:\PrepareWin10\ActiveBitlocker.bat
         Pause
 
-        Start-Process -Wait C:\PrepareWin10\ActiveBitlocker.bat
+        #Start-Process -Wait C:\PrepareWin10\ActiveBitlocker.bat
 
         Pause
         
