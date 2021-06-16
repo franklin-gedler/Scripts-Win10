@@ -41,7 +41,7 @@ function Bitlocker {
         Start-Sleep -Seconds 10
 
         Add-BitLockerKeyProtector -MountPoint $env:SystemDrive -RecoveryPasswordProtector
-        Add-BitLockerKeyProtector -MountPoint $env:SystemDrive –TpmProtector
+        Add-BitLockerKeyProtector -MountPoint $env:SystemDrive -TpmProtector
         Get-Command -Name manage-bde
         Pause
         manage-bde.exe -on $env:SystemDrive
