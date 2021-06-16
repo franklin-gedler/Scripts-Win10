@@ -113,8 +113,6 @@ if (!$Status){
                     DownloadModules "ARProgramPackages"
                     . C:\PrepareWin10\ARProgramPackages.ps1
                     ARProgramPackages
-                    Pause
-                    Exit
                 }
                 
             }
