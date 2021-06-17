@@ -72,12 +72,22 @@ if (!$Status){
 
     # Configuro Windows para que ejecute el script al iniciar Windows
     RunScript
+    <#
+    $model = (Get-WmiObject Win32_ComputerSystem).Model
+    $model = $model -replace 'Latitude ' -replace ''
     
-    DownloadModules "PowerAdapterStatus"
-    DownloadModules "UpdateDriversBasic"
-    . C:\PrepareWin10\UpdateDriversBasic.ps1
-    UpdateDriversBasic
+    switch($model){
 
+        5411{
+            $ProgressPreference = 'SilentlyContinue'
+            Invoke-WebRequest -Uri "https://dl.dell.com/FOLDER06445726M/1/Intel-Rapid-Storage-Technology-Driver_KTG51_WIN64_17.9.1.1009_A03.EXE" `
+                -UseBasicParsing -OutFile $env:TMP\dellcommand\Intel-Rapid-Storage-Technology-Driver_KTG51_WIN64_17.9.1.1009_A03.EXE
+            
+            Start-Process -Wait $env:TMP\dellcommand\Intel-Rapid-Storage-Technology-Driver_KTG51_WIN64_17.9.1.1009_A03.EXE -ArgumentList '/s'
+        }
+    }
+    #>
+    
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
     DownloadModules "ShowMenu"
     DownloadModules "ValidateConnectAD"
@@ -91,6 +101,11 @@ if (!$Status){
     DownloadModules "Bitlocker"
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
+
+    #DownloadModules "PowerAdapterStatus"
+    #DownloadModules "UpdateDriversBasic"
+    #. C:\PrepareWin10\UpdateDriversBasic.ps1
+    #UpdateDriversBasic
 
     Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
     timeout /t 10
