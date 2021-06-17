@@ -74,7 +74,7 @@ function Bitlocker {
                         | Where-Object KeyProtectorType -eq 'RecoveryPassword' | Select-Object -ExpandProperty RecoveryPassword
 
         $Global:IdKeyBitlocker = "KeyProtectorId:  $KeyID ------------------------------ RecoveryPassword:  $PassRecovery"
-
+        <#
         # Envia el mail con id y recovery -----------------------------------------------------------------
         $Mail = 'soportescripts@gmail.com'
         $PassFile = "C:\PrepareWin10\passfile"
@@ -91,8 +91,8 @@ function Bitlocker {
                         -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
                         -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
         #--------------------------------------------------------------------------------------------------
+        #>
         
-
         Write-Output ""
         Write-Output " ============================= "
         Write-Host "  Verificando conexion al NAS  " -ForegroundColor Yellow -BackgroundColor Black
