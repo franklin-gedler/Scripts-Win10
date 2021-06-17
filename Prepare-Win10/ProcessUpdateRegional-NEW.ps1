@@ -83,13 +83,16 @@ if (!$Status){
     DownloadModules "TimeSet"
     . C:\PrepareWin10\ShowMenu.ps1
 
+    Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
+    Start-Service wuauserv -InformationAction SilentlyContinue
+
     # Activo Bitlocker
     $Pais = Get-Content C:\PrepareWin10\Pais.txt
     DownloadModules "Bitlocker"
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
 
-    Pause
+    
     timeout /t 10
     Restart-Computer
 
@@ -118,7 +121,7 @@ if (!$Status){
             }
 
             Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
-            Pause
+            
             timeout /t 10
             Restart-Computer
         }
