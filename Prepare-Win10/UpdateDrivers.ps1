@@ -5,7 +5,7 @@ function UpdateDrivers {
 
     Write-Output ""
     Write-Output " ===================  "
-    Write-Output "   Updating Drivers   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "   Updating Drivers   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ==================== "
     Write-Output ""
     
@@ -14,6 +14,10 @@ function UpdateDrivers {
     Install-Module PSWindowsUpdate -Confirm:$False -Force
     Import-Module PSWindowsUpdate
     Pause
+
+    Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
+    Start-Service wuauserv -InformationAction SilentlyContinue
+
     Install-WindowsUpdate -Confirm:$False -AutoReboot
     #Install-WindowsUpdate -AcceptAll
     Pause
