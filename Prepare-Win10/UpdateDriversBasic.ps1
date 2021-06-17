@@ -12,10 +12,10 @@ function UpdateDriversBasic {
 
     #Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
     #Start-Service wuauserv -InformationAction SilentlyContinue
-    Get-PnpDevice -Status ERROR
+    Get-PnpDevice -Status ERROR > NULL
     $StatusDriversBasic = $?
 
-    while ($StatusDriversBasic -eq "False") {
+    while ($StatusDriversBasic -eq "True") {
         Get-PnpDevice -Status ERROR
         $StatusDriversBasic = $?
     }
