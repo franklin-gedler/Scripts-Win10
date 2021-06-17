@@ -83,9 +83,6 @@ if (!$Status){
     DownloadModules "TimeSet"
     . C:\PrepareWin10\ShowMenu.ps1
 
-    Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
-    Start-Service wuauserv -InformationAction SilentlyContinue
-
     # Activo Bitlocker
     $Pais = Get-Content C:\PrepareWin10\Pais.txt
     DownloadModules "Bitlocker"
