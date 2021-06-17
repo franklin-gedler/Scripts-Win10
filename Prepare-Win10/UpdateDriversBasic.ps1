@@ -9,8 +9,8 @@ function UpdateDriversBasic {
     Write-Output " ==================== "
     Write-Output ""
 
-    Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
-    Start-Service wuauserv -InformationAction SilentlyContinue
+    #Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
+    #Start-Service wuauserv -InformationAction SilentlyContinue
 
     $Statusdrivers = Get-PnpDevice -Status ERROR
 
