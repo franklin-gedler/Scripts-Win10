@@ -72,6 +72,11 @@ if (!$Status){
 
     # Configuro Windows para que ejecute el script al iniciar Windows
     RunScript
+    
+    DownloadModules "PowerAdapterStatus"
+    DownloadModules "UpdateDriversBasic"
+    . C:\PrepareWin10\UpdateDriversBasic.ps1
+    UpdateDriversBasic
 
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
     DownloadModules "ShowMenu"
@@ -86,11 +91,6 @@ if (!$Status){
     DownloadModules "Bitlocker"
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
-
-    DownloadModules "PowerAdapterStatus"
-    DownloadModules "UpdateDriversBasic"
-    . C:\PrepareWin10\UpdateDriversBasic.ps1
-    UpdateDriversBasic
 
     Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
     timeout /t 10
