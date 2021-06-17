@@ -124,19 +124,19 @@ if (!$Status){
         }
 
         2{
-            Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
+            
             DownloadModules "PowerAdapterStatus"
             #DownloadModules "DellCommandUpdate"
             #. C:\PrepareWin10\DellCommandUpdate.ps1
             #DellCommandUpdate
-            DownloadModules "UpdateDrivers"
-            . C:\PrepareWin10\UpdateDrivers.ps1
-            UpdateDrivers
+            DownloadModules "UpdateDriversBasic"
+            . C:\PrepareWin10\UpdateDriversBasic.ps1
+            UpdateDriversBasic
 
-
+            Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
             #Pause
-            #timeout /t 10
-            #Restart-Computer    El reinicio lo controla DellCommandUpdate
+            timeout /t 10
+            Restart-Computer
         }
 
         3{

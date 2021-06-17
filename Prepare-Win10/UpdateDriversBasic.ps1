@@ -1,4 +1,4 @@
-function UpdateDrivers {
+function UpdateDriversBasic {
 
     . C:\PrepareWin10\PowerAdapterStatus.ps1
     PowerAdapterStatus # valido si el cargador esta conectado
