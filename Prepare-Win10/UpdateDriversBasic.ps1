@@ -4,18 +4,20 @@ function UpdateDriversBasic {
     PowerAdapterStatus # valido si el cargador esta conectado
 
     Write-Output ""
-    Write-Output " ===================  "
-    Write-Host "   Updating Drivers Basic  " -ForegroundColor Yellow -BackgroundColor Black
-    Write-Output " ==================== "
+    Write-Output " ================================================  "
+    Write-Host "             Updating Drivers Basic                " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host " Esto puede tardar un poco, por favor Espere . . . " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " ================================================= "
     Write-Output ""
 
     #Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
     #Start-Service wuauserv -InformationAction SilentlyContinue
+    Get-PnpDevice -Status ERROR
+    $StatusDriversBasic = $?
 
-    $Statusdrivers = Get-PnpDevice -Status ERROR
-
-    while ($Statusdrivers) {
-        $Statusdrivers = Get-PnpDevice -Status ERROR
+    while ($StatusDriversBasic -eq "False") {
+        Get-PnpDevice -Status ERROR
+        $StatusDriversBasic = $?
     }
 
     Write-Output "Sali del While, verifica si estan todos los driver instalados"
