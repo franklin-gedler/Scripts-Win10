@@ -16,6 +16,7 @@ function UpdateDriversBasic {
     $StatusDriversBasic = $?
 
     while ($StatusDriversBasic -eq "True") {
+        Start-Sleep -Seconds 20
         Get-PnpDevice -Status ERROR 2> NULL
         $StatusDriversBasic = $?
     }
