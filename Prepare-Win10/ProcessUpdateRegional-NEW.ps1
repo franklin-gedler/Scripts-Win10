@@ -126,9 +126,13 @@ if (!$Status){
         2{
             Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
             DownloadModules "PowerAdapterStatus"
-            DownloadModules "DellCommandUpdate"
-            . C:\PrepareWin10\DellCommandUpdate.ps1
-            DellCommandUpdate
+            #DownloadModules "DellCommandUpdate"
+            #. C:\PrepareWin10\DellCommandUpdate.ps1
+            #DellCommandUpdate
+            DownloadModules "UpdateDrivers"
+            . C:\PrepareWin10\UpdateDrivers.ps1
+            UpdateDrivers
+
 
             #Pause
             #timeout /t 10
