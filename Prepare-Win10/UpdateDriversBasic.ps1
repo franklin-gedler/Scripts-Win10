@@ -12,13 +12,11 @@ function UpdateDriversBasic {
 
     #Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
     #Start-Service wuauserv -InformationAction SilentlyContinue
-    Get-PnpDevice -Status ERROR 2> NULL
-    $StatusDriversBasic = $?
-
-    while ($StatusDriversBasic -eq "True") {
-        Start-Sleep -Seconds 20
-        Get-PnpDevice -Status ERROR 2> NULL
-        $StatusDriversBasic = $?
+    $StatusDriversBasic = (Get-PnpDevice -Status ERROR).Status 2> NULL
+    
+    while ($StatusDriversBasic) {
+        Start-Sleep -Seconds 5
+        $StatusDriversBasic = (Get-PnpDevice -Status ERROR).Status 2> NULL
     }
 
     Write-Output "Sali del While, verifica si estan todos los driver instalados"
