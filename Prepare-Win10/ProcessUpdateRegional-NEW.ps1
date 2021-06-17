@@ -70,8 +70,6 @@ if (!$Status){
 
     Copy-Item -Path "C:\Windows\Setup\Scripts\*" -Destination C:\PrepareWin10 -Force -Recurse
 
-    Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
-
     # Configuro Windows para que ejecute el script al iniciar Windows
     RunScript
 
@@ -89,7 +87,12 @@ if (!$Status){
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
 
-    
+    DownloadModules "PowerAdapterStatus"
+    DownloadModules "UpdateDriversBasic"
+    . C:\PrepareWin10\UpdateDriversBasic.ps1
+    UpdateDriversBasic
+
+    Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
     timeout /t 10
     Restart-Computer
 
