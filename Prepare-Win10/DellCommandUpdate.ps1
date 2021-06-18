@@ -26,18 +26,8 @@ function DellCommandUpdate {
         #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
         #    -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable'
 
-        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/driverInstall -reboot=enable -outputLog=C:\Users\admindesp\Desktop\driverInstall.log'
+        
 
-
-            Install-PackageProvider NuGet -Force > NULL
-            Set-PSRepository PSGallery -InstallationPolicy Trusted
-            Install-Module PSWindowsUpdate -Confirm:$False -Force
-
-            Import-Module PSWindowsUpdate
-            Pause
-            Set-ExecutionPolicy Bypass -Force
-            Install-WindowsUpdate -Confirm:$False
     }
     
 }

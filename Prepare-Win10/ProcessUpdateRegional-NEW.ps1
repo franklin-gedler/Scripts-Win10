@@ -89,13 +89,16 @@ if (!$Status){
     #>
     
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
-    DownloadModules "ShowMenu"
+    DownloadModules "MainAction"
     DownloadModules "ValidateConnectAD"
     DownloadModules "VerifyCred"
     DownloadModules "ChangeName"
     DownloadModules "TimeSet"
-    . C:\PrepareWin10\ShowMenu.ps1
+    . C:\PrepareWin10\MainAction.ps1
+    MainAction
 
+    Pause
+    
     # Activo Bitlocker
     $Pais = Get-Content C:\PrepareWin10\Pais.txt
     DownloadModules "Bitlocker"
@@ -144,12 +147,12 @@ if (!$Status){
         2{
             
             DownloadModules "PowerAdapterStatus"
-            #DownloadModules "DellCommandUpdate"
-            #. C:\PrepareWin10\DellCommandUpdate.ps1
-            #DellCommandUpdate
-            DownloadModules "UpdateDriversBasic"
-            . C:\PrepareWin10\UpdateDriversBasic.ps1
-            UpdateDriversBasic
+            DownloadModules "DellCommandUpdate"
+            . C:\PrepareWin10\DellCommandUpdate.ps1
+            DellCommandUpdate
+            #DownloadModules "UpdateDriversBasic"
+            #. C:\PrepareWin10\UpdateDriversBasic.ps1
+            #UpdateDriversBasic
 
             Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
             #Pause
