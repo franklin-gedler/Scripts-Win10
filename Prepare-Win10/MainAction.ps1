@@ -74,7 +74,7 @@ function ActionPCI {
             0{
                 MainAction
             }
-            
+
             1{
                 # Cuando es PCI
                 Write-Output "Es PCI"
@@ -162,19 +162,19 @@ function MainAction {
 
             5{
                 Write-Output "Ejecuto para CL"
-            
+                ActionOffice365  # llamo a la funcion de Office365
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
 
             6{
                 Write-Output "Ejecuto para MX"
-                
+                ActionOffice365  # llamo a la funcion de Office365
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
 
             7{
                 Write-Output "Ejecuto para PE"
-                
+                ActionOffice365  # llamo a la funcion de Office365
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
                 
