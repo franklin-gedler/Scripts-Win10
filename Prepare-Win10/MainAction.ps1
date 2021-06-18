@@ -141,7 +141,7 @@ function MainAction {
                 . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
                 ChangeName "AR"
                 #---------------------------------------------------------------
-                break :loop
+                Break :mylable
                 
                 #Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
@@ -193,3 +193,4 @@ function MainAction {
     } 
     
 }
+:mylable
