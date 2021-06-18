@@ -5,7 +5,6 @@ function JoinAD {
 
     # Mi firma ##################
     . C:\PrepareWin10\Firma.ps1 #
-    Firma
     #############################
 
     # $1 = Pais

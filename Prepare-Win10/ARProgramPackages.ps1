@@ -1,7 +1,6 @@
 function ARProgramPackages {
     # Mi firma ##################
     . C:\PrepareWin10\Firma.ps1 #
-    Firma
     #############################
 
     $InstallOffice365 = Get-Content C:\Users\admindesp\Desktop\Office365.txt

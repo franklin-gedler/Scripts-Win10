@@ -6,7 +6,6 @@ function Bitlocker {
 
     # Mi firma ##################
     . C:\PrepareWin10\Firma.ps1 #
-    Firma
     #############################
 
     $NCompu = Get-Content C:\PrepareWin10\NCompu.txt

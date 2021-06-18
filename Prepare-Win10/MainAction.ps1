@@ -106,7 +106,6 @@ function MainAction {
 
     # Mi firma ##################
     . C:\PrepareWin10\Firma.ps1 #
-    Firma
     #############################
     
     Write-Output ""

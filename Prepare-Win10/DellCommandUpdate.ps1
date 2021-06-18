@@ -2,7 +2,6 @@ function DellCommandUpdate {
 
     # Mi firma ##################
     . C:\PrepareWin10\Firma.ps1 #
-    Firma
     #############################
 
     $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
