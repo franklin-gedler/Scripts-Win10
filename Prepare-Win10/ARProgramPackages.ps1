@@ -13,6 +13,14 @@ function ARProgramPackages {
         Write-Output " ========================== "
         Start-Process -Wait C:\PrepareWin10\Office365\setup.exe `
             -ArgumentList '/configure C:\PrepareWin10\Office365\installOfficeBusRet64.xml'
+
+        Write-Output ""
+        Write-Output " ############# "
+        Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+        Write-Output " ############# "
+        Write-Output ""
+        Write-Output "_________________________________________________________________________________________"
+        Write-Output "" 
     }
     
     Write-Output ""
