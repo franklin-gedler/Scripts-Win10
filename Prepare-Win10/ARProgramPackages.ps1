@@ -11,10 +11,10 @@ function ARProgramPackages {
         Write-Output " ========================== "
         Write-Host "    Instalando Office365    " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ========================== "
-        Start-Process -Wait C:\Users\admindesp\Downloads\Office365\setup.exe `
+        Start-Process -Wait C:\PrepareWin10\Office365\setup.exe `
             -ArgumentList '/configure C:\PrepareWin10\Office365\installOfficeBusRet64.xml'
     }
-    Pause
+    
     Write-Output ""
     Write-Output " ================================= "
     Write-Host "    Instalando FusionInventory     " -ForegroundColor Yellow -BackgroundColor Black
