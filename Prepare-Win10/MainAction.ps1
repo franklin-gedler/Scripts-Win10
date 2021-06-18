@@ -71,6 +71,10 @@ function ActionPCI {
 
             default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
 
+            0{
+                MainAction
+            }
+            
             1{
                 # Cuando es PCI
                 Write-Output "Es PCI"
@@ -167,7 +171,7 @@ function MainAction {
                 
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
-            
+
             7{
                 Write-Output "Ejecuto para PE"
                 
