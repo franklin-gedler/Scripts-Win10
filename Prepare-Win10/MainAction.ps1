@@ -85,7 +85,7 @@ function ActionPCI {
 
 
 
-                Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             2{
@@ -95,7 +95,7 @@ function ActionPCI {
 
 
 
-                Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
         }
     }
@@ -111,7 +111,7 @@ function MainAction {
     Write-Output ""
     showmenupais
     Write-Output ""
-    :outer
+    
     while($inp = Read-Host -Prompt "Seleccione una Opcion Pais"){
         
         switch($inp){
@@ -141,18 +141,15 @@ function MainAction {
                 . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
                 ChangeName "AR"
                 #---------------------------------------------------------------
-                #Break :mylable
-                #Return
-                Continue :outer
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
                 
-                #Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
 
             2{
 
                 Write-host "        Seleccionastes UY          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
-                Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             3{
@@ -173,19 +170,19 @@ function MainAction {
             5{
                 Write-host "        Seleccionastes CL          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
-                Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             6{
                 Write-host "        Seleccionastes MX          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
-                Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             7{
                 Write-host "        Seleccionastes PE          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
-                Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
                 
         }
@@ -195,4 +192,3 @@ function MainAction {
     } 
     
 }
-#:mylable Continue
