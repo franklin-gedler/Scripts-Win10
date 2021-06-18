@@ -139,6 +139,14 @@ if (!$Status){
         }
 
         3{
+
+            DownloadModules "ChangePassAdmindesp"
+            . C:\PrepareWin10\ChangePassAdmindesp.ps1
+            ChangePassAdmindesp $CodigoPais
+
+
+            Write-Output "activar el windows update antes de agregarla a dominio" ##################################################
+            
             # La agrego a Dominio
             DownloadModules "JoinAD"
             . C:\PrepareWin10\JoinAD.ps1
@@ -151,7 +159,9 @@ if (!$Status){
         }
 
         4{
-            Write-Output "sigo con lo demas"
+            Write-Output "este ultimo puedo usarlo para borrar la carpeta en C:\PrepareWin10\"
+            StopScript    ### esto stopea el script para qu no se corra mas al inicio, recuerda que esta funcion
+                            ### esta declarada en el script ProcessUpdateRegional
             Pause
         }
     }

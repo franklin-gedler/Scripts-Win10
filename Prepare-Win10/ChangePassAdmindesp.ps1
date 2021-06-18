@@ -1,4 +1,9 @@
-
+function FunctionName {
+    param (
+        $1
+    )
+    
+}
 # Borro las claves que me creo el NTlite
 Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -Name "AutoAdminLogon"
 Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -Name "DefaultUserName"
@@ -10,6 +15,8 @@ while (!$SCompu) {
 }
 
 # le Inyecto la clave que va con admindesp
-$p = ConvertTo-SecureString "*+54#$SCompu*" -AsPlainText -Force
+$p = ConvertTo-SecureString "*+$1#$SCompu*" -AsPlainText -Force
 $u = (Get-LocalUser).Name[0]
+Write-Host "Valor de u: " $u   # Esto es para ver que valor toma $u
+Pause
 Set-LocalUser -Name $u -Password $p -PasswordNeverExpires 1
