@@ -3,7 +3,7 @@ function ValidateConnectAD {
         $1,$2
     )
 
-    Write-Output "YO $env:USERNAME ejecuto el script"
+    #Write-Output "YO $env:USERNAME ejecuto el script"
     Write-Output ""
     Write-Output " ================================================ "
     Write-Host "       Verificando conexion con el Dominio        " -ForegroundColor Yellow -BackgroundColor Black

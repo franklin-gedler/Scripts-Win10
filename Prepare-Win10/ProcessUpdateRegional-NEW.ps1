@@ -85,8 +85,6 @@ if (!$Status){
     . C:\PrepareWin10\MainAction.ps1
     MainAction
 
-    Pause
-
     # Activo Bitlocker
     $Pais = Get-Content C:\PrepareWin10\Pais.txt
     DownloadModules "Bitlocker"

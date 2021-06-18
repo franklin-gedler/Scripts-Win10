@@ -6,7 +6,7 @@ function VerifyCred {
 
     # $1 = Pais
     # $2 = CodigoPais
-    Write-Output "YO $env:USERNAME ejecuto el script"
+    #Write-Output "YO $env:USERNAME ejecuto el script"
     
     # Verifico si esta conectado al AD
     . C:\PrepareWin10\ValidateConnectAD.ps1
