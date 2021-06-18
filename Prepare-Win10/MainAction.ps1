@@ -45,18 +45,21 @@ function ActionOffice365 {
     ShowMenuOffice365
     Write-Output ""
 
-    $InputOffice365 = Read-Host -Prompt "Seleccione una Opcion Para office"
-    switch ($InputOffice365) {
+    #$InputOffice365 = Read-Host -Prompt "Seleccione una Opcion Para office"
+    switch (Read-Host -Prompt "Seleccione una Opcion Para Office") {
 
         0{
             MainAction
         }
 
         1{
-            Write-Host "instalo office";
-            #Write-Output '1' > C:\Users\admindesp\Desktop\Office365.txt 
+            #Write-Host "instalo office";
+            Write-Output '1' > C:\Users\admindesp\Desktop\Office365.txt
         }
         
+        2{
+            Write-Output '0' > C:\Users\admindesp\Desktop\Office365.txt
+        }
     }
 }
 
@@ -65,9 +68,9 @@ function ActionPCI {
     ShowMenuPci
     Write-Output ""
 
-    while($inpbr = Read-Host -Prompt "Seleccione una Opcion PCI"){
+    while($inpPCI = Read-Host -Prompt "Seleccione una Opcion PCI"){
         
-        switch ($inpbr) {
+        switch ($inpPCI) {
 
             default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
 
