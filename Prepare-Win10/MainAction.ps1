@@ -194,5 +194,3 @@ function MainAction {
     } 
     
 }
-
-MainAction
