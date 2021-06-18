@@ -157,14 +157,14 @@ function MainAction {
                 Write-host "        Seleccionastes BR          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
 
-                # Nota: el Exit lo tiene la funcion ActionPCI
+                # Nota: el Return lo tiene la funcion ActionPCI
             }
 
             4{
                 Write-host "        Seleccionastes CO          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
                 
-                # Nota: el Exit lo tiene la funcion ActionPCI       
+                # Nota: el Return lo tiene la funcion ActionPCI       
             }
 
             5{
