@@ -100,6 +100,11 @@ function ActionPCI {
 }
 
 function MainAction {
+
+    # Mi firma ##################
+    . C:\PrepareWin10\Firma.ps1 #
+    Firma
+    #############################
     
     Write-Output ""
     showmenupais
@@ -113,9 +118,10 @@ function MainAction {
 
             1{
                 
-                Write-Output "Ejecuto para AR"
+                Write-host "        Seleccionastes AR          " -ForegroundColor Yellow -BackgroundColor Black
+                
                 ActionOffice365  # llamo a la funcion de Office365
-                <#
+                
                 Write-Output 'AR' > C:\PrepareWin10\Pais.txt
                 Write-Output '54' > C:\PrepareWin10\CodigoPais.txt
 
@@ -133,47 +139,47 @@ function MainAction {
                 . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
                 ChangeName "AR"
                 #---------------------------------------------------------------
-                #>
+                
                 
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
 
             2{
 
-                Write-Output "Ejecuto para UY"
+                Write-host "        Seleccionastes UY          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
 
             3{
 
-                Write-Output "Ejecuto para BR"
+                Write-host "        Seleccionastes BR          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
 
                 # Nota: el Exit lo tiene la funcion ActionPCI
             }
 
             4{
-                Write-Output "Ejecuto para CO"
+                Write-host "        Seleccionastes CO          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
                 
                 # Nota: el Exit lo tiene la funcion ActionPCI       
             }
 
             5{
-                Write-Output "Ejecuto para CL"
+                Write-host "        Seleccionastes CL          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
 
             6{
-                Write-Output "Ejecuto para MX"
+                Write-host "        Seleccionastes MX          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
 
             7{
-                Write-Output "Ejecuto para PE"
+                Write-host "        Seleccionastes PE          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }

@@ -1,4 +1,10 @@
 function DellCommandUpdate {
+
+    # Mi firma ##################
+    . C:\PrepareWin10\Firma.ps1 #
+    Firma
+    #############################
+
     $machinebrand =  (Get-WmiObject -class win32_computersystem).Manufacturer
     
     if("$machinebrand" -eq "Dell Inc."){
@@ -22,12 +28,49 @@ function DellCommandUpdate {
         Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE -ArgumentList '/s'
         #---------------------------------------------------------------------------------------------------------------------------------
 
-
-        #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-        #    -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable'
-
+        # Configuro ------------------------------------------------------------------------------------
+        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/configure -userConsent=disable -autoSuspendBitLocker=enable'
+        #-----------------------------------------------------------------------------------------------
         
+        # Actualizo drivers y bios -----------------------------------------------------------------------------------------------------------
+        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver,bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+        #-------------------------------------------------------------------------------------------------------------------------------------
 
+        # --------------------------Tarea de Winodws para el futuro------------------------------ #
+
+        $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
+            -WorkingDirectory "C:\Program Files\Dell\" `
+            -Argument '-NoProfile -ExecutionPolicy Bypass -File TaskDellUpdate.ps1'
+
+        $trigger =  New-ScheduledTaskTrigger -AtStartup
+
+        Register-ScheduledTask -RunLevel Highest -User SYSTEM `
+            -Action $action -Trigger $trigger -TaskName 'Dell Command Update' `
+            -Description "Esta Tarea actualiza Bios y Driver del equipo Dell"
+        # --------------------------------------------------------------------------------------- #
+
+        # Script de Tarea Para mantener Drivers Actualizados --------------------------------------------------------------------------------
+        @'
+        Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                -ArgumentList '/scan -updateDeviceCategory=audio,video,network,others -outputLog=C:\Users\admindesp\Desktop\ScanOutput.log'
+        
+        $ScanOutput = Get-Content C:\Users\admindesp\Desktop\ScanOutput.log
+        $patron = 'BIOS'
+        $SearchScanOutput = $ScanOutput | Select-String -AllMatches $patron
+
+        if ($SearchScanOutput){
+            echo "instalo primero bios"
+            Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log' `
+            
+        }else{
+            echo "no hay Bios, instalamos drivers"
+            Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+        }
+'@ | Add-Content "C:\Program Files\Dell\TaskDellUpdate.ps1"
     }
     
 }
