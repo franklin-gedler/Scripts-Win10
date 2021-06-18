@@ -111,7 +111,7 @@ function MainAction {
     Write-Output ""
     showmenupais
     Write-Output ""
-
+    :outer
     while($inp = Read-Host -Prompt "Seleccione una Opcion Pais"){
         
         switch($inp){
@@ -141,7 +141,9 @@ function MainAction {
                 . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
                 ChangeName "AR"
                 #---------------------------------------------------------------
-                Break :mylable
+                #Break :mylable
+                #Return
+                Continue :outer
                 
                 #Exit  # Este exit le devuelve el control al script de ProcessUpdateRegional
             }
