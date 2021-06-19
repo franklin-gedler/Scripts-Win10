@@ -120,6 +120,17 @@ if (!$Status){
         }
 
         2{
+            DownloadModules "UpdatingWindows"
+            . C:\PrepareWin10\UpdatingWindows.ps1
+            UpdatingWindows
+
+            Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
+            #Pause
+            timeout /t 10
+            Restart-Computer
+        }
+
+        3{
             # Descargo he instalo el paquete de programas segun el Pais que hayan seleccionado
             switch ($Pais) {
                 
@@ -132,37 +143,36 @@ if (!$Status){
                 
             }
             
-            Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
+            Write-Output '4' > C:\Users\admindesp\Desktop\status.txt
             #Pause
             timeout /t 10
             Restart-Computer
         }
 
-        3{
+        4{
 
             DownloadModules "ChangePassAdmindesp"
             . C:\PrepareWin10\ChangePassAdmindesp.ps1
             ChangePassAdmindesp $CodigoPais
 
-
-            Write-Output "activar el windows update antes de agregarla a dominio" ##################################################
-            
             # La agrego a Dominio
             DownloadModules "JoinAD"
             . C:\PrepareWin10\JoinAD.ps1
             JoinAD $Pais $CodigoPais
 
-            Write-Output '4' > C:\Users\admindesp\Desktop\status.txt
+            Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
             Pause
             timeout /t 10
+
+            StopScript   # Esto elimina en el registro la ejecucion del script al inicio
+
+            # Limpio el Sistema de los archivos de instalacion
+            DownloadModules "WipeSystem"
+            . C:\PrepareWin10\WipeSystem.ps1
+            WipeSystem
+
             Restart-Computer
         }
 
-        4{
-            Write-Output "este ultimo puedo usarlo para borrar la carpeta en C:\PrepareWin10\"
-            StopScript    ### esto stopea el script para qu no se corra mas al inicio, recuerda que esta funcion
-                            ### esta declarada en el script ProcessUpdateRegional
-            Pause
-        }
     }
 }

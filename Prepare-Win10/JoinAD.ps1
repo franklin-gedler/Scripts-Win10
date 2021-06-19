@@ -10,7 +10,7 @@ function JoinAD {
     # $1 = Pais
     # $2 = CodigoPais
 
-    Write-Output "YO $env:USERNAME ejecuto el script"
+    #Write-Output "YO $env:USERNAME ejecuto el script"
     #$cred = Import-CliXml -Path "C:\PrepareWin10\CredSoporte_${env:USERNAME}_${env:COMPUTERNAME}.xml"
 
     # Importo Usuario y Clave
