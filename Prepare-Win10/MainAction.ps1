@@ -18,10 +18,10 @@ Function showmenupais {
 function ShowMenuPci {
     
     Write-Output ""
-    Write-Host " *** ¿Va ser PCI el equipo? ***  "
+    Write-Host ' *** ¿Va ser PCI el equipo? ***  '
     Write-Host ""
-    Write-Host "            0. Atras             " -ForegroundColor Yellow -BackgroundColor Black
-    Write-Host ""
+    #Write-Host "            0. Atras             " -ForegroundColor Yellow -BackgroundColor Black
+    #Write-Host ""
     Write-Host "            1. SI                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "            2. NO                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " ******************************* "
@@ -31,8 +31,8 @@ function ShowMenuOffice365 {
     
     Write-Output ""
     Write-Host " *** ¿Desea Instalar Office365? ***  "
-    Write-Host ""
-    Write-Host "               0. Atras               " -ForegroundColor Yellow -BackgroundColor Black
+    #Write-Host ""
+    #Write-Host "               0. Atras               " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host ""
     Write-Host "               1. SI                 " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "               2. NO                 " -ForegroundColor Yellow -BackgroundColor Black
@@ -47,12 +47,13 @@ function ActionOffice365 {
 
     #$InputOffice365 = Read-Host -Prompt "Seleccione una Opcion Para office"
     switch (Read-Host -Prompt "Seleccione una Opcion Para Office") {
-
+        <#
         0{
             MainAction
             Return
         }
-
+        #>
+        
         1{
             #Write-Host "instalo office";
             Write-Output '1' > C:\Users\admindesp\Desktop\Office365.txt
@@ -76,12 +77,13 @@ function ActionPCI {
         switch ($inpPCI) {
 
             default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
-
+            <#
             0{
                 MainAction
                 Return
             }
-
+            #>
+            
             1{
                 # Cuando es PCI
                 Write-Output "Es PCI"

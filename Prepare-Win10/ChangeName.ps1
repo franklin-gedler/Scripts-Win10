@@ -26,5 +26,5 @@ function ChangeName {
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
-    Return
+    return
 }
