@@ -187,13 +187,15 @@ if (!$Status){
             
             #Start-Process PowerShell.exe -ArgumentList "$env:TMP\AutoDelete.ps1"
             #Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
-            & "$env:TMP\AutoDelete.ps1"
+            #& "$env:TMP\AutoDelete.ps1"
 
             #Invoke-Expression -Command "$env:TMP\AutoDelete.ps1"
 
             #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
-            Exit
+            break
         }
 
     }
+    & "$env:TMP\AutoDelete.ps1"
+    Exit
 }
