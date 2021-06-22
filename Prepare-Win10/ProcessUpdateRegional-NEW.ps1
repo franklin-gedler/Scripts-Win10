@@ -165,7 +165,7 @@ if (!$Status){
             
             timeout /t 10
 
-            StopScript   # Esto elimina en el registro la ejecucion del script al inicio
+           # StopScript   # Esto elimina en el registro la ejecucion del script al inicio
 
             # Limpio el Sistema de los archivos de instalacion
             DownloadModules "WipeSystem"
