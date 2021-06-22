@@ -19,6 +19,6 @@ function WipeSystem {
     Restart-Computer
 '@ | Add-Content $env:TMP\AutoDelete.ps1
 
-    
+    Exit
 
 }

@@ -64,17 +64,30 @@ function StopScript {
     #Remove-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10'
 }
 
-$Status= Get-ChildItem -Path C:\Users\admindesp\Desktop\ -Name Status.txt
-
-if (!$Status){
-
+function PostRunConfig {
+    
     mkdir C:\PrepareWin10 -Force > NULL
 
     Copy-Item -Path "C:\Windows\Setup\Scripts\*" -Destination C:\PrepareWin10 -Force -Recurse
 
     # Configuro Windows para que ejecute el script al iniciar Windows
     RunScript
-    
+
+    @'
+    @echo off
+    :Script PowerShell
+    PowerShell.exe -NoProfile -Command "& {Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "C:\PrepareWin10\process.ps1"' -Verb RunAs}"
+'@ | Add-Content C:\PrepareWin10\SetupComplete.cmd
+
+}
+
+$Status= Get-ChildItem -Path C:\Users\admindesp\Desktop\ -Name Status.txt
+
+if (!$Status){
+
+    # Esto es Para que se ejecute despues del reinicio
+    PostRunConfig
+
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
     DownloadModules "Firma"
     DownloadModules "MainAction"
@@ -172,11 +185,11 @@ if (!$Status){
             . C:\PrepareWin10\WipeSystem.ps1
             WipeSystem
             
-            #Start-Process PowerShell.exe -ArgumentList " $env:TMP\AutoDelete.ps1"
+            Start-Process PowerShell.exe -ArgumentList "& $env:TMP\AutoDelete.ps1"
             #Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
             #& $env:TMP\AutoDelete.ps1
 
-            Invoke-Expression -Command "$env:TMP\AutoDelete.ps1"
+            #Invoke-Expression -Command "$env:TMP\AutoDelete.ps1"
 
             #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
             exit
