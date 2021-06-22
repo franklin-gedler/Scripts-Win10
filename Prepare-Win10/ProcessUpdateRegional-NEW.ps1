@@ -174,7 +174,7 @@ if (!$Status){
             JoinAD $Pais $CodigoPais
             #>
             
-            #Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
+            Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
             
             #timeout /t 10
 
