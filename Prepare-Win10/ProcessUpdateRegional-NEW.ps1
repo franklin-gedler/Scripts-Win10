@@ -194,9 +194,9 @@ if (!$Status){
             #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
             break
         }
-
+        
     }
-    
+    break
 }
 
 $Status = Get-Content C:\Users\admindesp\Desktop\status.txt
@@ -210,6 +210,7 @@ if ($Status = "Lista Para Usar"){
 '@ | Add-Content $env:TMP\AutoDelete.ps1
 
     & "$env:TMP\AutoDelete.ps1"
+    break
 }
 
 
