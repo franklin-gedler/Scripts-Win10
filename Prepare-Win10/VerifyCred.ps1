@@ -8,6 +8,10 @@ function VerifyCred {
     # $2 = CodigoPais
     #Write-Output "YO $env:USERNAME ejecuto el script"
     
+    # Mi firma ##################
+    . C:\PrepareWin10\Firma.ps1 #
+    #############################
+
     # Verifico si esta conectado al AD
     . C:\PrepareWin10\ValidateConnectAD.ps1
     ValidateConnectAD $1 $2

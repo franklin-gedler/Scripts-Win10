@@ -28,5 +28,5 @@ function ValidateConnectAD {
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
-    
+    Return
 }
