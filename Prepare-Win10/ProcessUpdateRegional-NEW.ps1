@@ -210,7 +210,7 @@ if ($Status = "Lista Para Usar"){
 '@ | Add-Content $env:TMP\AutoDelete.ps1
 
     & "$env:TMP\AutoDelete.ps1"
-    break
+    exit
 }
 
 
