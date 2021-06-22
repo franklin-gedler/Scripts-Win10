@@ -172,9 +172,11 @@ if (!$Status){
             . C:\PrepareWin10\WipeSystem.ps1
             WipeSystem
             
+            Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
             #Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
-            & $env:TMP\AutoDelete.ps1
+            #& $env:TMP\AutoDelete.ps1
             #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
+            break
         }
 
     }
