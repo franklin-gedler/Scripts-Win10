@@ -150,7 +150,7 @@ if (!$Status){
         }
 
         4{
-
+            <#
             DownloadModules "ChangePassAdmindesp"
             . C:\PrepareWin10\ChangePassAdmindesp.ps1
             ChangePassAdmindesp $CodigoPais
@@ -159,7 +159,8 @@ if (!$Status){
             DownloadModules "JoinAD"
             . C:\PrepareWin10\JoinAD.ps1
             JoinAD $Pais $CodigoPais
-
+            #>
+            
             Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
             
             timeout /t 10
@@ -171,6 +172,7 @@ if (!$Status){
             . C:\PrepareWin10\WipeSystem.ps1
             WipeSystem
             
+            Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1'
             #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
         }
 

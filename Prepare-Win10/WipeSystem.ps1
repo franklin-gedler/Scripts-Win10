@@ -8,7 +8,7 @@ function WipeSystem {
         Restart-Computer
     } > $env:TMP\AutoDelete.ps1
 
-    Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1'
+    
     return
     
 }
