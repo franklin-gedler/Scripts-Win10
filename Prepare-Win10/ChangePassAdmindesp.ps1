@@ -20,7 +20,8 @@ function ChangePassAdmindesp {
     # le Inyecto la clave que va con admindesp
     $p = ConvertTo-SecureString "*+$1#$SCompu*" -AsPlainText -Force
     $u = (Get-LocalUser).Name[0]
-    Write-Host "Valor de u: " $u   # Esto es para ver que valor toma $u
-    Pause
     Set-LocalUser -Name $u -Password $p -PasswordNeverExpires 1
+    #Write-Host "Valor de u: " $u   # Esto es para ver que valor toma $u
+    #Pause
+    
 }

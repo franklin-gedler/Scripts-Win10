@@ -170,8 +170,8 @@ if (!$Status){
             DownloadModules "WipeSystem"
             . C:\PrepareWin10\WipeSystem.ps1
             WipeSystem
-            Pause
-            Restart-Computer
+            
+            #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
         }
 
     }

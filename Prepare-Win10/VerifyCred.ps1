@@ -57,5 +57,6 @@ function VerifyCred {
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
+    Start-Sleep -Seconds 10
     Return
 }

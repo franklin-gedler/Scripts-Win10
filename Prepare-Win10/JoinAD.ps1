@@ -26,7 +26,7 @@ function JoinAD {
 
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
+    $consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
         -SearchScope Subtree -Server "10.40.$2.1" `
         -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 
@@ -35,7 +35,7 @@ function JoinAD {
         Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " =============================================== "
         Remove-ADObject -Identity "$consul" -Credential $cred -Server "10.40.$2.1" -Confirm:$False -verbose
-        Start-Sleep -Seconds 15
+        Start-Sleep -Seconds 30
         Write-Output ""
         Write-Output " ############# "
         Write-Host "   Eliminado   " -ForegroundColor Green -BackgroundColor Black
@@ -53,13 +53,14 @@ function JoinAD {
         -Credential $cred -Force -Options AccountCreate `
         -WarningAction SilentlyContinue
     
-    Start-Sleep -Seconds 20
+    Start-Sleep -Seconds 30
 
-    $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
+    $consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
         -SearchScope Subtree -Server "10.40.$2.1" `
         -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 
     while (!$consul){
+        Write-Output ""
         Write-Output " ====================== "
         Write-Host "   Reintentando Enlazar   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ====================== "
@@ -69,9 +70,9 @@ function JoinAD {
             -Credential $cred -Force -Options AccountCreate `
             -WarningAction SilentlyContinue
 
-        Start-Sleep -Seconds 20
+        Start-Sleep -Seconds 30
         
-        $Global:consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
+        $consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
             -SearchScope Subtree -Server "10.40.$2.1" `
             -Credential $cred | Select-Object -ExpandProperty DistinguishedName
     }
