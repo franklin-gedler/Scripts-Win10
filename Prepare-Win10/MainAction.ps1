@@ -124,8 +124,12 @@ function MainAction {
 
             1{
                 
-                Write-host "        Seleccionastes AR          " -ForegroundColor Yellow -BackgroundColor Black
+                #Write-host "        Seleccionastes AR          " -ForegroundColor Yellow -BackgroundColor Black
                 
+                # Mi firma ##################
+                . C:\PrepareWin10\Firma.ps1 #
+                #############################
+
                 ActionOffice365  # llamo a la funcion de Office365
                 
                 Write-Output 'AR' > C:\PrepareWin10\Pais.txt
