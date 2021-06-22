@@ -60,5 +60,5 @@ function TimeSet {
     # Cambia la Zona horaria
     #Set-TimeZone -Id "E. South America Standard Time"
 
-     
+    Return
 }

@@ -53,4 +53,5 @@ function VerifyCred {
     Write-Output ""
     Write-Output "_________________________________________________________________________________________"
     Write-Output ""
+    Return
 }
