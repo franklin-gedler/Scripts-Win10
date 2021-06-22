@@ -1,7 +1,5 @@
 function WipeSystem {
 
-
-
     @'
     Start-Sleep -Seconds 5
     Remove-Item -LiteralPath C:\Windows\Setup\scripts -Recurse -Force

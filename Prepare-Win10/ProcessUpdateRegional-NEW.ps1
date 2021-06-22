@@ -181,9 +181,9 @@ if (!$Status){
            # StopScript   # Esto elimina en el registro la ejecucion del script al inicio
 
             # Limpio el Sistema de los archivos de instalacion
-            DownloadModules "WipeSystem"
-            . C:\PrepareWin10\WipeSystem.ps1
-            WipeSystem
+            #DownloadModules "WipeSystem"
+            #. C:\PrepareWin10\WipeSystem.ps1
+            #WipeSystem
             
             #Start-Process PowerShell.exe -ArgumentList "$env:TMP\AutoDelete.ps1"
             #Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
@@ -198,6 +198,18 @@ if (!$Status){
     }
     
 }
-& "$env:TMP\AutoDelete.ps1"
-#Start-Process -UseNewEnvironment PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
-Exit
+
+$Status = Get-Content C:\Users\admindesp\Desktop\status.txt
+if ($Status = "Lista Para Usar"){
+    @'
+    Start-Sleep -Seconds 5
+    Remove-Item -LiteralPath C:\Windows\Setup\scripts -Recurse -Force
+    Remove-Item -LiteralPath C:\PrepareWin10\ -Recurse -Force
+    Pause
+    Restart-Computer
+'@ | Add-Content $env:TMP\AutoDelete.ps1
+
+    & "$env:TMP\AutoDelete.ps1"
+}
+
+
