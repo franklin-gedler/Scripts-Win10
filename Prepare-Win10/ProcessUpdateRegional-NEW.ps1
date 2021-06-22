@@ -198,4 +198,5 @@ if (!$Status){
     }
     
 }
-& "$env:TMP\AutoDelete.ps1"
+#& "$env:TMP\AutoDelete.ps1"
+Start-Process -UseNewEnvironment PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
