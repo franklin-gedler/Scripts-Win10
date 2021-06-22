@@ -91,7 +91,7 @@ if (!$Status){
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
 
-    Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
+    Write-Output '4' > C:\Users\admindesp\Desktop\status.txt
     timeout /t 10
     Restart-Computer
 
