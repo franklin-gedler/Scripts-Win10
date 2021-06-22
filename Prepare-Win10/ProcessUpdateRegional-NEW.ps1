@@ -192,7 +192,7 @@ if (!$Status){
             #Invoke-Expression -Command "$env:TMP\AutoDelete.ps1"
 
             #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
-            exit
+            Exit
         }
 
     }
