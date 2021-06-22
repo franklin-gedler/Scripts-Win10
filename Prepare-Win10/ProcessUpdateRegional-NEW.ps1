@@ -104,7 +104,7 @@ if (!$Status){
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
 
-    Write-Output '4' > C:\Users\admindesp\Desktop\status.txt
+    Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
     timeout /t 10
     Restart-Computer
 
@@ -163,7 +163,7 @@ if (!$Status){
         }
 
         4{
-            <#
+            
             DownloadModules "ChangePassAdmindesp"
             . C:\PrepareWin10\ChangePassAdmindesp.ps1
             ChangePassAdmindesp $CodigoPais
@@ -172,7 +172,7 @@ if (!$Status){
             DownloadModules "JoinAD"
             . C:\PrepareWin10\JoinAD.ps1
             JoinAD $Pais $CodigoPais
-            #>
+            
             
             Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
             
