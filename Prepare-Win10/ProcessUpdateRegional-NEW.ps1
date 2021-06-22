@@ -196,6 +196,6 @@ if (!$Status){
         }
 
     }
-    & "$env:TMP\AutoDelete.ps1"
-    Exit
+    
 }
+& "$env:TMP\AutoDelete.ps1"
