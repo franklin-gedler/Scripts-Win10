@@ -161,7 +161,7 @@ if (!$Status){
             JoinAD $Pais $CodigoPais
 
             Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
-            Pause
+            
             timeout /t 10
 
             StopScript   # Esto elimina en el registro la ejecucion del script al inicio
@@ -170,7 +170,7 @@ if (!$Status){
             DownloadModules "WipeSystem"
             . C:\PrepareWin10\WipeSystem.ps1
             WipeSystem
-
+            Pause
             Restart-Computer
         }
 
