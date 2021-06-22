@@ -161,9 +161,9 @@ if (!$Status){
             JoinAD $Pais $CodigoPais
             #>
             
-            Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
+            #Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
             
-            timeout /t 10
+            #timeout /t 10
 
            # StopScript   # Esto elimina en el registro la ejecucion del script al inicio
 
@@ -172,9 +172,12 @@ if (!$Status){
             . C:\PrepareWin10\WipeSystem.ps1
             WipeSystem
             
+            #Start-Process PowerShell.exe -ArgumentList " $env:TMP\AutoDelete.ps1"
             #Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
-            #Start-Process PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $env:TMP\AutoDelete.ps1"
-            & $env:TMP\AutoDelete.ps1
+            #& $env:TMP\AutoDelete.ps1
+
+            Invoke-Expression -Command "$env:TMP\AutoDelete.ps1"
+
             #Restart-Computer     Dentro de WipeSystem hay un mini script que se encarga de borrar y reiniciar el equipo
             exit
         }
