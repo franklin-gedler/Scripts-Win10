@@ -50,15 +50,18 @@ function ActionOffice365 {
 
         0{
             MainAction
+            Return
         }
 
         1{
             #Write-Host "instalo office";
             Write-Output '1' > C:\Users\admindesp\Desktop\Office365.txt
+            Return
         }
         
         2{
             Write-Output '0' > C:\Users\admindesp\Desktop\Office365.txt
+            Return
         }
     }
 }
@@ -76,6 +79,7 @@ function ActionPCI {
 
             0{
                 MainAction
+                Return
             }
 
             1{
@@ -156,14 +160,14 @@ function MainAction {
 
                 Write-host "        Seleccionastes BR          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
-
+                # Recuerda que todas las tareas que deba hacer debo asignarlas en la funcion ActionPCI
                 # Nota: el Return lo tiene la funcion ActionPCI
             }
 
             4{
                 Write-host "        Seleccionastes CO          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
-                
+                # Recuerda que todas las tareas que deba hacer debo asignarlas en la funcion ActionPCI
                 # Nota: el Return lo tiene la funcion ActionPCI       
             }
 
