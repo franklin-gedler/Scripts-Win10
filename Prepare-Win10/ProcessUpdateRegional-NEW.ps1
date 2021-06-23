@@ -75,6 +75,10 @@ function PostRunConfig {
 
     # Elimino el SetupComplete
     Remove-Item -LiteralPath C:\PrepareWin10\SetupComplete.cmd -Force
+
+    #$SetupComplete = Get-Content C:\Windows\Setup\Scripts\SetupComplete.cmd
+    #$SetupComplete = $SetupComplete.Replace('%windir%\Setup\Scripts\process.ps1','C:\PrepareWin10\process.ps1')
+    #$SetupComplete | Add-Content C:\PrepareWin10\SetupComplete.cmd
 @'
 @echo off
 :Script PowerShell
@@ -122,10 +126,9 @@ if (!$Status){
     
         1{
             
-            DownloadModules "PowerAdapterStatus"
-            DownloadModules "DellCommandUpdate"
-            . C:\PrepareWin10\DellCommandUpdate.ps1
-            DellCommandUpdate
+            DownloadModules "UpdatingWindows"
+            . C:\PrepareWin10\UpdatingWindows.ps1
+            UpdatingWindows
             
 
             Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
@@ -135,9 +138,11 @@ if (!$Status){
         }
 
         2{
-            DownloadModules "UpdatingWindows"
-            . C:\PrepareWin10\UpdatingWindows.ps1
-            UpdatingWindows
+            
+            DownloadModules "PowerAdapterStatus"
+            DownloadModules "DellCommandUpdate"
+            . C:\PrepareWin10\DellCommandUpdate.ps1
+            DellCommandUpdate
 
             Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
             #Pause
