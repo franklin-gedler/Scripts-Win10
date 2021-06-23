@@ -125,7 +125,7 @@ if (!$Status){
     switch($Status){
     
         1{
-            
+            DownloadModules "PowerAdapterStatus"
             DownloadModules "UpdatingWindows"
             . C:\PrepareWin10\UpdatingWindows.ps1
             UpdatingWindows
