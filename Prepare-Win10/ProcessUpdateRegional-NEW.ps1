@@ -73,11 +73,13 @@ function PostRunConfig {
     # Configuro Windows para que ejecute el script al iniciar Windows
     RunScript
 
+    # Elimino el SetupComplete
+    Remove-Item -LiteralPath C:\PrepareWin10\SetupComplete.cmd -Force
 @'
 @echo off
 :Script PowerShell
 PowerShell.exe -NoProfile -Command "& {Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "C:\PrepareWin10\process.ps1"' -Verb RunAs}"
-'@ > C:\PrepareWin10\SetupComplete.cmd
+'@ | Add-Content C:\PrepareWin10\SetupComplete.cmd
 
 }
 
