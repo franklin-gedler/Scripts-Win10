@@ -28,7 +28,9 @@ function JoinAD {
     ValidateConnectAD $1 $2
 
     $NCompu = $env:COMPUTERNAME
+
     $Domain = "$1.infra.d"
+    $Domain = $Domain.ToLower()
 
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
@@ -137,7 +139,7 @@ function JoinAD {
         
         Write-Output ""
         Write-Output " ######################################################### "
-        Write-Host "  Se agrego al equipo $NCompu al Dominio $1.infra.d  " -ForegroundColor Green -BackgroundColor Black
+        Write-Host "  Se agrego al equipo $NCompu al Dominio $Domain  " -ForegroundColor Green -BackgroundColor Black
         Write-Output " ######################################################### "
 
         # _____________________________________________________________________________________________________
