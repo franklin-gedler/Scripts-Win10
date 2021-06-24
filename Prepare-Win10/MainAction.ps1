@@ -137,16 +137,16 @@ function MainAction {
                 Write-Output 'AR' > C:\PrepareWin10\Pais.txt
                 Write-Output '54' > C:\PrepareWin10\CodigoPais.txt
 
+                # Sincronizo hora y la seteo para que la tome del AD -----------
+                . C:\PrepareWin10\TimeSet.ps1
+                TimeSet "Argentina Standard Time"
+                #---------------------------------------------------------------
+
                 # Solicito y Valido Credenciales de Soporte IT -----------------
                 . C:\PrepareWin10\VerifyCred.ps1
                 VerifyCred "AR" "54"
                 #---------------------------------------------------------------
 
-                # Sincronizo hora y la seteo para que la tome del AD -----------
-                . C:\PrepareWin10\TimeSet.ps1
-                TimeSet "Argentina Standard Time"
-                #---------------------------------------------------------------
-                
                 # Cambio nombre al equipo --------------------------------------
                 . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
                 ChangeName "AR"

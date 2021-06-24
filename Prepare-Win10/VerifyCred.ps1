@@ -17,7 +17,7 @@ function VerifyCred {
     ValidateConnectAD $1 $2
 
     # Solicito Credenciales
-    $Global:cred = Get-Credential $1\ -Message "Ingresar Credenciales, $1\Nombre.Apellido"
+    $cred = Get-Credential $1\ -Message "Ingresar Credenciales, $1\Nombre.Apellido"
 
     Write-Output " ============================================== "
     Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
@@ -25,17 +25,17 @@ function VerifyCred {
     Copy-Item -Path $PSScriptRoot\PS -Destination C:\ -Recurse -force
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-    $Global:Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
+    $Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
     while(!$Very){
         Write-Output ""
         Write-Output " ########################################################## "
         Write-Host " Error con credenciales, Vuelva a escribir sus credenciales " -ForegroundColor Red -BackgroundColor Black
         Write-Output " ########################################################## "
         Write-Output ""
-        $Global:cred = Get-Credential $1\ -Message "Vuelva a escribir sus credenciales, Ej: $1\Nombre.Apellido"
+        $cred = Get-Credential $1\ -Message "Vuelva a escribir sus credenciales, Ej: $1\Nombre.Apellido"
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-        $Global:Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
+        $Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
     }
     Write-Output ""
     Write-Output " ##############################################################"

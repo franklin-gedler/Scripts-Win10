@@ -16,7 +16,7 @@ function TimeSet {
 
     Start-Service w32time # Tengo que iniciar el servicio antes de setearle cualquier config.
 
-    w32tm /config /syncfromflags:domhier /update > NULL
+    #w32tm /config /syncfromflags:domhier /update > NULL
 
     Start-Sleep -Seconds 15
 
