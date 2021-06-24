@@ -134,7 +134,7 @@ function MainAction {
 
                 ActionOffice365  # llamo a la funcion de Office365
                 
-                Write-Output 'AR' > C:\PrepareWin10\Pais.txt
+                Write-Output 'ar' > C:\PrepareWin10\Pais.txt
                 Write-Output '54' > C:\PrepareWin10\CodigoPais.txt
 
                 # Sincronizo hora y la seteo para que la tome del AD -----------
@@ -144,7 +144,7 @@ function MainAction {
 
                 # Solicito y Valido Credenciales de Soporte IT -----------------
                 . C:\PrepareWin10\VerifyCred.ps1
-                VerifyCred "AR" "54"
+                VerifyCred "ar" "54"
                 #---------------------------------------------------------------
 
                 # Cambio nombre al equipo --------------------------------------

@@ -154,7 +154,7 @@ if (!$Status){
             # Descargo he instalo el paquete de programas segun el Pais que hayan seleccionado
             switch ($Pais) {
                 
-                AR{
+                ar{
                     Write-Output "Programas Para AR"
                     DownloadModules "ARProgramPackages"
                     . C:\PrepareWin10\ARProgramPackages.ps1
