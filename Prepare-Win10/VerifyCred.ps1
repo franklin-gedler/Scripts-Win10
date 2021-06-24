@@ -12,6 +12,8 @@ function VerifyCred {
     . C:\PrepareWin10\Firma.ps1 #
     #############################
 
+    $Domain = "$1.infra.d"
+
     # Verifico si esta conectado al AD
     . C:\PrepareWin10\ValidateConnectAD.ps1
     ValidateConnectAD $1 $2
@@ -25,7 +27,8 @@ function VerifyCred {
     Copy-Item -Path $PSScriptRoot\PS -Destination C:\ -Recurse -force
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-    $Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
+    #$Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
+    $Very = Get-ADDomain -Server $Domain -Credential $cred -ErrorAction SilentlyContinue
     while(!$Very){
         Write-Output ""
         Write-Output " ########################################################## "
@@ -35,7 +38,8 @@ function VerifyCred {
         $cred = Get-Credential $1\ -Message "Vuelva a escribir sus credenciales, Ej: $1\Nombre.Apellido"
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-        $Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
+        #$Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
+        $Very = Get-ADDomain -Server $Domain -Credential $cred -ErrorAction SilentlyContinue
     }
     Write-Output ""
     Write-Output " ##############################################################"
