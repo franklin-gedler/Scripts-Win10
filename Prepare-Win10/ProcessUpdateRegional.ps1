@@ -10,9 +10,12 @@ Write-Output "                                  ++++++++++++++++++++++++++++++++
 Write-Output ""
 
 Write-Output " _____________________________________________________________________________________________________"
+
+
 Write-Output ""
 Write-host 'Preparando lo necesario . . . Espere' -ForegroundColor Yellow -BackgroundColor Black
 Write-Output ""
+
 #Write-Output "YO $env:USERNAME ejecuto el script"
 #Get-Location
 
