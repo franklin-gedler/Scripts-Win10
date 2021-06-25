@@ -72,9 +72,6 @@ function PostRunConfig {
 
     Start-Sleep -Seconds 15
 
-    # Configuro Windows para que ejecute el script al iniciar Windows
-    OnScriptConfig
-
     # Seteo el file SetupConfig.cmd
     (Get-Content C:\PrepareWin10\SetupComplete.cmd).Replace('%windir%\Setup\Scripts\process.ps1','C:\PrepareWin10\process.ps1') | Set-Content C:\PrepareWin10\SetupComplete.cmd
 
@@ -117,6 +114,9 @@ if (!$Status){
     DownloadModules "Bitlocker"
     . C:\PrepareWin10\Bitlocker.ps1
     Bitlocker $Pais
+
+    # Configuro Windows para que ejecute el script al iniciar Windows
+    OnScriptConfig
 
     Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
     timeout /t 10
