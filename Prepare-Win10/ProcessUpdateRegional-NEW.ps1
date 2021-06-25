@@ -45,7 +45,7 @@ function DownloadModules {
         -UseBasicParsing -OutFile "C:\PrepareWin10\$1.ps1"
 }
 
-function RunScript {
+function OnScriptConfig {
     # Deshabilito el control de usuarios UAC
     Set-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLUA' -Value 0 > NULL
 
@@ -55,7 +55,7 @@ function RunScript {
     #New-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run' -Name 'PrepareWin10' -Value '"C:\PrepareWin10\SetupComplete.cmd"' > NULL
 }
 
-function StopScript {
+function OffScriptConfig {
     # Habilito el control de usuarios UAC
     Set-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLUA' -Value 1 > NULL
     
@@ -70,20 +70,28 @@ function PostRunConfig {
 
     Copy-Item -Path "C:\Windows\Setup\Scripts\*" -Destination C:\PrepareWin10 -Force -Recurse
 
+    Start-Sleep -Seconds 15
+
     # Configuro Windows para que ejecute el script al iniciar Windows
-    RunScript
+    OnScriptConfig
+
+    # Seteo el file SetupConfig.cmd
+    (Get-Content C:\PrepareWin10\SetupComplete.cmd).Replace('%windir%\Setup\Scripts\process.ps1','C:\PrepareWin10\process.ps1') | Set-Content C:\PrepareWin10\SetupComplete.cmd
 
     # Elimino el SetupComplete
-    Remove-Item -LiteralPath C:\PrepareWin10\SetupComplete.cmd -Force
+    #Remove-Item -LiteralPath C:\PrepareWin10\SetupComplete.cmd -Force
 
     #$SetupComplete = Get-Content C:\Windows\Setup\Scripts\SetupComplete.cmd
     #$SetupComplete = $SetupComplete.Replace('%windir%\Setup\Scripts\process.ps1','C:\PrepareWin10\process.ps1')
     #$SetupComplete | Add-Content C:\PrepareWin10\SetupComplete.cmd
-@'
-@echo off
-:Script PowerShell
-PowerShell.exe -NoProfile -Command "& {Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "C:\PrepareWin10\process.ps1"' -Verb RunAs}"
-'@ | Add-Content C:\PrepareWin10\SetupComplete.cmd
+    <#
+    @'
+    @echo off
+    :Script PowerShell
+    PowerShell.exe -NoProfile -Command "& {Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "C:\PrepareWin10\process.ps1"' -Verb RunAs}"
+    '@ | Add-Content C:\PrepareWin10\SetupComplete.cmd
+    #>
+
 
 }
 
@@ -185,7 +193,7 @@ if (!$Status){
             
             timeout /t 10
 
-            StopScript   # Esto elimina en el registro la ejecucion del script al inicio
+            OffScriptConfig   # Esto elimina en el registro la ejecucion del script al inicio
 
             # Limpio el Sistema de los archivos de instalacion
             DownloadModules "WipeSystem"
