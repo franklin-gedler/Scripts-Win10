@@ -1,7 +1,7 @@
 function TimeSet {
     
     param(
-        $1
+        $1, $2
     )
     
     Write-Output ""
@@ -10,15 +10,27 @@ function TimeSet {
     Write-Output " ============================= "
     Write-Output ""
 
+    $Domain = "$2.infra.d"
+    $Domain = $Domain.ToLower()
+
+    # debo agregar el ar.infra.d como servidor de hora y fecha
+
     Set-TimeZone -Id "$1"
 
     Set-Service w32time -StartupType Automatic
 
     Start-Service w32time # Tengo que iniciar el servicio antes de setearle cualquier config.
 
+    w32tm /config /syncfromflags:all /manualpeerlist:$Domain /reliable:yes /update > $null
+
+    Stop-Service w32time
     #w32tm /config /syncfromflags:domhier /update > NULL
 
-    Start-Sleep -Seconds 15
+    Start-Sleep -Seconds 10
+
+    Start-Service w32time
+
+    Start-Sleep -Seconds 10
 
     #w32tm /query /status
     #Stop-Service w32time
