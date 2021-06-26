@@ -78,20 +78,9 @@ function PostRunConfig {
     # Seteo el file SetupConfig.cmd
     (Get-Content C:\PrepareWin10\SetupComplete.cmd).Replace('%windir%\Setup\Scripts\process.ps1','C:\PrepareWin10\process.ps1') | Set-Content C:\PrepareWin10\SetupComplete.cmd
 
-    # Elimino el SetupComplete
-    #Remove-Item -LiteralPath C:\PrepareWin10\SetupComplete.cmd -Force
-
-    #$SetupComplete = Get-Content C:\Windows\Setup\Scripts\SetupComplete.cmd
-    #$SetupComplete = $SetupComplete.Replace('%windir%\Setup\Scripts\process.ps1','C:\PrepareWin10\process.ps1')
-    #$SetupComplete | Add-Content C:\PrepareWin10\SetupComplete.cmd
-    <#
-    @'
-    @echo off
-    :Script PowerShell
-    PowerShell.exe -NoProfile -Command "& {Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File "C:\PrepareWin10\process.ps1"' -Verb RunAs}"
-    '@ | Add-Content C:\PrepareWin10\SetupComplete.cmd
-    #>
-
+    # Seteo el file process.ps1
+    (Get-Content "C:\PrepareWin10\process.ps1").Replace('Stop-Service wuauserv -Force','#Stop-Service wuauserv -Force') | Set-Content "C:\PrepareWin10\process.ps1"
+    (Get-Content "C:\PrepareWin10\process.ps1").Replace('Set-Service wuauserv -StartupType Disabled','#Set-Service wuauserv -StartupType Disabled') | Set-Content "C:\PrepareWin10\process.ps1"
 
 }
 
