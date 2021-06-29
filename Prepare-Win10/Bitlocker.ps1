@@ -77,6 +77,8 @@ function Bitlocker {
         Send-MailMessage -From "$Mail" -To "soporte@despegar.com" `
                         -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
                         -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
+        
+        Start-Sleep -Seconds 10
         #--------------------------------------------------------------------------------------------------
         
         
