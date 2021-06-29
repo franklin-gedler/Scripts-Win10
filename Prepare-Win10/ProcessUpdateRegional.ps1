@@ -16,25 +16,23 @@ Write-Output ""
 Write-host 'Preparando lo necesario . . . Espere' -ForegroundColor Yellow -BackgroundColor Black
 Write-Output ""
 
-#Write-Output "YO $env:USERNAME ejecuto el script"
-#Get-Location
+#------ Este Bloque le dice a Windows que no se suspenda ni apague la pantalla mientras el script se ejecuta--------
+$code=@' 
+[DllImport("kernel32.dll", CharSet = CharSet.Auto,SetLastError = true)]
+  public static extern void SetThreadExecutionState(uint esFlags);
+'@
 
-<#
-function DownloadModules {
+$ste = Add-Type -memberDefinition $code -name System -namespace Win32 -passThru
+$ES_CONTINUOUS = [uint32]"0x80000000" 
+#$ES_AWAYMODE_REQUIRED = [uint32]"0x00000040" 
+$ES_DISPLAY_REQUIRED = [uint32]"0x00000002"
+$ES_SYSTEM_REQUIRED = [uint32]"0x00000001"
 
-    # Descargo todos los modulos necesarios
-    $token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
-    $headers = @{Authorization = "token $($token)"}
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ShowMenu.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\ShowMenu.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/VerifyCred.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\VerifyCred.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ChangeName.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\ChangeName.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/JoinAD.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\JoinAD.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ValidateConnectAD.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\ValidateConnectAD.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/TimeSet.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\TimeSet.ps1"
-    Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/Bitlocker.ps1" -UseBasicParsing -OutFile "C:\PrepareWin10\Bitlocker.ps1"
-}
-#>
+$ste::SetThreadExecutionState($ES_CONTINUOUS -bor $ES_SYSTEM_REQUIRED -bor $ES_DISPLAY_REQUIRED)
+
+#$ste::SetThreadExecutionState($ES_CONTINUOUS)
+
+#-------------------------------------------------------------------------------------------------------------------
 
 function DownloadModules {
     param (
