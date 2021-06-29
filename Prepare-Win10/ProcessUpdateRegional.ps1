@@ -79,7 +79,7 @@ function PostRunConfig {
     # Seteo el file process.ps1
     (Get-Content "C:\PrepareWin10\process.ps1").Replace('Stop-Service wuauserv -Force','#Stop-Service wuauserv -Force') | Set-Content "C:\PrepareWin10\process.ps1"
     (Get-Content "C:\PrepareWin10\process.ps1").Replace('Set-Service wuauserv -StartupType Disabled','#Set-Service wuauserv -StartupType Disabled') | Set-Content "C:\PrepareWin10\process.ps1"
-
+    (Get-Content "C:\PrepareWin10\process.ps1").Replace('Pause','timeout /t 10') | Set-Content "C:\PrepareWin10\process.ps1"
 }
 
 $Status= Get-ChildItem -Path C:\Users\admindesp\Desktop\ -Name Status.txt
