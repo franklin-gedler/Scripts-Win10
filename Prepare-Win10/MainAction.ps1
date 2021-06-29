@@ -137,6 +137,9 @@ function MainAction {
                 Write-Output 'AR' > C:\PrepareWin10\Pais.txt
                 Write-Output '54' > C:\PrepareWin10\CodigoPais.txt
 
+                . C:\PrepareWin10\PowerAdapterStatus.ps1
+                PowerAdapterStatus # valido si el cargador esta conectado
+
                 # Solicito y Valido Credenciales de Soporte IT -----------------
                 . C:\PrepareWin10\VerifyCred.ps1
                 VerifyCred "AR" "54"

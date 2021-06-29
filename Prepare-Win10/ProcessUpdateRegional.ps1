@@ -93,6 +93,7 @@ if (!$Status){
 
     # Ejecuto una sola vez ShowMenu ya que despues en los proximos reinicios con los archivos de estado se de que pais es.
     DownloadModules "Firma"
+    DownloadModules "PowerAdapterStatus"
     DownloadModules "MainAction"
     DownloadModules "ValidateConnectAD"
     DownloadModules "VerifyCred"
