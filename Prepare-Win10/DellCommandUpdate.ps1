@@ -19,12 +19,15 @@ function DellCommandUpdate {
 
         # Descargo el dell command update --------------------------------------------------------------------------------------------
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri "https://dl.dell.com/FOLDER06986472M/2/Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE" `
-            -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE
+        #$URL = 'https://dl.dell.com/FOLDER06986472M/2/Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE'
+        $URL = 'https://dl.dell.com/FOLDER07414802M/1/Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE'
+
+        Invoke-WebRequest -Uri $URL `
+            -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE
         #-----------------------------------------------------------------------------------------------------------------------------
 
         # Instalo Dell Command Update ----------------------------------------------------------------------------------------------------
-        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE -ArgumentList '/s'
+        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE -ArgumentList '/s'
         #---------------------------------------------------------------------------------------------------------------------------------
 
         # Configuro ------------------------------------------------------------------------------------
