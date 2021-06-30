@@ -31,12 +31,13 @@ function UpdatingWindows {
     Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
     Start-Service wuauserv -InformationAction SilentlyContinue
 
+    $ProgressPreference = 'SilentlyContinue' # Esto es Para que no tarde tanto en Descargar las actualizaciones
     Install-PackageProvider NuGet -Force > NULL
     Set-PSRepository PSGallery -InstallationPolicy Trusted
     Install-Module PSWindowsUpdate -Confirm:$False -Force
     Import-Module PSWindowsUpdate
     
-    $ProgressPreference = 'SilentlyContinue' # Esto es Para que no tarde tanto en Descargar las actualizaciones
+    
     Install-WindowsUpdate -Confirm:$False -IgnoreReboot -AcceptAll
     #Install-WindowsUpdate -AcceptAll
     
