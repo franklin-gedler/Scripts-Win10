@@ -100,6 +100,4 @@ Foreach ($Computer in (Get-Content $PSScriptRoot\Equipos.txt ))
 
 }
 
-Pause
-
 ###########################################################################################
