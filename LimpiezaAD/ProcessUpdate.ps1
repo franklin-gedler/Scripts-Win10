@@ -20,7 +20,6 @@ DownloadModules Firma
 #Set-Location $currentdirectory
 Set-Location $PSScriptRoot
 (Get-Location).Path
-Pause
 ###########################################################################################
 
 Remove-Item -LiteralPath C:\PS -Recurse -Force -ErrorAction SilentlyContinue
