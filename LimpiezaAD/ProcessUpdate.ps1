@@ -1,7 +1,26 @@
+function DownloadModules {
+    param (
+        $1
+    )
+    $token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    $headers = @{Authorization = "token $($token)"}
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Headers $headers `
+        -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/$1.ps1" `
+        -UseBasicParsing -OutFile "$PSScriptRoot\$1.ps1"
+}
+
+DownloadModules Firma
+
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
 Set-Location $currentdirectory
 (Get-Location).Path
+Pause
 ###########################################################################################
+
+
+
+
 Remove-Item -LiteralPath C:\PS -Recurse -Force -ErrorAction SilentlyContinue
 Write-Output ""
 Write-Output " ================================================ "
