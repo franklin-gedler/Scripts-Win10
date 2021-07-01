@@ -12,6 +12,10 @@ function DownloadModules {
 
 DownloadModules Firma
 
+# Mi firma ##################
+. C:\PrepareWin10\Firma.ps1 #
+#############################
+
 $currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
 Set-Location $currentdirectory
 (Get-Location).Path
