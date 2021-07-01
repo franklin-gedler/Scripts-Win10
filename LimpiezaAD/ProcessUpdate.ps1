@@ -16,14 +16,12 @@ DownloadModules Firma
 . $PSScriptRoot\Firma.ps1 #
 #############################
 
-$currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
-Set-Location $currentdirectory
+#$currentdirectory = split-path -parent $MyInvocation.MyCommand.Definition
+#Set-Location $currentdirectory
+Set-Location $PSScriptRoot
 (Get-Location).Path
 Pause
 ###########################################################################################
-
-
-
 
 Remove-Item -LiteralPath C:\PS -Recurse -Force -ErrorAction SilentlyContinue
 Write-Output ""
@@ -81,17 +79,17 @@ Write-Host "   Credenciales Validadas con el Dominio: $Very " -ForegroundColor G
 Write-Output " ############################################################## "
 
 #$File = "Equipos.txt"
-$Content = [System.IO.File]::ReadAllText("$currentdirectory\Equipos.txt")
+$Content = [System.IO.File]::ReadAllText("$PSScriptRoot\Equipos.txt")
 $Content = $Content.Trim()
-[System.IO.File]::WriteAllText("$currentdirectory\Equipos.txt", $Content)
-#$Content = [System.IO.File]::ReadAllText("$currentdirectory\Equipos.txt")
+[System.IO.File]::WriteAllText("$PSScriptRoot\Equipos.txt", $Content)
+#$Content = [System.IO.File]::ReadAllText("$PSScriptRoot\Equipos.txt")
 
 Write-Output ""
 Write-Output " ########################### "
 Write-Host "        Procesando . . .     " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output " ########################### "
 
-Foreach ($Computer in (Get-Content $currentdirectory\Equipos.txt ))
+Foreach ($Computer in (Get-Content $PSScriptRoot\Equipos.txt ))
 {
     $consul = Get-ADComputer -LDAPFilter "(cn=*$Computer)" -SearchScope Subtree -Server $Domain -Credential $cred | Select-Object -ExpandProperty DistinguishedName
     if ($consul){
