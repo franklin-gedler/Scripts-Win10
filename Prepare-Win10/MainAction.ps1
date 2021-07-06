@@ -154,7 +154,7 @@ function MainAction {
             3{
 
                 Write-host "         Seleccionastes: BR          " -ForegroundColor Yellow -BackgroundColor Black
-                ActionPCI    # Setea si es PCI o NO y tambien pregunta si va con Office365 o NO
+                ActionPCI    # Setea si es PCI o NO
                 ActionOffice365  # llamo a la funcion de Office365
 
                 # Mi firma ##################
