@@ -13,6 +13,7 @@ Function showmenupais {
     Write-Host "                6. MX                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "                7. PE                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " *********************************** "
+    
 }
 
 function ShowMenuPci {
@@ -25,6 +26,7 @@ function ShowMenuPci {
     Write-Host "            1. SI                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "            2. NO                " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host " ******************************* "
+    
 }
 
 function ShowMenuOffice365 {
@@ -76,7 +78,7 @@ function ActionPCI {
             
             1{
                 # Es PCI
-                Write-Output "Es PCI"
+                Write-host "     Seleccionastes: Es PCI      " -ForegroundColor Yellow -BackgroundColor Black
                 #Write-Output '1' > C:\Users\admindesp\Desktop\PCI.txt
                 $Global:PCI = 1
                 Return
@@ -84,7 +86,7 @@ function ActionPCI {
 
             2{
                 # No es PCI
-                Write-Output "No es PCI"
+                Write-host "    Seleccionastes: No es PCI    " -ForegroundColor Yellow -BackgroundColor Black
                 #Write-Output '0' > C:\Users\admindesp\Desktop\PCI.txt
                 $Global:PCI = 2
                 Return
@@ -110,16 +112,14 @@ function MainAction {
 
             default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
 
-            1{
-                
-                #Write-host "        Seleccionastes AR          " -ForegroundColor Yellow -BackgroundColor Black
-                
+            1{  
+                Write-host "         Seleccionastes: AR          " -ForegroundColor Yellow -BackgroundColor Black
+                ActionOffice365  # llamo a la funcion de Office365
+
                 # Mi firma ##################
                 . C:\PrepareWin10\Firma.ps1 #
                 #############################
-
-                ActionOffice365  # llamo a la funcion de Office365
-                
+ 
                 Write-Output 'AR' > C:\PrepareWin10\Pais.txt
                 Write-Output '54' > C:\PrepareWin10\CodigoPais.txt
 
@@ -146,14 +146,14 @@ function MainAction {
 
             2{
 
-                Write-host "        Seleccionastes UY          " -ForegroundColor Yellow -BackgroundColor Black
+                Write-host "         Seleccionastes: UY          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             3{
 
-                Write-host "        Seleccionastes BR          " -ForegroundColor Yellow -BackgroundColor Black
+                Write-host "         Seleccionastes: BR          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Setea si es PCI o NO y tambien pregunta si va con Office365 o NO
                 ActionOffice365  # llamo a la funcion de Office365
 
@@ -186,26 +186,26 @@ function MainAction {
             }
 
             4{
-                Write-host "        Seleccionastes CO          " -ForegroundColor Yellow -BackgroundColor Black
+                Write-host "         Seleccionastes: CO          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
                 # Recuerda que todas las tareas que deba hacer debo asignarlas en la funcion ActionPCI
                 # Nota: el Return lo tiene la funcion ActionPCI       
             }
 
             5{
-                Write-host "        Seleccionastes CL          " -ForegroundColor Yellow -BackgroundColor Black
+                Write-host "         Seleccionastes: CL          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             6{
-                Write-host "        Seleccionastes MX          " -ForegroundColor Yellow -BackgroundColor Black
+                Write-host "         Seleccionastes: MX          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             7{
-                Write-host "        Seleccionastes PE          " -ForegroundColor Yellow -BackgroundColor Black
+                Write-host "         Seleccionastes: PE          " -ForegroundColor Yellow -BackgroundColor Black
                 ActionOffice365  # llamo a la funcion de Office365
                 Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
