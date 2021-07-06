@@ -47,12 +47,8 @@ function ActionOffice365 {
 
     #$InputOffice365 = Read-Host -Prompt "Seleccione una Opcion Para office"
     switch (Read-Host -Prompt "Seleccione una Opcion Para Office") {
-        <#
-        0{
-            MainAction
-            Return
-        }
-        #>
+        
+        default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
         
         1{
             #Write-Host "instalo office";
@@ -77,31 +73,21 @@ function ActionPCI {
         switch ($inpPCI) {
 
             default {Write-Host -ForegroundColor Red "Opcion Invalida, por favor seleccione una de las disponibles"}
-            <#
-            0{
-                MainAction
-                Return
-            }
-            #>
             
             1{
-                # Cuando es PCI
+                # Es PCI
                 Write-Output "Es PCI"
-                ActionOffice365  # llamo a la funcion de Office365
-
-
-
-                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
+                #Write-Output '1' > C:\Users\admindesp\Desktop\PCI.txt
+                $Global:PCI = 1
+                Return
             }
 
             2{
-                # Cuando no es PCI
+                # No es PCI
                 Write-Output "No es PCI"
-                ActionOffice365  # llamo a la funcion de Office365
-
-
-
-                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
+                #Write-Output '0' > C:\Users\admindesp\Desktop\PCI.txt
+                $Global:PCI = 2
+                Return
             }
         }
     }
@@ -168,9 +154,35 @@ function MainAction {
             3{
 
                 Write-host "        Seleccionastes BR          " -ForegroundColor Yellow -BackgroundColor Black
-                ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
-                # Recuerda que todas las tareas que deba hacer debo asignarlas en la funcion ActionPCI
-                # Nota: el Return lo tiene la funcion ActionPCI
+                ActionPCI    # Setea si es PCI o NO y tambien pregunta si va con Office365 o NO
+                ActionOffice365  # llamo a la funcion de Office365
+
+                # Mi firma ##################
+                . C:\PrepareWin10\Firma.ps1 #
+                #############################
+
+                Write-Output 'BR' > C:\PrepareWin10\Pais.txt
+                Write-Output '55' > C:\PrepareWin10\CodigoPais.txt
+
+                . C:\PrepareWin10\PowerAdapterStatus.ps1
+                PowerAdapterStatus # valido si el cargador esta conectado
+
+                # Solicito y Valido Credenciales de Soporte IT -----------------
+                . C:\PrepareWin10\VerifyCred.ps1
+                VerifyCred "BR" "55"
+                #---------------------------------------------------------------
+
+                # Sincronizo hora y la seteo para que la tome del AD -----------
+                . C:\PrepareWin10\TimeSet.ps1
+                TimeSet "E. South America Standard Time" "BR"
+                #---------------------------------------------------------------
+
+                # Cambio nombre al equipo --------------------------------------
+                . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
+                ChangeName "BR"
+                #---------------------------------------------------------------
+
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
             4{

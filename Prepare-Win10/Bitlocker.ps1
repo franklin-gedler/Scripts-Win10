@@ -8,7 +8,7 @@ function Bitlocker {
     . C:\PrepareWin10\Firma.ps1 #
     #############################
 
-    $NCompu = Get-Content C:\PrepareWin10\NCompu.txt
+    #$NCompu = Get-Content C:\PrepareWin10\NCompu.txt
 
     # Importo Usuario y Clave de RED
     $Ucred = Get-Content C:\PrepareWin10\Ucred.txt
