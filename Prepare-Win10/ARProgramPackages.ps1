@@ -24,6 +24,37 @@ function ARProgramPackages {
     }
     
     Write-Output ""
+    Write-Output " =========================== "
+    Write-Host "    Instalando EBS Oracle    " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Output " =========================== "
+
+    $URL = 'https://www.talkingbyte.com/download.php?product_id=ThinForms_JavaHost_installer.zip'
+
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $URL -UseBasicParsing -OutFile 'C:\PrepareWin10\ThinForms_JavaHost_installer.zip'
+
+    Expand-Archive C:\PrepareWin10\ThinForms_JavaHost_installer.zip C:\PrepareWin10\ThinForms_JavaHost_installer\ -Force
+
+    @'
+    install_path=C:\\Program Files\\ThinApplet\\JavaHostPlugin
+    reg_name=Despegar SA
+    reg_key=5007-cb9b-8114-fba7
+    all_users=true
+'@ | Add-Content C:\PrepareWin10\ThinForms_JavaHost_installer\key.properties
+
+    $fileinstaller = (Get-ChildItem C:\PrepareWin10\ThinForms_JavaHost_installer).Name | Select-String ".exe"
+
+    Start-Process -Wait C:\PrepareWin10\ThinForms_JavaHost_installer\$fileinstaller
+
+    Write-Output ""
+    Write-Output " ############# "
+    Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
+    Write-Output " ############# "
+    Write-Output ""
+    Write-Output "_________________________________________________________________________________________"
+    Write-Output "" 
+
+    Write-Output ""
     Write-Output " ================================= "
     Write-Host "    Instalando FusionInventory     " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================= "
