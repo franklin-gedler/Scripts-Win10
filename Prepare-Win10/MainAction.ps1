@@ -187,9 +187,34 @@ function MainAction {
 
             4{
                 Write-host "         Seleccionastes: CO          " -ForegroundColor Yellow -BackgroundColor Black
-                ActionPCI    # Menu con sus tareas dependiendo si es PCI o NO
-                # Recuerda que todas las tareas que deba hacer debo asignarlas en la funcion ActionPCI
-                # Nota: el Return lo tiene la funcion ActionPCI       
+                ActionPCI    # Setea si es PCI o NO
+                ActionOffice365  # llamo a la funcion de Office365
+
+                # Mi firma ##################
+                . C:\PrepareWin10\Firma.ps1 #
+                #############################
+                
+                Write-Output 'CO' > C:\PrepareWin10\Pais.txt
+                Write-Output '57' > C:\PrepareWin10\CodigoPais.txt
+
+                . C:\PrepareWin10\PowerAdapterStatus.ps1
+                PowerAdapterStatus # valido si el cargador esta conectado
+
+                # Solicito y Valido Credenciales de Soporte IT -----------------
+                . C:\PrepareWin10\VerifyCred.ps1
+                VerifyCred "CO" "57"
+                #---------------------------------------------------------------
+
+                # Sincronizo hora y la seteo para que la tome del AD -----------
+                . C:\PrepareWin10\TimeSet.ps1
+                TimeSet "SA Pacific Standard Time" "CO"
+                #---------------------------------------------------------------
+
+                # Cambio nombre al equipo --------------------------------------
+                . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
+                ChangeName "CO"
+                #---------------------------------------------------------------
+
             }
 
             5{
