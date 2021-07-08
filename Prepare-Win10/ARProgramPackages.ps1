@@ -179,6 +179,11 @@ function ARProgramPackages {
 
     Start-Process -Wait C:\PrepareWin10\ThinForms_JavaHost_installer\$fileinstaller
 
+    New-Item -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist' -Force > NULL
+    
+    New-ItemProperty -Path 'HKLM:HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist' `
+        -Name '1' -Value 'nmjefghbgfcpoobigfbalocpncklkjhk;https://clients2.google.com/service/update2/crx' > NULL
+
     Write-Output ""
     Write-Output " ############# "
     Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
