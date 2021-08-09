@@ -94,6 +94,7 @@ Foreach ($Computer in (Get-Content $PSScriptRoot\Equipos.txt ))
     if ($consul){
         Write-Output "$consul ---->>>> Borrado pa la verga!!  " >> Encontrados.txt
         Remove-ADObject -Identity "$consul" -Credential $cred -Server $Domain -Confirm:$False -Verbose
+        timeout /t 30
     }else{
         Write-Output "$Computer ------>>>> No encontrado!!! " >> NoEncontrados.txt
     }
