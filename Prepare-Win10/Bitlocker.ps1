@@ -61,20 +61,55 @@ function Bitlocker {
 
         $Global:IdKeyBitlocker = "KeyProtectorId:  $KeyID ------------------------------ RecoveryPassword:  $PassRecovery"
         
+        switch($Pais){
+
+            AR{
+            
+                $Mail_Receptor = 'soporte@despegar.com'
+            }
         
+            UY{
+            
+                $Mail_Receptor = 'soporteuy@despegar.com'
+            }
+        
+            BR{
+                $Mail_Receptor = 'soportebr@decolar.com'
+            }
+        
+            CO{
+                $Mail_Receptor = 'soporteco@despegar.com'
+            }
+        
+            CL{
+                $Mail_Receptor = 'soportecl@despegar.com'
+            }
+        
+            MX{
+                $Mail_Receptor = 'soportemx@despegar.com'
+            }
+        
+            PE{
+                # Este Mail creo que no existe ** Averiguar **
+                #$Mail_Receptor = 'soportepe@despegar.com'
+            }
+        
+        }
+
+
         # Envia el mail con id y recovery -----------------------------------------------------------------
-        $Mail = 'soportescripts@gmail.com'
+        $Mail_Emisor = 'soportescripts@gmail.com'
         $PassFile = "C:\PrepareWin10\passfile"
         $Key = "C:\PrepareWin10\key"
 
         $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
-                    -ArgumentList "$Mail", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
+                    -ArgumentList "$Mail_Emisor", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
 
         #$PassMail = ConvertTo-SecureString "micontraseña" -AsPlainText -Force
         #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
-        #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail, $PassMail
+        #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail_Emisor, $PassMail
         
-        Send-MailMessage -From "$Mail" -To "soporte@despegar.com" `
+        Send-MailMessage -From "$Mail_Emisor" -To "$Mail_Receptor" `
                         -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
                         -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
         

@@ -215,6 +215,8 @@ function MainAction {
                 ChangeName "CO"
                 #---------------------------------------------------------------
 
+                Return # Este Return le devuelve el control al script de ProcessUpdateRegional
+
             }
 
             5{
@@ -225,7 +227,34 @@ function MainAction {
 
             6{
                 Write-host "         Seleccionastes: MX          " -ForegroundColor Yellow -BackgroundColor Black
+                ActionPCI    # Setea si es PCI o NO
                 ActionOffice365  # llamo a la funcion de Office365
+
+                # Mi firma ##################
+                . C:\PrepareWin10\Firma.ps1 #
+                #############################
+
+                Write-Output 'MX' > C:\PrepareWin10\Pais.txt
+                Write-Output '52' > C:\PrepareWin10\CodigoPais.txt
+
+                . C:\PrepareWin10\PowerAdapterStatus.ps1
+                PowerAdapterStatus # valido si el cargador esta conectado
+
+                # Solicito y Valido Credenciales de Soporte IT -----------------
+                . C:\PrepareWin10\VerifyCred.ps1
+                VerifyCred "MX" "52"
+                #---------------------------------------------------------------
+
+                # Sincronizo hora y la seteo para que la tome del AD -----------
+                . C:\PrepareWin10\TimeSet.ps1
+                TimeSet "Central Standard Time (Mexico)" "MX"
+                #---------------------------------------------------------------
+
+                # Cambio nombre al equipo --------------------------------------
+                . C:\PrepareWin10\ChangeName.ps1   # Cargo la funcion en memoria
+                ChangeName "MX"
+                #---------------------------------------------------------------
+
                 Return # Este Return le devuelve el control al script de ProcessUpdateRegional
             }
 
