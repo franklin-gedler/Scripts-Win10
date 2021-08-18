@@ -160,7 +160,48 @@ if (!$Status){
                     . C:\PrepareWin10\ARProgramPackages.ps1
                     ARProgramPackages
                 }
+
+                UY{
+                    Write-Output "Programas Para UY"
+                    DownloadModules "UYProgramPackages"
+                    . C:\PrepareWin10\UYProgramPackages.ps1
+                    UYProgramPackages
+                }
                 
+                BR{
+                    Write-Output "Programas Para BR"
+                    DownloadModules "BRProgramPackages"
+                    . C:\PrepareWin10\BRProgramPackages.ps1
+                    BRProgramPackages
+                }
+
+                CO{
+                    Write-Output "Programas Para CO"
+                    DownloadModules "COProgramPackages"
+                    . C:\PrepareWin10\COProgramPackages.ps1
+                    COProgramPackages
+                }
+
+                CL{
+                    Write-Output "Programas Para CL"
+                    DownloadModules "CLProgramPackages"
+                    . C:\PrepareWin10\CLProgramPackages.ps1
+                    CLProgramPackages
+                }
+
+                MX{
+                    Write-Output "Programas Para MX"
+                    DownloadModules "MXProgramPackages"
+                    . C:\PrepareWin10\MXProgramPackages.ps1
+                    MXProgramPackages
+                }
+
+                PE{
+                    Write-Output "Programas Para PE"
+                    DownloadModules "PEProgramPackages"
+                    . C:\PrepareWin10\PEProgramPackages.ps1
+                    PEProgramPackages
+                }
             }
             
             Write-Output '4' > C:\Users\admindesp\Desktop\status.txt
