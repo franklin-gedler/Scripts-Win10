@@ -32,7 +32,7 @@ while("$CI" -eq 'False'){
     Write-Output ""
 }
 
-$token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+$token = "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"
 $headers = @{Authorization = "token $($token)"}
 Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ProcessUpdateRegional.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\ProcessUpdateRegional.ps1"
 

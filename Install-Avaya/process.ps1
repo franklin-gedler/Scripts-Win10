@@ -4,7 +4,7 @@ Set-Location $currentdirectory
 #######################################################################################################################
 
 # Descargar desde Github 
-$token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+$token = "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"
 $headers = @{Authorization = "token $($token)"}
 Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Install-Avaya/ProcessUpdateLatest.ps1" -UseBasicParsing -OutFile "$currentdirectory\ProcessUpdateLatest.ps1"
 

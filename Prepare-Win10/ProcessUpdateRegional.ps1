@@ -39,7 +39,7 @@ function DownloadModules {
     param (
         $1
     )
-    $token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    $token = "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"
     $headers = @{Authorization = "token $($token)"}
     $ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Headers $headers `

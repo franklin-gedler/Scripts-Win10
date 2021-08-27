@@ -71,7 +71,7 @@ function ARProgramPackages {
     #Start-Process -Wait -FilePath C:\PrepareWin10\java.exe -ArgumentList '/s'
     mkdir $env:TMP\javadownload > NULL
 
-    $Token = "569b159288f7c200c33d6472bd5f26a9f2aa7d21"
+    $Token = "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"
     
     $Headers = @{
     accept = "application/octet-stream"
@@ -79,10 +79,10 @@ function ARProgramPackages {
     }
 
     $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri "https://api.github.com/repos/franklin-gedler/Only-Download-Prepare-Windows10/releases/assets/36871675" `
-                    -Headers $Headers -UseBasicParsing -OutFile $env:TMP\javadownload\jre-8u291-windows-i586.exe
+    Invoke-WebRequest -Uri "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/43446413" `
+        -Headers $Headers -UseBasicParsing -OutFile $env:TMP\javadownload\jre-8u301-windows-i586.exe
 
-    Start-Process -Wait -FilePath $env:TMP\javadownload\jre-8u291-windows-i586.exe -ArgumentList '/s'
+    Start-Process -Wait -FilePath $env:TMP\javadownload\jre-8u301-windows-i586.exe -ArgumentList '/s'
 
     Write-Output ""
     Write-Output " ############# "
