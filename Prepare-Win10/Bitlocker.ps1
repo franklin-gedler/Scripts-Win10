@@ -96,8 +96,20 @@ function Bitlocker {
         
         }
 
-        DownloadFiles passfile
-        DownloadFiles key
+        function DownloadFilesMail {
+            param (
+                $1
+            )
+            $token = "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"
+            $headers = @{Authorization = "token $($token)"}
+            $ProgressPreference = 'SilentlyContinue'
+            Invoke-WebRequest -Headers $headers `
+                -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/$1" `
+                -UseBasicParsing -OutFile "C:\PrepareWin10\$1"
+        }
+
+        DownloadFilesMail passfile
+        DownloadFilesMail key
 
         $Mail_Emisor = 'soportescripts@despegar.com'
         $PassFile = "C:\PrepareWin10\passfile"
