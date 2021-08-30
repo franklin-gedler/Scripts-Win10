@@ -71,7 +71,7 @@ function MXProgramPackages {
     #Start-Process -Wait -FilePath C:\PrepareWin10\java.exe -ArgumentList '/s'
     mkdir $env:TMP\javadownload > NULL
 
-    $Token = "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"
+    $Token = "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"
     
     $Headers = @{
     accept = "application/octet-stream"

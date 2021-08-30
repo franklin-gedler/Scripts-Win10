@@ -67,7 +67,7 @@ function DownloadMotor {
         $1,$2,$3
     )
     
-    $Token = "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"
+    $Token = "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"
     
     $Headers = @{
     accept = "application/octet-stream"
@@ -418,7 +418,7 @@ function AutoDeleteNow {
 
 Function DownloadPS {
 
-    $Token = "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"
+    $Token = "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"
     
     $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596420"
 
