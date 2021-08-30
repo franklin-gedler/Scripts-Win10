@@ -96,7 +96,20 @@ function Bitlocker {
         
         }
 
+        DownloadFiles passfile
+        DownloadFiles key
 
+        $Mail_Emisor = 'soportescripts@despegar.com'
+        $PassFile = "C:\PrepareWin10\passfile"
+        $Key = "C:\PrepareWin10\key"
+
+        $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
+            -ArgumentList "$Mail_Emisor", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
+
+        Send-MailMessage -From "$Mail_Emisor" -To "$Mail_Receptor" `
+            -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
+            -UseSsl -SmtpServer mail.despegar.com -Port 25 -Credential $credMail
+        <#
         # Envia el mail con id y recovery -----------------------------------------------------------------
         $Mail_Emisor = 'soportescripts@gmail.com'
         $PassFile = "C:\PrepareWin10\passfile"
@@ -115,7 +128,7 @@ function Bitlocker {
         
         Start-Sleep -Seconds 10
         #--------------------------------------------------------------------------------------------------
-        
+        #>
         
         Write-Output ""
         Write-Output " ============================= "
