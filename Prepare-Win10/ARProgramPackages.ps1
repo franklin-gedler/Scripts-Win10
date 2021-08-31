@@ -3,6 +3,24 @@ function ARProgramPackages {
     . C:\PrepareWin10\Firma.ps1 #
     #############################
 
+    function DownloadFilesInstaller {
+        param (
+            $1,$2
+        )
+        $Token = "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"
+    
+        $Headers = @{
+        accept = "application/octet-stream"
+        authorization = "Token " + $Token
+        }
+
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri $1 `
+                -Headers $Headers -UseBasicParsing -OutFile "C:\PrepareWin10\$2"
+    }
+
+    # ----------------------------------------------------------------------------------------------
+
     $InstallOffice365 = Get-Content C:\Users\admindesp\Desktop\Office365.txt
 
     if ($InstallOffice365 -eq 1) {
@@ -67,8 +85,8 @@ function ARProgramPackages {
     Write-Output " =================== "
     Write-Host "   Instalando Java   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================== "
-    #Set-Location $PSScriptRoot
-    #Start-Process -Wait -FilePath C:\PrepareWin10\java.exe -ArgumentList '/s'
+    
+    @'
     mkdir $env:TMP\javadownload > NULL
 
     $Token = "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"
@@ -83,6 +101,15 @@ function ARProgramPackages {
         -Headers $Headers -UseBasicParsing -OutFile $env:TMP\javadownload\jre-8u301-windows-i586.exe
 
     Start-Process -Wait -FilePath $env:TMP\javadownload\jre-8u301-windows-i586.exe -ArgumentList '/s'
+'@ > NULL  # Se puede Borrar despues de varias pruebas
+
+    $URLinstaller = 'https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/43446413'
+    $NameInstaller = 'jre-8u301-windows-i586.exe'
+
+    DownloadFilesInstaller $URLinstaller $NameInstaller
+
+    Start-Process -Wait -FilePath C:\PrepareWin10\$NameInstaller -ArgumentList '/s'
+
 
     Write-Output ""
     Write-Output " ############# "
@@ -147,7 +174,14 @@ function ARProgramPackages {
     Write-Host "   Instalando VPN Regional   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =========================== "
     #Set-Location $PSScriptRoot
-    Start-Process -Wait msiexec -ArgumentList '/i "C:\PrepareWin10\E84.00_CheckPointVPN.msi" /quiet /norestart'
+
+    $URLinstaller = 'https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/43715114'
+    $NameInstaller = 'E84.71_CheckPointVPN.msi'
+
+    DownloadFilesInstaller $URLinstaller $NameInstaller
+
+    Start-Process -Wait msiexec -ArgumentList "/i C:\PrepareWin10\$NameInstaller /quiet /norestart"
+
     Write-Output ""
     Write-Output " ############# "
     Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
