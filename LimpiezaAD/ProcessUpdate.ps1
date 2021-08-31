@@ -108,7 +108,7 @@ Write-Output " ########################### "
 
 Foreach ($Computer in (Get-Content $PSScriptRoot\Equipos.txt ))
 {
-    $consul = Get-ADComputer -LDAPFilter "(cn=*$Computer)" -SearchScope Subtree -Server $Domain -Credential $cred | Select-Object -ExpandProperty DistinguishedName
+    $consul = Get-ADComputer -LDAPFilter "(cn=*$Computer*)" -SearchScope Subtree -Server $Domain -Credential $cred | Select-Object -ExpandProperty DistinguishedName
     if ($consul){
         Write-Output "$consul ---->>>> Borrado pa la verga!!  " >> Encontrados.txt
         Remove-ADObject -Identity "$consul" -Credential $cred -Server $Domain -Confirm:$False -Verbose
