@@ -3,6 +3,24 @@ function MXProgramPackages {
     . C:\PrepareWin10\Firma.ps1 #
     #############################
 
+    function DownloadFilesInstaller {
+        param (
+            $1,$2
+        )
+        $Token = "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"
+    
+        $Headers = @{
+        accept = "application/octet-stream"
+        authorization = "Token " + $Token
+        }
+
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri $1 `
+                -Headers $Headers -UseBasicParsing -OutFile "C:\PrepareWin10\$2"
+    }
+
+    # ----------------------------------------------------------------------------------------------
+
     $InstallOffice365 = Get-Content C:\Users\admindesp\Desktop\Office365.txt
 
     if ($InstallOffice365 -eq 1) {
