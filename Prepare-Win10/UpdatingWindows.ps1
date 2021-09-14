@@ -38,9 +38,10 @@ function UpdatingWindows {
     Import-Module PSWindowsUpdate
     
     
-    Install-WindowsUpdate -Confirm:$False -IgnoreReboot -AcceptAll
-    #Install-WindowsUpdate -AcceptAll
+    #Install-WindowsUpdate -Confirm:$False -IgnoreReboot -AcceptAll
     
-    
+    # Este bloque es de prueba -------------------------------------------
+        Get-WindowsUpdate -NotCategory "Drivers" -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Sin drivers
+        #Get-WindowsUpdate -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Con Drivers
     
 }
