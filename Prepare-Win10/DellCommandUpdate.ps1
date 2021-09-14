@@ -20,14 +20,15 @@ function DellCommandUpdate {
         # Descargo el dell command update --------------------------------------------------------------------------------------------
         $ProgressPreference = 'SilentlyContinue'
         #$URL = 'https://dl.dell.com/FOLDER06986472M/2/Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE'
-        $URL = 'https://dl.dell.com/FOLDER07414802M/1/Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE'
+        #$URL = 'https://dl.dell.com/FOLDER07414802M/1/Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE'
+        $URL = 'https://dl.dell.com/FOLDER07582763M/3/Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE'
 
         Invoke-WebRequest -Uri $URL `
-            -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE
+            -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE
         #-----------------------------------------------------------------------------------------------------------------------------
 
         # Instalo Dell Command Update ----------------------------------------------------------------------------------------------------
-        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE -ArgumentList '/s'
+        Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE -ArgumentList '/s'
         #---------------------------------------------------------------------------------------------------------------------------------
 
         # Configuro ------------------------------------------------------------------------------------
@@ -75,4 +76,7 @@ function DellCommandUpdate {
 '@ | Add-Content "C:\Program Files\Dell\TaskDellUpdate.ps1"
     }
     
+    Set-Service wuauserv -StartupType Automatic -InformationAction SilentlyContinue
+    Start-Service wuauserv -InformationAction SilentlyContinue
+
 }

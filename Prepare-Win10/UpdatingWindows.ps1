@@ -44,4 +44,7 @@ function UpdatingWindows {
         Get-WindowsUpdate -NotCategory "Drivers" -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Sin drivers
         #Get-WindowsUpdate -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Con Drivers
     
+        # Se desabilita WindowsUpdate y se habilita despues de ejecutarse DellCommandUpdated
+        Stop-Service wuauserv -Force -InformationAction SilentlyContinue
+        Set-Service wuauserv -StartupType Disabled -InformationAction SilentlyContinue
 }
