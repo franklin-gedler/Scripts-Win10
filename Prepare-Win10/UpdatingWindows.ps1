@@ -41,8 +41,8 @@ function UpdatingWindows {
     #Install-WindowsUpdate -Confirm:$False -IgnoreReboot -AcceptAll
     
     # Este bloque es de prueba -------------------------------------------
-        Get-WindowsUpdate -NotCategory "Drivers" -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Sin drivers
-        #Get-WindowsUpdate -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Con Drivers
+        #Get-WindowsUpdate -NotCategory "Drivers" -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Sin drivers
+        Get-WindowsUpdate -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Con Drivers
 
         $Job = Start-Job -ScriptBlock {Get-WindowsUpdateLog -logpath C:\Users\admindesp\Desktop\WindowsUpdate.log}
         Start-Sleep -Seconds 10
