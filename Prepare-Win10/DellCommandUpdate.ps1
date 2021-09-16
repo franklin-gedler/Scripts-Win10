@@ -18,7 +18,7 @@ function DellCommandUpdate {
 
         $StateDellUpdate = Test-Path "C:\Program Files\Dell\"
 
-        if($StateDellUpdate = "False"){
+        if($StateDellUpdate -eq $False){
 
             mkdir $env:TMP\dellcommand > NULL
 
