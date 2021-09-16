@@ -37,8 +37,10 @@ function DellCommandUpdate {
         #-----------------------------------------------------------------------------------------------
         
         # Actualizo drivers y bios -----------------------------------------------------------------------------------------------------------
+        #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+        #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver,bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver,bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
         #-------------------------------------------------------------------------------------------------------------------------------------
 
         # --------------------------Tarea de Winodws para el futuro------------------------------ #
