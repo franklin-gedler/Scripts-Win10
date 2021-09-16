@@ -9,7 +9,7 @@ function DellCommandUpdate {
     if("$machinebrand" -eq "Dell Inc."){
     
         Write-Output " ======================= "
-        Write-Output "   Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
+        Write-Host "   Dell Command Update   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ======================= "
         Write-Output ""
 
