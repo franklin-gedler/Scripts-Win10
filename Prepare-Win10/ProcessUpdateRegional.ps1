@@ -144,7 +144,7 @@ if (!$Status){
             . C:\PrepareWin10\DellCommandUpdate.ps1
             DellCommandUpdate
 
-            Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
+            #Write-Output '3' > C:\Users\admindesp\Desktop\status.txt # Esto lo setea el DellCommandUpdate
             #Pause
             timeout /t 10
             Restart-Computer
