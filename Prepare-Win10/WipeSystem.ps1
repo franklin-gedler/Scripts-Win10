@@ -2,8 +2,9 @@ function WipeSystem {
     
     @'
     Start-Sleep -Seconds 5
-    Remove-Item -LiteralPath C:\Windows\Setup\scripts -Recurse -Force
     Remove-Item -LiteralPath C:\PrepareWin10\ -Recurse -Force
+    Remove-Item -LiteralPath C:\Windows\Setup\scripts -Recurse -Force
+    
 '@ | Add-Content C:\PS\AutoDelete.ps1
     
     $action = New-ScheduledTaskAction -Execute 'Powershell.exe' `
@@ -16,5 +17,5 @@ function WipeSystem {
             -Action $action -Trigger $trigger -TaskName 'AutoDelete' `
             -Description "Finalizacion del Script"
 
-    Return
+    #Return
 }
