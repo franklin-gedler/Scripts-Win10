@@ -92,12 +92,11 @@ function JoinAD {
 
         $consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Credential $cred -Server $Domain | Select-Object -ExpandProperty DistinguishedName
 
-        if (!$consul){
+        while (!$consul){
             Write-Output ""
-            Write-Output " ================================================ "
-            Write-Host "              Problemas para Enlazar              " -ForegroundColor Red -BackgroundColor Black
-            Write-Host "   Se Intentara Nuevamente Despues del Reinicio   " -ForegroundColor Red -BackgroundColor Black
-            Write-Output " ================================================ "
+            Write-Output " ====================== "
+            Write-Host "   Reintentando Enlazar   " -ForegroundColor Yellow -BackgroundColor Black
+            Write-Output " ====================== "
 
             #Remove-Computer -UnjoinDomainCredential $cred -WorkgroupName "TRABAJO" -Force  ## bajo localmente el equipo de la falsa subida a dominio
             #Add-Computer -DomainName "$1.infra.d" `
@@ -107,12 +106,8 @@ function JoinAD {
             Copy-Item C:\Windows\debug\NetSetup.LOG C:\Users\admindesp\Desktop\
             
             # La Bajo de la falsa subida
-            $UnJoinToAD = (Get-WMIObject -NameSpace "Root\Cimv2" -Class "Win32_ComputerSystem").UnJoinDomainOrWorkgroup("$Pcred","$Ucred",0)
+            $JoinToAD = (Get-WMIObject -NameSpace "Root\Cimv2" -Class "Win32_ComputerSystem").UnJoinDomainOrWorkgroup("$Pcred","$Ucred",0)
 
-            timeout /t 10
-            Restart-Computer
-
-            <#
             Start-Sleep -Seconds 10
             # La vuelvo a subir
             $JoinToAD = (Get-WMIObject -NameSpace "Root\Cimv2" -Class "Win32_ComputerSystem").JoinDomainOrWorkgroup("$Domain","$Pcred","$Ucred",$null,3)
@@ -124,28 +119,6 @@ function JoinAD {
             #$consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
             #    -SearchScope Subtree -Server "10.40.$2.1" `
             #    -Credential $cred | Select-Object -ExpandProperty DistinguishedName
-            #>
-            
-        }else {
-
-            Write-Output ""
-            Write-Output " ######################################################### "
-            Write-Host "  Se agrego al equipo $NCompu al Dominio $Domain  " -ForegroundColor Green -BackgroundColor Black
-            Write-Output " ######################################################### "
-
-            # _____________________________________________________________________________________________________
-
-            Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
-            
-            OffScriptConfig   # Esto elimina en el registro la ejecucion del script al inicio
-
-            # Limpio el Sistema de los archivos de instalacion
-            DownloadModules "WipeSystem"
-            . C:\PrepareWin10\WipeSystem.ps1
-            WipeSystem
-
-            timeout /t 10
-    
         }
         <#
         while ($Binding.HasSucceeded -eq $False) {
@@ -164,7 +137,12 @@ function JoinAD {
         }
         #>
         
-        
+        Write-Output ""
+        Write-Output " ######################################################### "
+        Write-Host "  Se agrego al equipo $NCompu al Dominio $Domain  " -ForegroundColor Green -BackgroundColor Black
+        Write-Output " ######################################################### "
+
+        # _____________________________________________________________________________________________________
     }
 
     

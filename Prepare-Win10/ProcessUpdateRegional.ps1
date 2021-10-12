@@ -221,7 +221,7 @@ if (!$Status){
             . C:\PrepareWin10\JoinAD.ps1
             JoinAD $Pais $CodigoPais
             
-            
+            <#    Este Bloque lo controla JoinAD.ps1
             Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
             
             timeout /t 10
@@ -232,6 +232,7 @@ if (!$Status){
             DownloadModules "WipeSystem"
             . C:\PrepareWin10\WipeSystem.ps1
             WipeSystem
+            #>
             
             Restart-Computer
             
