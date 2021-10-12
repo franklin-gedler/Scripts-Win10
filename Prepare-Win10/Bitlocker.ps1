@@ -106,6 +106,8 @@ function Bitlocker {
             Invoke-WebRequest -Headers $headers `
                 -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/$1" `
                 -UseBasicParsing -OutFile "C:\PrepareWin10\$1"
+
+            Start-Sleep -Seconds 10
         }
 
         DownloadFilesMail passfile
