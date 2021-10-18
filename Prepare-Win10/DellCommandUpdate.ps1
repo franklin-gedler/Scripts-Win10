@@ -50,14 +50,14 @@ function DellCommandUpdate {
         
         
             $URLinstaller = 'https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/47280151'
-            $NameInstaller = 'Dell_Command_Update_GRVPK_WIN_4.3.0_A00_03.exe'
+            $NameInstaller = 'Dell_Command_Update_GRVPK_WIN_4.3.0_A00_03.exe'  # Debes acortar el nombre del archivo ya que genera problemas
             
             DownloadFilesInstaller $URLinstaller $NameInstaller
 
 
             # Instalo Dell Command Update ----------------------------------------------------------------------------------------------------
             #Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE -ArgumentList '/s'
-            Start-Process -Wait C:\PrepareWin10\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE -ArgumentList '/s'
+            Start-Process -Wait C:\PrepareWin10\Dell_Command_Update_GRVPK_WIN_4.3.0_A00_03.exe -ArgumentList '/s'
             #---------------------------------------------------------------------------------------------------------------------------------
 
             # Configuro ------------------------------------------------------------------------------------
