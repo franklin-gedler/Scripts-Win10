@@ -20,20 +20,44 @@ function DellCommandUpdate {
 
         if($StateDellUpdate -eq $False){
 
-            mkdir $env:TMP\dellcommand > NULL
+            #mkdir $env:TMP\dellcommand > NULL
 
             # Descargo el dell command update --------------------------------------------------------------------------------------------
-            $ProgressPreference = 'SilentlyContinue'
+            #$ProgressPreference = 'SilentlyContinue'
             #$URL = 'https://dl.dell.com/FOLDER06986472M/2/Dell-Command-Update-Application-for-Windows-10_DF2DT_WIN_4.1.0_A00.EXE'
             #$URL = 'https://dl.dell.com/FOLDER07414802M/1/Dell-Command-Update-Application-for-Windows-10_W1RMW_WIN_4.2.1_A00.EXE'
-            $URL = 'https://dl.dell.com/FOLDER07582763M/3/Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE'
+            #$URL = 'https://dl.dell.com/FOLDER07582763M/3/Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE'
 
-            Invoke-WebRequest -Uri $URL `
-                -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE
+            #Invoke-WebRequest -Uri $URL `
+            #    -UseBasicParsing -OutFile $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE
             #-----------------------------------------------------------------------------------------------------------------------------
 
+            function DownloadFilesInstaller {
+                param (
+                    $1,$2
+                )
+                $Token = "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"
+            
+                $Headers = @{
+                accept = "application/octet-stream"
+                authorization = "Token " + $Token
+                }
+        
+                $ProgressPreference = 'SilentlyContinue'
+                Invoke-WebRequest -Uri $1 `
+                        -Headers $Headers -UseBasicParsing -OutFile "C:\PrepareWin10\$2"
+            }
+        
+        
+            $URLinstaller = 'https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/47280151'
+            $NameInstaller = 'Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_03.EXE'
+            
+            DownloadFilesInstaller $URLinstaller $NameInstaller
+
+
             # Instalo Dell Command Update ----------------------------------------------------------------------------------------------------
-            Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE -ArgumentList '/s'
+            #Start-Process -Wait $env:TMP\dellcommand\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE -ArgumentList '/s'
+            Start-Process -Wait C:\PrepareWin10\Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_02.EXE -ArgumentList '/s'
             #---------------------------------------------------------------------------------------------------------------------------------
 
             # Configuro ------------------------------------------------------------------------------------
