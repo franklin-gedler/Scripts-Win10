@@ -50,7 +50,7 @@ function DellCommandUpdate {
         
         
             $URLinstaller = 'https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/47280151'
-            $NameInstaller = 'Dell-Command-Update-Application-for-Windows-10_GRVPK_WIN_4.3.0_A00_03.EXE'
+            $NameInstaller = 'Dell_Command_Update_GRVPK_WIN_4.3.0_A00_03.exe'
             
             DownloadFilesInstaller $URLinstaller $NameInstaller
 
