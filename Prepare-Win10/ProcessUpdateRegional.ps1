@@ -211,11 +211,12 @@ if (!$Status){
         }
 
         4{
-            
+            <#   Esto esta dentro de JoinAD
             DownloadModules "ChangePassAdmindesp"
             . C:\PrepareWin10\ChangePassAdmindesp.ps1
             ChangePassAdmindesp $CodigoPais
-
+            #>
+            
             # La agrego a Dominio
             DownloadModules "JoinAD"
             . C:\PrepareWin10\JoinAD.ps1

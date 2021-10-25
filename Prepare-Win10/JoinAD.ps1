@@ -128,6 +128,10 @@ function JoinAD {
             
         }else {
 
+            DownloadModules "ChangePassAdmindesp"
+            . C:\PrepareWin10\ChangePassAdmindesp.ps1
+            ChangePassAdmindesp $CodigoPais
+
             Write-Output ""
             Write-Output " ######################################################### "
             Write-Host "  Se agrego al equipo $NCompu al Dominio $Domain  " -ForegroundColor Green -BackgroundColor Black
