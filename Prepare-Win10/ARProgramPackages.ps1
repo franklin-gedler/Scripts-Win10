@@ -136,10 +136,16 @@ function ARProgramPackages {
     Write-Host "   Instalando TeamViewerHost con Politicas   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =========================================== "
     #Set-Location $PSScriptRoot
-    Start-Process msiexec -ArgumentList '/i "C:\PrepareWin10\TeamViewer_Host.msi" /qn SETTINGSFILE="C:\PrepareWin10\politicas.reg"' -Wait
+    #Start-Process msiexec -ArgumentList '/i "C:\PrepareWin10\TeamViewer_Host.msi" /qn SETTINGSFILE="C:\PrepareWin10\politicas.reg"' -Wait
     
-    
+    Start-Process -Wait msiexec -ArgumentList '/i "C:\PrepareWin10\TeamViewer_Host.msi" /qn'
 
+    Stop-Service -Name TeamViewer -Force
+
+    Start-Process -Wait C:\Windows\SysWOW64\reg.exe -ArgumentList 'IMPORT C:\PrepareWin10\politicas.reg'
+
+    Start-Service -Name TeamViewer
+    
     Write-Output ""
     Write-Output " ############# "
     Write-Host "   Instalado   " -ForegroundColor Green -BackgroundColor Black
