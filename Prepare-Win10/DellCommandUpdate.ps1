@@ -85,20 +85,16 @@ function DellCommandUpdate {
             switch($StatusDell){
 
                 1{
+                    #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
+                    #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                        -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                        -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\driverInstallOutput.log'
 
                     Write-Output '2' > C:\Users\admindesp\Desktop\statusdellcommand.txt
                 }
 
                 2{
-                    Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                        -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
-
-                    Write-Output '3' > C:\Users\admindesp\Desktop\statusdellcommand.txt
-                }
-
-                3{
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
                         -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
@@ -141,9 +137,9 @@ function DellCommandUpdate {
                     Set-Service wuauserv -StartupType Automatic -InformationAction SilentlyContinue
                     Start-Service wuauserv -InformationAction SilentlyContinue
                 }
+
             }
 
-            
         }
 
     }
