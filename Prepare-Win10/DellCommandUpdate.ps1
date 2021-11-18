@@ -82,7 +82,7 @@ function DellCommandUpdate {
             
             $StatusDell = Get-Content C:\Program Files\Dell\statusdellcommand.txt
 
-            switch($StatusDell -eq '1'){
+            switch($StatusDell){
 
                 1{
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
