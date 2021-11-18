@@ -76,11 +76,11 @@ function DellCommandUpdate {
                 -ArgumentList '/driverInstall -reboot=disable -outputLog=C:\Users\admindesp\Desktop\driverInstallOutput.log'
             #-------------------------------------------------------------------------------------------------------------------------------------
 
-            Write-Output '1' > C:\Program Files\Dell\statusdellcommand.txt
+            Write-Output '1' > "C:\Program Files\Dell\statusdellcommand.txt"
 
         }else {
             
-            $StatusDell = Get-Content C:\Program Files\Dell\statusdellcommand.txt
+            $StatusDell = Get-Content "C:\Program Files\Dell\statusdellcommand.txt"
 
             switch($StatusDell){
 
@@ -88,14 +88,14 @@ function DellCommandUpdate {
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
                         -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
-                    Write-Output '2' > C:\Program Files\Dell\statusdellcommand.txt
+                    Write-Output '2' > "C:\Program Files\Dell\statusdellcommand.txt"
                 }
 
                 2{
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
                         -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
-                    Write-Output '3' > C:\Program Files\Dell\statusdellcommand.txt
+                    Write-Output '3' > "C:\Program Files\Dell\statusdellcommand.txt"
                 }
 
                 3{
