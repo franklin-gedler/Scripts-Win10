@@ -89,7 +89,7 @@ function DellCommandUpdate {
                     #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                        -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\driverInstallOutput.log'
+                        -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
 
                     Write-Output '2' > C:\Users\admindesp\Desktop\statusdellcommand.txt
                 }
