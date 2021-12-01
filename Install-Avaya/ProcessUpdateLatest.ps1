@@ -27,7 +27,8 @@ function listsSucursal {
     $Global:listurl = @(
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596446",
-    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
+    #"https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
+    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/50739137",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30761673",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596372",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596376",
@@ -118,7 +119,8 @@ function listsDespegar {
     $Global:listurl = @(
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596446",
-    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
+    #"https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
+    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/50739137",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30761673",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596372",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596376",
@@ -257,7 +259,7 @@ Function avaya {
     Write-Output " ===================================="
     Write-Output ""
 
-    Start-Process -Wait -FilePath Downloads\AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
+    Start-Process -Wait -FilePath Downloads\AvayaOneX\OneXAgentSetup.exe -ArgumentList "/qn"
     Start-Process -Wait regedit.exe -ArgumentList "/s Downloads\AvayaOneX\DisableMuteButton.reg"
 
     Start-Process -FilePath 'C:\Program Files (x86)\Avaya\Avaya one-X Agent\OneXAgentUI.exe'
