@@ -28,7 +28,7 @@ function listsSucursal {
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596446",
     #"https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
-    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/50739137",
+    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/50761955",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30761673",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596372",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596376",
@@ -120,7 +120,7 @@ function listsDespegar {
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596446",
     #"https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30567056",
-    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/50739137",
+    "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/50761955",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30761673",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596372",
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596376",
@@ -259,6 +259,7 @@ Function avaya {
     Write-Output " ===================================="
     Write-Output ""
 
+    #Start-Process -Wait -FilePath Downloads\AvayaOneX\OnexAgentSetup\application\OneXAgentSetup.exe -ArgumentList "/qn"
     Start-Process -Wait -FilePath Downloads\AvayaOneX\OneXAgentSetup.exe -ArgumentList "/qn"
     Start-Process -Wait regedit.exe -ArgumentList "/s Downloads\AvayaOneX\DisableMuteButton.reg"
 
