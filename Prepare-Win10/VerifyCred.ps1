@@ -40,7 +40,7 @@ function VerifyCred {
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
         #$Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
-        $Very = Get-ADDomain -Server $Domain -Credential $cred -ErrorAction SilentlyContinue
+        $Very = Get-ADDomain -Server Domain -Credential $cred -ErrorAction SilentlyContinue
     }
     Write-Output ""
     Write-Output " ##############################################################"
