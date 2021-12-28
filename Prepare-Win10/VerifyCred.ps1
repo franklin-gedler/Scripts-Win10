@@ -12,7 +12,7 @@ function VerifyCred {
     . C:\PrepareWin10\Firma.ps1 #
     #############################
 
-    $Domain = "$99.infra.d"
+    $Domain = "$1.infra.d"
     $Domain = $Domain.ToLower()
 
     # Verifico si esta conectado al AD
@@ -29,7 +29,7 @@ function VerifyCred {
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
     #$Very = Get-ADDomain -Server "10.40.$2.1" -Credential $cred -ErrorAction SilentlyContinue
-    $Very = Get-ADDomain -Server $Domain -Credential $cred -ErrorAction SilentlyContinue
+    $Very = Get-ADDomain -Server Domain -Credential $cred -ErrorAction SilentlyContinue
     while(!$Very){
         Write-Output ""
         Write-Output " ########################################################## "
