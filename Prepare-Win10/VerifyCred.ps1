@@ -12,7 +12,7 @@ function VerifyCred {
     . C:\PrepareWin10\Firma.ps1 #
     #############################
 
-    $Domain = "$1.infra.d"
+    $Domain = "$99.infra.d"
     $Domain = $Domain.ToLower()
 
     # Verifico si esta conectado al AD
