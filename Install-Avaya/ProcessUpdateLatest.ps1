@@ -71,7 +71,7 @@ function DownloadMotor {
     $Token = "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"
     
     $Headers = @{
-    accept = "application/octet-stream"
+    accept = "apoctstream"
     authorization = "Token " + $Token
     }
 
