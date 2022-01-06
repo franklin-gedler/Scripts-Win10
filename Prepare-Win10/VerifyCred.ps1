@@ -6,7 +6,7 @@ function VerifyCred {
 
     # $1 = Pais
     # $2 = CodigoPais
-    #Write-Output "YO $env:USERNAME ejecuto el script"
+    #Write-Output "YO $env:USERNAME ejecuto el scri"
     
     # Mi firma ##################
     . C:\PrepareWin10\Firma.ps1 #
