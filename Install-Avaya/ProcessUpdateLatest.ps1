@@ -9,8 +9,6 @@ Function creadopor {
     Write-Output ""
     Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
     Write-Host "                                   Script Creado por Franklin Gedler                                  " -ForegroundColor green -BackgroundColor Black
-    Write-Host "                                      Soporte Despegar Argentina                                      " -ForegroundColor green -BackgroundColor Black
-    Write-Host "                                         Updates Franklin Diaz                                        " -ForegroundColor green -BackgroundColor Black
     Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
     Write-Output ""
 
@@ -68,7 +66,7 @@ function DownloadMotor {
         $1,$2,$3
     )
     
-    $Token = "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"
+    $Token = "Token Generado por Github"
     
     $Headers = @{
     accept = "apoctstream"
@@ -421,7 +419,7 @@ function AutoDeleteNow {
 
 Function DownloadPS {
 
-    $Token = "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"
+    $Token = "Token Generado Desde Gitgub"
     
     $URI = "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596420"
 
@@ -445,7 +443,7 @@ Function credencials {
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
 
-    $Very = Get-ADDomain -Server 10.40.54.1 -Credential $cred -ErrorAction SilentlyContinue
+    $Very = Get-ADDomain -Server 'domain' -Credential $cred -ErrorAction SilentlyContinue
 
     while(!$Very){
 
@@ -455,10 +453,10 @@ Function credencials {
         Write-Output " ########################################################## "
         Write-Output ""
 
-        $Global:cred = Get-Credential Pais\Nombre.Apellido -Message "Ingresar Credenciales, Ejemplo AR\Fulano.Perencejo"
+        $Global:cred = Get-Credential Domain\Nombre.Apellido -Message "Ingresar Credenciales, Ejemplo domain\Fulano.Perencejo"
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
         Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
-        $Very = Get-ADDomain -Server 10.40.54.1 -Credential $cred -ErrorAction SilentlyContinue
+        $Very = Get-ADDomain -Server 'domain' -Credential $cred -ErrorAction SilentlyContinue
     }
 
     Write-Output ""
@@ -479,9 +477,9 @@ function moveou {
 
         # ___________________________________________________________________________________________________________________________________________"
         
-        $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
+        $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "Domain.com" -Credential $cred).objectGUID).Guid
         while (!$Identity){
-            $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).objectGUID).Guid
+            $Identity = ((Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "Domain.com" -Credential $cred).objectGUID).Guid
         }
         Write-Output ""
         Write-Host   "   El ID del equipo es: $Identity" -ForegroundColor Yellow -BackgroundColor Black
@@ -489,10 +487,10 @@ function moveou {
         
         # ___________________________________________________________________________________________________________________________________________"
 
-        $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+        $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "Domain.com" -Credential $cred).DistinguishedName
       
         while (!$currentou){
-            $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+            $currentou = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "Domain.com" -Credential $cred).DistinguishedName
         }
         Write-Output ""
         Write-Host   "   OU Actuales del equipo: $currentou" -ForegroundColor Yellow -BackgroundColor Black
@@ -515,9 +513,9 @@ function moveou {
 
         # ___________________________________________________________________________________________________________________________________________"
 
-        $Confirm = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+        $Confirm = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "Domain.com" -Credential $cred).DistinguishedName
         while (!$Confirm){
-            $Confirm = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "$1.infra.d" -Credential $cred).DistinguishedName
+            $Confirm = (Get-ADComputer -LDAPFilter "(cn=$Computer)" -SearchScope Subtree -Server "Domain.com" -Credential $cred).DistinguishedName
         }
         Write-Output ""        
         Write-Host   "   Nueva OU del equipo: $Confirm" -ForegroundColor Yellow -BackgroundColor Black
@@ -614,8 +612,8 @@ Function showmenumain {
     #Clear-Host
     Write-Output ""
     Write-Host " ********************** "
-    Write-Host "  1. Usuario Despegar   " -ForegroundColor Yellow -BackgroundColor Black
-    Write-Host "  2. Usuario Falabella  " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "  1. Usuario Interno   " -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "  2. Usuario Externo  " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "  3. Reparar (No Usar)  " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "  4. Mover Equipo OU    " -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "  5. Exit               " -ForegroundColor Yellow -BackgroundColor Black
@@ -652,7 +650,7 @@ switch($inp){
             #Clear-Host
             Write-Output ""
             Write-Host "------------------------------"
-            Write-Host " Ejecuto Script para usuario Despegar " 
+            Write-Host " Ejecuto Script para usuario Interno " 
             Write-Host "------------------------------"
             Write-Output ""
 
