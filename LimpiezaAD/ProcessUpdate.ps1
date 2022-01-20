@@ -20,7 +20,7 @@ function DownloadModules {
     param (
         $1
     )
-    $token = "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"
+    $token = "Token Generado desde Github"
     $headers = @{Authorization = "token $($token)"}
     $ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Headers $headers `
@@ -46,7 +46,7 @@ Write-Output " ================================================ "
 Write-Host "       Verificando conexion con el Dominio        " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output " ================================================ "
 
-$Domain = 'ar.infra.d'
+$Domain = 'domain.com'
 
 $CAD = $(Test-Connection $Domain -Count 2 -Quiet -ErrorAction SilentlyContinue)
 
@@ -69,7 +69,7 @@ Write-Output ""
 Write-Output "_________________________________________________________________________________________"
 Write-Output ""
 
-$cred = Get-Credential AR\ -Message "Ingresar Credenciales, AR\User.Name"
+$cred = Get-Credential domain\ -Message "Ingresar Credenciales, domain\User.Name"
 Write-Output " ============================================== "
 Write-Host "       Validando credenciales ingresadas        " -ForegroundColor Yellow -BackgroundColor Black
 Write-Output " ============================================== "
