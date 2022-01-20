@@ -5,7 +5,6 @@ Write-Output " _________________________________________________________________
 Write-Output ""
 Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
 Write-Host "                                   Script Creado por Franklin Gedler                                  " -ForegroundColor green -BackgroundColor Black
-Write-Host "                                      Soporte Despegar Argentina                                      " -ForegroundColor green -BackgroundColor Black
 Write-Output "                                  ++++++++++++++++++++++++++++++++++++"
 Write-Output ""
 
@@ -15,31 +14,12 @@ Write-Output " _________________________________________________________________
 Write-Output ""
 Write-host 'Preparando lo necesario . . . Espere' -ForegroundColor Yellow -BackgroundColor Black
 Write-Output ""
-<#
-#------ Este Bloque le dice a Windows que no se suspenda ni apague la pantalla mientras el script se ejecuta--------
-$code=@' 
-[DllImport("kernel32.dll", CharSet = CharSet.Auto,SetLastError = true)]
-  public static extern void SetThreadExecutionState(uint esFlags);
-'@
-
-$ste = Add-Type -memberDefinition $code -name System -namespace Win32 -PassThru
-$ES_CONTINUOUS = [uint32]"0x80000000"
-#$ES_AWAYMODE_REQUIRED = [uint32]"0x00000040"
-$ES_DISPLAY_REQUIRED = [uint32]"0x00000002"
-$ES_SYSTEM_REQUIRED = [uint32]"0x00000001"
-
-$ste::SetThreadExecutionState($ES_CONTINUOUS -bor $ES_SYSTEM_REQUIRED -bor $ES_DISPLAY_REQUIRED)
-
-#$ste::SetThreadExecutionState($ES_CONTINUOUS)
-
-#-------------------------------------------------------------------------------------------------------------------
-#>
 
 function DownloadModules {
     param (
         $1
     )
-    $token = "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"
+    $token = "Token Generado por GitHub"
     $headers = @{Authorization = "token $($token)"}
     $ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Headers $headers `
@@ -83,7 +63,7 @@ function PostRunConfig {
     (Get-Content "C:\PrepareWin10\process.ps1").Replace('Pause','timeout /t 10') | Set-Content "C:\PrepareWin10\process.ps1"
 }
 
-$Status= Get-ChildItem -Path C:\Users\admindesp\Desktop\ -Name Status.txt
+$Status= Get-ChildItem -Path C:\Users\adminuser\Desktop\ -Name Status.txt
 
 if (!$Status){
 
@@ -110,7 +90,7 @@ if (!$Status){
     # Configuro Windows para que ejecute el script al iniciar Windows
     OnScriptConfig
 
-    Write-Output '1' > C:\Users\admindesp\Desktop\status.txt
+    Write-Output '1' > C:\Users\adminuser\Desktop\status.txt
     timeout /t 10
     Restart-Computer
 
@@ -118,7 +98,7 @@ if (!$Status){
 }else{
     
     Set-Location -Path C:\PrepareWin10\
-    $Status = Get-Content C:\Users\admindesp\Desktop\status.txt
+    $Status = Get-Content C:\Users\adminuser\Desktop\status.txt
     $Pais = Get-Content C:\PrepareWin10\Pais.txt
     $CodigoPais = Get-Content C:\PrepareWin10\CodigoPais.txt
 
@@ -131,7 +111,7 @@ if (!$Status){
             UpdatingWindows
             
 
-            Write-Output '2' > C:\Users\admindesp\Desktop\status.txt
+            Write-Output '2' > C:\Users\adminuser\Desktop\status.txt
             
             timeout /t 10
             Restart-Computer
@@ -144,7 +124,7 @@ if (!$Status){
             . C:\PrepareWin10\DellCommandUpdate.ps1
             DellCommandUpdate
 
-            #Write-Output '3' > C:\Users\admindesp\Desktop\status.txt # Esto lo setea el DellCommandUpdate
+            #Write-Output '3' > C:\Users\adminuser\Desktop\status.txt # Esto lo setea el DellCommandUpdate
             #Pause
             timeout /t 10
             Restart-Computer
@@ -204,7 +184,7 @@ if (!$Status){
                 }
             }
             
-            Write-Output '4' > C:\Users\admindesp\Desktop\status.txt
+            Write-Output '4' > C:\Users\adminuser\Desktop\status.txt
             #Pause
             timeout /t 10
             Restart-Computer
@@ -212,9 +192,9 @@ if (!$Status){
 
         4{
             <#   Esto esta dentro de JoinAD
-            DownloadModules "ChangePassAdmindesp"
-            . C:\PrepareWin10\ChangePassAdmindesp.ps1
-            ChangePassAdmindesp $CodigoPais
+            DownloadModules "ChangePassadminuser"
+            . C:\PrepareWin10\ChangePassadminuser.ps1
+            ChangePassadminuser $CodigoPais
             #>
             
             # La agrego a Dominio
@@ -223,7 +203,7 @@ if (!$Status){
             JoinAD $Pais $CodigoPais
             
             <#    Este Bloque lo controla JoinAD.ps1
-            Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
+            Write-Output 'Lista Para Usar' > C:\Users\adminuser\Desktop\status.txt
             
             timeout /t 10
 

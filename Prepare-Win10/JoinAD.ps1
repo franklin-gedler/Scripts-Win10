@@ -29,13 +29,13 @@ function JoinAD {
 
     $NCompu = $env:COMPUTERNAME
 
-    $Domain = "$1.infra.d"
+    $Domain = "NameDomain"
     $Domain = $Domain.ToLower()
 
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.dll" -WarningAction SilentlyContinue
     Import-Module "C:\PS\ADPoSh\Microsoft.ActiveDirectory.Management.resources.dll" -WarningAction SilentlyContinue
     #$consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
-    #    -SearchScope Subtree -Server "10.40.$2.1" `
+    #    -SearchScope Subtree -Server "IP_Domain" `
     #    -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 
     $consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Credential $cred -Server $Domain | Select-Object -ExpandProperty DistinguishedName
@@ -44,7 +44,7 @@ function JoinAD {
         Write-Output " =============================================== "
         Write-Host "   Equipo existe en el AD, se procede a borrar   " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " =============================================== "
-        #Remove-ADObject -Identity "$consul" -Credential $cred -Server "10.40.$2.1" -Confirm:$False -verbose
+        #Remove-ADObject -Identity "$consul" -Credential $cred -Server "IP_Domain" -Confirm:$False -verbose
         Remove-ADObject -Identity "$consul" -Credential $cred -Server $Domain -Confirm:$False -verbose
         Start-Sleep -Seconds 60
         Write-Output ""
@@ -64,14 +64,14 @@ function JoinAD {
     $JoinToAD = (Get-WMIObject -NameSpace "Root\Cimv2" -Class "Win32_ComputerSystem").JoinDomainOrWorkgroup("$Domain","$Pcred","$Ucred",$null,3)
     
     <#
-    Add-Computer -DomainName "$1.infra.d" `
+    Add-Computer -DomainName "NameDomain" `
         -Credential $cred -Force -Options AccountCreate `
         -WarningAction SilentlyContinue
     
     #>
     
     if ($JoinToAD.ReturnValue -ne 0){
-        Copy-Item C:\Windows\debug\NetSetup.LOG C:\Users\admindesp\Desktop\
+        Copy-Item C:\Windows\debug\NetSetup.LOG C:\Users\adminuser\Desktop\
         $ErrorToAD = $JoinToAD.ReturnValue
         Write-Output "Codigo de error: $ErrorToAD"
         Write-Output "La leyenda del codigo de error se puede buscar en:"
@@ -84,10 +84,10 @@ function JoinAD {
 
         ############ Para investigar comando Test-ComputerSecureChannel -Repair ###############
         $ConfianzaAD = Test-ComputerSecureChannel
-        Write-Output $ConfianzaAD > C:\Users\admindesp\Desktop\ConfianzaAD.txt
+        Write-Output $ConfianzaAD > C:\Users\adminuser\Desktop\ConfianzaAD.txt
 
         #$consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
-        #    -SearchScope Subtree -Server "10.40.$2.1" `
+        #    -SearchScope Subtree -Server "IP_Domain" `
         #    -Credential $cred | Select-Object -ExpandProperty DistinguishedName
 
         $consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Credential $cred -Server $Domain | Select-Object -ExpandProperty DistinguishedName
@@ -100,11 +100,11 @@ function JoinAD {
             Write-Output " ================================================ "
 
             #Remove-Computer -UnjoinDomainCredential $cred -WorkgroupName "TRABAJO" -Force  ## bajo localmente el equipo de la falsa subida a dominio
-            #Add-Computer -DomainName "$1.infra.d" `
+            #Add-Computer -DomainName "NameDomain" `
             #    -Credential $cred -Force -Options AccountCreate `
             #    -WarningAction SilentlyContinue
 
-            Copy-Item C:\Windows\debug\NetSetup.LOG C:\Users\admindesp\Desktop\
+            Copy-Item C:\Windows\debug\NetSetup.LOG C:\Users\adminuser\Desktop\
             
             # La Bajo de la falsa subida
             $UnJoinToAD = (Get-WMIObject -NameSpace "Root\Cimv2" -Class "Win32_ComputerSystem").UnJoinDomainOrWorkgroup("$Pcred","$Ucred",0)
@@ -122,15 +122,15 @@ function JoinAD {
             $consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" -SearchScope Subtree -Credential $cred -Server $Domain | Select-Object -ExpandProperty DistinguishedName
             
             #$consul = Get-ADComputer -LDAPFilter "(cn=$NCompu)" `
-            #    -SearchScope Subtree -Server "10.40.$2.1" `
+            #    -SearchScope Subtree -Server "IP_Domain" `
             #    -Credential $cred | Select-Object -ExpandProperty DistinguishedName
             #>
             
         }else {
 
-            DownloadModules "ChangePassAdmindesp"
-            . C:\PrepareWin10\ChangePassAdmindesp.ps1
-            ChangePassAdmindesp $CodigoPais
+            DownloadModules "ChangePassadminuser"
+            . C:\PrepareWin10\ChangePassadminuser.ps1
+            ChangePassadminuser $CodigoPais
 
             Write-Output ""
             Write-Output " ######################################################### "
@@ -139,7 +139,7 @@ function JoinAD {
 
             # _____________________________________________________________________________________________________
 
-            Write-Output 'Lista Para Usar' > C:\Users\admindesp\Desktop\status.txt
+            Write-Output 'Lista Para Usar' > C:\Users\adminuser\Desktop\status.txt
             
             OffScriptConfig   # Esto elimina en el registro la ejecucion del script al inicio
 
@@ -151,25 +151,7 @@ function JoinAD {
             timeout /t 10
     
         }
-        <#
-        while ($Binding.HasSucceeded -eq $False) {
-            Write-Output ""
-            Write-Output " #################################### "
-            Write-Host "   Error en enlazar el equipo al AD   " -ForegroundColor Red -BackgroundColor Black
-            Write-Output " #################################### "
-            Write-Output ""
-            $Global:cred = Get-Credential -Message "Ingresar Credenciales, Nombre.Apellido"
-            #Write-Host "  Presione Enter para Intentar de Nuevo " -ForegroundColor Yellow -BackgroundColor Black
-            #Write-Output ""
-            #$host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-            $Global:Binding = Add-Computer -DomainName "$1.infra.d" `
-                -Credential $cred -Force -Options JoinWithNewName,AccountCreate `
-                -WarningAction SilentlyContinue -PassThru  
-        }
-        #>
-        
-        
+    
     }
 
-    
 }

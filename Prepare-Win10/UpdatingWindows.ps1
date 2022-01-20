@@ -14,20 +14,6 @@ function UpdatingWindows {
     Write-Output " ================================================= "
     Write-Output ""
 
-    <#
-    #Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
-    #Start-Service wuauserv -InformationAction SilentlyContinue
-    $StatusDriversBasic = (Get-PnpDevice -Status ERROR).Status 2> NULL
-    
-    while ($StatusDriversBasic) {
-        Start-Sleep -Seconds 5
-        $StatusDriversBasic = (Get-PnpDevice -Status ERROR).Status 2> NULL
-    }
-
-    Write-Output "Sali del While, verifica si estan todos los driver instalados"
-    Pause
-    #>
-    
     Set-Service wuauserv -StartupType Manual -InformationAction SilentlyContinue
     Start-Service wuauserv -InformationAction SilentlyContinue
 
@@ -44,7 +30,7 @@ function UpdatingWindows {
         Get-WindowsUpdate -NotCategory "Drivers" -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Sin drivers
         #Get-WindowsUpdate -IgnoreReboot -AcceptAll -Confirm:$False -Install  # Con Drivers
 
-        $Job = Start-Job -ScriptBlock {Get-WindowsUpdateLog -logpath C:\Users\admindesp\Desktop\WindowsUpdate.log}
+        $Job = Start-Job -ScriptBlock {Get-WindowsUpdateLog -logpath C:\Users\adminuser\Desktop\WindowsUpdate.log}
         Start-Sleep -Seconds 10
         $Job | Wait-Job | Remove-Job
 

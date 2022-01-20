@@ -54,12 +54,12 @@ function ActionOffice365 {
         
         1{
             #Write-Host "instalo office";
-            Write-Output '1' > C:\Users\admindesp\Desktop\Office365.txt
+            Write-Output '1' > C:\Users\adminuser\Desktop\Office365.txt
             Return
         }
         
         2{
-            Write-Output '0' > C:\Users\admindesp\Desktop\Office365.txt
+            Write-Output '0' > C:\Users\adminuser\Desktop\Office365.txt
             Return
         }
     }
@@ -79,7 +79,7 @@ function ActionPCI {
             1{
                 # Es PCI
                 Write-host "     Seleccionastes: Es PCI      " -ForegroundColor Yellow -BackgroundColor Black
-                #Write-Output '1' > C:\Users\admindesp\Desktop\PCI.txt
+                #Write-Output '1' > C:\Users\adminuser\Desktop\PCI.txt
                 $Global:PCI = 1
                 Return
             }
@@ -87,7 +87,7 @@ function ActionPCI {
             2{
                 # No es PCI
                 Write-host "    Seleccionastes: No es PCI    " -ForegroundColor Yellow -BackgroundColor Black
-                #Write-Output '0' > C:\Users\admindesp\Desktop\PCI.txt
+                #Write-Output '0' > C:\Users\adminuser\Desktop\PCI.txt
                 $Global:PCI = 2
                 Return
             }

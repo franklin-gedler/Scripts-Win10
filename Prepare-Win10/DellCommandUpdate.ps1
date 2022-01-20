@@ -36,7 +36,7 @@ function DellCommandUpdate {
                 param (
                     $1,$2
                 )
-                $Token = "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"
+                $Token = "Token Generado por GitHub"
             
                 $Headers = @{
                 accept = "application/octet-stream"
@@ -67,37 +67,37 @@ function DellCommandUpdate {
             
             # Actualizo drivers y bios -----------------------------------------------------------------------------------------------------------
             #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver,bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver,bios -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
             #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
             #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-            #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+            #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
             Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                -ArgumentList '/driverInstall -reboot=disable -outputLog=C:\Users\admindesp\Desktop\driverInstallOutput.log'
+                -ArgumentList '/driverInstall -reboot=disable -outputLog=C:\Users\adminuser\Desktop\driverInstallOutput.log'
             #-------------------------------------------------------------------------------------------------------------------------------------
 
-            Write-Output '1' > C:\Users\admindesp\Desktop\statusdellcommand.txt
+            Write-Output '1' > C:\Users\adminuser\Desktop\statusdellcommand.txt
 
         }else {
             
-            $StatusDell = Get-Content C:\Users\admindesp\Desktop\statusdellcommand.txt
+            $StatusDell = Get-Content C:\Users\adminuser\Desktop\statusdellcommand.txt
 
             switch($StatusDell){
 
                 1{
 
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                        -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                        -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
 
                     #Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                    #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                    #    -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -updateDeviceCategory=network,audio,video,input,chipset -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
 
-                    Write-Output '2' > C:\Users\admindesp\Desktop\statusdellcommand.txt
+                    Write-Output '2' > C:\Users\adminuser\Desktop\statusdellcommand.txt
                 }
 
                 2{
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                        -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                        -ArgumentList '/applyUpdates -reboot=disable -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
 
                     # --------------------------Tarea de Winodws para el futuro------------------------------ #
 
@@ -115,25 +115,25 @@ function DellCommandUpdate {
                     # Script de Tarea Para mantener Drivers Actualizados --------------------------------------------------------------------------------
                     @'
                     Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                            -ArgumentList '/scan -updateDeviceCategory=audio,video,network,others -outputLog=C:\Users\admindesp\Desktop\ScanOutput.log'
+                            -ArgumentList '/scan -updateDeviceCategory=audio,video,network,others -outputLog=C:\Users\adminuser\Desktop\ScanOutput.log'
                     
-                    $ScanOutput = Get-Content C:\Users\admindesp\Desktop\ScanOutput.log
+                    $ScanOutput = Get-Content C:\Users\adminuser\Desktop\ScanOutput.log
                     $patron = 'BIOS'
                     $SearchScanOutput = $ScanOutput | Select-String -AllMatches $patron
 
                     if ($SearchScanOutput){
                         echo "instalo primero bios"
                         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                            -ArgumentList '/applyUpdates -reboot=disable -updatetype=bios -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
                         
                     }else{
                         echo "no hay Bios, instalamos drivers"
                         Start-Process -Wait "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" `
-                            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\admindesp\Desktop\applyUpdateOutput.log'
+                            -ArgumentList '/applyUpdates -reboot=disable -updatetype=driver -outputLog=C:\Users\adminuser\Desktop\applyUpdateOutput.log'
                     }
 '@ | Add-Content "C:\Program Files\Dell\TaskDellUpdate.ps1"
                     
-                    Write-Output '3' > C:\Users\admindesp\Desktop\status.txt
+                    Write-Output '3' > C:\Users\adminuser\Desktop\status.txt
 
                     Set-Service wuauserv -StartupType Automatic -InformationAction SilentlyContinue
                     Start-Service wuauserv -InformationAction SilentlyContinue

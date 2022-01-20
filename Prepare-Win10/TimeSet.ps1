@@ -10,7 +10,7 @@ function TimeSet {
     Write-Output " ============================= "
     Write-Output ""
 
-    $Domain = "$2.infra.d"
+    $Domain = "NameDomain"
     $Domain = $Domain.ToLower()
 
     # debo agregar el ar.infra.d como servidor de hora y fecha

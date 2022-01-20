@@ -7,7 +7,7 @@ function ARProgramPackages {
         param (
             $1,$2
         )
-        $Token = "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"
+        $Token = "Token Generado por GitHub"
     
         $Headers = @{
         accept = "application/octet-stream"
@@ -21,7 +21,7 @@ function ARProgramPackages {
 
     # ----------------------------------------------------------------------------------------------
 
-    $InstallOffice365 = Get-Content C:\Users\admindesp\Desktop\Office365.txt
+    $InstallOffice365 = Get-Content C:\Users\adminuser\Desktop\Office365.txt
 
     if ($InstallOffice365 -eq 1) {
 
@@ -86,23 +86,6 @@ function ARProgramPackages {
     Write-Host "   Instalando Java   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =================== "
     
-    @'
-    mkdir $env:TMP\javadownload > NULL
-
-    $Token = "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"
-    
-    $Headers = @{
-    accept = "application/octet-stream"
-    authorization = "Token " + $Token
-    }
-
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/43446413" `
-        -Headers $Headers -UseBasicParsing -OutFile $env:TMP\javadownload\jre-8u301-windows-i586.exe
-
-    Start-Process -Wait -FilePath $env:TMP\javadownload\jre-8u301-windows-i586.exe -ArgumentList '/s'
-'@ > NULL  # Se puede Borrar despues de varias pruebas
-
     $URLinstaller = 'https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/43446413'
     $NameInstaller = 'jre-8u301-windows-i586.exe'
 
@@ -213,8 +196,8 @@ function ARProgramPackages {
 
     @'
     install_path=C:\\Program Files\\ThinApplet\\JavaHostPlugin
-    reg_name=Despegar SA
-    reg_key=5007-cb9b-8114-fba7
+    reg_name=empresa SA
+    reg_key=number_serial_app_ThinForms
     all_users=true
 '@ | Add-Content C:\PrepareWin10\ThinForms_JavaHost_installer\key.properties
 

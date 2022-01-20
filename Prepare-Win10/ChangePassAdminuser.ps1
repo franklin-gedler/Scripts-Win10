@@ -1,4 +1,4 @@
-function ChangePassAdmindesp {
+function ChangePassadminuser {
     param (
         $1
     )
@@ -17,7 +17,7 @@ function ChangePassAdmindesp {
         $Global:SCompu = (Get-WmiObject win32_bios).SerialNumber
     }
 
-    # le Inyecto la clave que va con admindesp
+    # le Inyecto la clave que va con adminuser
     $p = ConvertTo-SecureString "*+$1#$SCompu*" -AsPlainText -Force
     $u = (Get-LocalUser).Name[0]
     Set-LocalUser -Name $u -Password $p -PasswordNeverExpires 1

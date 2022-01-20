@@ -8,8 +8,6 @@ function ChangeName {
     Write-Host "   Cambiando Nombre del Equipo   " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " =============================== "
 
-    #$VeryPCI = Get-Content C:\Users\admindesp\Desktop\PCI.txt
-    
     if (!$PCI){
 
         $SCompu = (Get-WmiObject win32_bios).SerialNumber

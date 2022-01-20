@@ -110,9 +110,9 @@ function DownloadUserSucursal {
     }
 }
 
-# _________Descargas para Usuarios de Despegar son todos menos GlobalProtec y Screenpop__________ #
+# _________Descargas para Usuarios de empresa son todos menos GlobalProtec y Screenpop__________ #
 
-function listsDespegar {
+function listsempresa {
 
     $Global:listurl = @(
     "https://api.github.com/repos/franklin-gedler/Scripts-Win10/releases/assets/30596410",
@@ -146,7 +146,7 @@ function listsDespegar {
     )
 }
 
-function DownloadUserDespegar {
+function DownloadUserempresa {
     
     Write-Output ""
     Write-Output " ---------------------------------------------------------------- "
@@ -154,7 +154,7 @@ function DownloadUserDespegar {
     Write-Output " ---------------------------------------------------------------- "
     Write-Output ""
 
-    listsDespegar
+    listsempresa
     for ($i = 0; $i -le 6; $i++){
         DownloadMotor $listurl[$i] $listfiles[$i] $listfolder[$i]
         
@@ -391,13 +391,13 @@ Function screenpop {
     Write-Output " ===================================="
     Write-Output ""
 
-    #& rundll32.exe dfshim.dll, ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application
+    #& rundll32.exe dfshim.dll, ShOpenVerbApplication https://empresa.teleperformance.co/spop/Install/TPSPOPempresa.application
 
-    #Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://despegar.teleperformance.co/spop/Install/TPSPOPDespegar.application"
+    #Start-Process -Wait rundll32.exe -ArgumentList "dfshim.dll,ShOpenVerbApplication https://empresa.teleperformance.co/spop/Install/TPSPOPempresa.application"
 
     Start-Process Downloads\ScreenPop\install.vbs
 
-    #Start-Process -FilePath .\Downloads\ScreenPop\TPSPOPDespegar.application
+    #Start-Process -FilePath .\Downloads\ScreenPop\TPSPOPempresa.application
 }
 
 # _______________________________________________________________________________________________ #
@@ -655,7 +655,7 @@ switch($inp){
             Write-Output ""
 
             extyagent
-            DownloadUserDespegar
+            DownloadUserempresa
             disableall
             netframework
             PreInstall

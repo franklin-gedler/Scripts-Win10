@@ -32,7 +32,7 @@ while("$CI" -eq 'False'){
     Write-Output ""
 }
 
-$token = "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"
+$token = "Token Generado por GitHub"
 $headers = @{Authorization = "token $($token)"}
 Invoke-WebRequest -Headers $headers -Uri "https://raw.githubusercontent.com/franklin-gedler/Scripts-Win10/main/Prepare-Win10/ProcessUpdateRegional.ps1" -UseBasicParsing -OutFile "$PSScriptRoot\ProcessUpdateRegional.ps1"
 

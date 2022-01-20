@@ -50,7 +50,7 @@ function Bitlocker {
         manage-bde.exe -on $env:SystemDrive > NULL
 
         # Respaldo la llave ID y Pass en el Escritorio
-        (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\admindesp\Desktop\$NCompu.txt
+        (Get-BitLockerVolume -mount c).keyprotector | Select-Object $NCompu, KeyProtectorId, RecoveryPassword > C:\Users\adminuser\Desktop\$NCompu.txt
         
         $KeyID = Get-BitLockerVolume -MountPoint C: | Select-Object -ExpandProperty KeyProtector `
                 | Where-Object KeyProtectorType -eq 'RecoveryPassword' `
@@ -65,33 +65,33 @@ function Bitlocker {
 
             AR{
             
-                $Mail_Receptor = 'soporte@despegar.com'
+                $Mail_Receptor = 'soporte@empresa.com'
             }
         
             UY{
             
-                $Mail_Receptor = 'soporteuy@despegar.com'
+                $Mail_Receptor = 'soporteuy@empresa.com'
             }
         
             BR{
-                $Mail_Receptor = 'soportebr@decolar.com'
+                $Mail_Receptor = 'soportebr@empresa.com'
             }
         
             CO{
-                $Mail_Receptor = 'soporteco@despegar.com'
+                $Mail_Receptor = 'soporteco@empresa.com'
             }
         
             CL{
-                $Mail_Receptor = 'soportecl@despegar.com'
+                $Mail_Receptor = 'soportecl@empresa.com'
             }
         
             MX{
-                $Mail_Receptor = 'soportemx@despegar.com'
+                $Mail_Receptor = 'soportemx@empresa.com'
             }
         
             PE{
                 # Este Mail creo que no existe ** Averiguar **
-                #$Mail_Receptor = 'soportepe@despegar.com'
+                #$Mail_Receptor = 'soportepe@empresa.com'
             }
         
         }
@@ -100,7 +100,7 @@ function Bitlocker {
             param (
                 $1
             )
-            $token = "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"
+            $token = "Token Generado por GitHub"
             $headers = @{Authorization = "token $($token)"}
             $ProgressPreference = 'SilentlyContinue'
             Invoke-WebRequest -Headers $headers `
@@ -113,7 +113,7 @@ function Bitlocker {
         DownloadFilesMail passfile
         DownloadFilesMail key
 
-        $Mail_Emisor = 'soportescripts@despegar.com'
+        $Mail_Emisor = 'soportescripts@empresa.com'
         $PassFile = "C:\PrepareWin10\passfile"
         $Key = "C:\PrepareWin10\key"
 
@@ -122,33 +122,14 @@ function Bitlocker {
 
         Send-MailMessage -From "$Mail_Emisor" -To "$Mail_Receptor" `
             -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
-            -UseSsl -SmtpServer mail.despegar.com -Port 25 -Credential $credMail
-        <#
-        # Envia el mail con id y recovery -----------------------------------------------------------------
-        $Mail_Emisor = 'soportescripts@gmail.com'
-        $PassFile = "C:\PrepareWin10\passfile"
-        $Key = "C:\PrepareWin10\key"
-
-        $credMail = New-Object -TypeName System.Management.Automation.PSCredential `
-                    -ArgumentList "$Mail_Emisor", (Get-Content "$PassFile" | ConvertTo-SecureString -Key (Get-Content "$Key"))
-
-        #$PassMail = ConvertTo-SecureString "micontraseña" -AsPlainText -Force
-        #$PassMail = Get-Content $env:USERPROFILE\Desktop\file | ConvertTo-SecureString -Force
-        #$credMail = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Mail_Emisor, $PassMail
-        
-        Send-MailMessage -From "$Mail_Emisor" -To "$Mail_Receptor" `
-                        -Subject "$NCompu" -Body "$IdKeyBitlocker" -Priority High `
-                        -UseSsl -SmtpServer smtp.gmail.com -Port 587 -Credential $credMail
-        
-        Start-Sleep -Seconds 10
-        #--------------------------------------------------------------------------------------------------
-        #>
+            -UseSsl -SmtpServer mail.empresa.com -Port 25 -Credential $credMail
         
         Write-Output ""
         Write-Output " ============================= "
         Write-Host "  Verificando conexion al NAS  " -ForegroundColor Yellow -BackgroundColor Black
         Write-Output " ============================= "
-        $nas = Test-Connection 10.40.54.52 -Count 2 -Quiet
+        
+        $nas = Test-Connection IP_NAS -Count 2 -Quiet
         if ("$nas" -eq 'False'){
             Write-Output ""
             Write-Output " ############################################################################################################## "
@@ -164,8 +145,8 @@ function Bitlocker {
             Write-Output " =========================== "
             Write-Host "  Copiando ID y PASS al NAS  " -ForegroundColor Yellow -BackgroundColor Black
             Write-Output " =========================== "
-            New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\reg-soporte-storage-00.infra.d\Soporte\BitLockerFiles\$1" -Credential $cred
-            Copy-Item -LiteralPath C:\Users\admindesp\Desktop\$NCompu.txt -Destination Z:\
+            New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\IP_NAS\Carpeta_Compartida\BitLockerFiles\$1" -Credential $cred
+            Copy-Item -LiteralPath C:\Users\adminuser\Desktop\$NCompu.txt -Destination Z:\
         }
     }
 

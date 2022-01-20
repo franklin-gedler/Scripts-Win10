@@ -5,7 +5,7 @@ function ValidateConnectAD {
 
     # $1 = Pais
     # $2 = CodigoPais
-    $Domain = "$1.infra.d"
+    $Domain = "NameDomain"
     $Domain = $Domain.ToLower()
 
     #Write-Output "YO $env:USERNAME ejecuto el script"
@@ -14,7 +14,7 @@ function ValidateConnectAD {
     Write-Host "       Verificando conexion con el Dominio        " -ForegroundColor Yellow -BackgroundColor Black
     Write-Output " ================================================ "
 
-    #$CAD = $(Test-Connection "10.40.$2.1" -Count 2 -Quiet -ErrorAction SilentlyContinue)
+    #$CAD = $(Test-Connection "IP_Domain" -Count 2 -Quiet -ErrorAction SilentlyContinue)
 
     $CAD = $(Test-Connection $Domain -Count 2 -Quiet -ErrorAction SilentlyContinue)
 
@@ -24,7 +24,7 @@ function ValidateConnectAD {
         Write-Host " Error al conectar con $Domain, por favor verificar conexion " -ForegroundColor Red -BackgroundColor Black
         Write-Output " ############################################################## "
         Pause
-        #$CAD = $(Test-Connection "10.40.$2.1" -Count 2 -Quiet -ErrorAction SilentlyContinue)
+        #$CAD = $(Test-Connection "IP_Domain" -Count 2 -Quiet -ErrorAction SilentlyContinue)
         $CAD = $(Test-Connection $Domain -Count 2 -Quiet -ErrorAction SilentlyContinue)
         Write-Output ""
     }
