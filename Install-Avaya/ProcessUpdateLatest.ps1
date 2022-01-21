@@ -69,7 +69,7 @@ function DownloadMotor {
     $Token = "Token Generado por Github"
     
     $Headers = @{
-    accept = "apoctstream"
+    accept = "application/octet-stream"
     authorization = "Token " + $Token
     }
 
